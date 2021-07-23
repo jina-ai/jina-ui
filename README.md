@@ -6,7 +6,7 @@ Monorepo for JinaJS and frontend projects
 - `showcases` - demo of jina live examples
 
 ## Commands
-Usage: `yarn <project> <command>`
+Usage: `yarn <package> <command>`
 
 ### Example Commands: 
 - `yarn jinajs build` - build jinajs
