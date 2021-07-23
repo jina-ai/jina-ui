@@ -1,0 +1,13 @@
+{
+  "name": "jina-monorepo",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "jinajs": "yarn workspace @jina-ai/jinajs",
+    "showcases": "yarn workspace @jina-ai/showcases"
+  }
+}
