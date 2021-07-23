@@ -1,7 +1,11 @@
-# frontend-monorepo
+# Jina Frontend Monorepo
 Monorepo for JinaJS and frontend projects
 
-## commands
+## Packages
+- `jinajs` - frontend toolkit for jina
+- `showcases` - demo of jina live examples
+
+## Commands
 - `yarn <project> <command>`
 
 ### Example Commands: 
