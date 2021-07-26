@@ -1,0 +1,51 @@
+name: "Build and Publish JinaJS"
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - packages/jinajs
+
+jobs:
+  npm-publish:
+    name: npm-publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15
+          registry-url: "https://registry.npmjs.org"
+
+      - name: set git email
+        run: |
+          git config --global user.email "dev-bot@jina.ai"
+          git config --global user.name "Jina Dev Bot"
+
+      - name: increment version
+        run: |
+          yarn jinajs version --patch
+
+      - name: install dependencies
+        run: yarn jinajs install
+
+      - name: build jinajs
+        run: yarn jinajs build
+
+      - name: publish
+        run: yarn jinajs publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # set this in your repo settings
+
+      - name: run git status
+        run: git status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

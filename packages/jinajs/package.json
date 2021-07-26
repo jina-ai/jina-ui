@@ -1,0 +1,14 @@
+{
+  "name": "@jina-ai/jinajs",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc",
+    "autobuild": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}
