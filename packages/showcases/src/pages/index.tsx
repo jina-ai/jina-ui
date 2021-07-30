@@ -10,16 +10,17 @@ export default function Home() {
       </Head>
 
       <main>
-        <div className="demo-container">
+        <div className="demo-container grid col-span-1 space-y-4">
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
+          <Base64Demo />
           <Base64Demo />
         </div>
-        <style jsx>
-          {`
-            .demo-container {
-              margin: 4em;
-            }
-          `}
-        </style>
       </main>
     </div>
   );
