@@ -1,12 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { HeaderAndSidebarLayout } from "../layouts/HeaderAndSidebarLayout";
+import { ShowcaseLayout } from "../layouts/ShowcaseLayout";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <HeaderAndSidebarLayout>
+    <ShowcaseLayout>
       <Component {...pageProps} />
-    </HeaderAndSidebarLayout>
+    </ShowcaseLayout>
   );
 }
 export default App;
