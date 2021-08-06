@@ -12,7 +12,7 @@ export const Base64Demo = () => {
   };
 
   return (
-    <div className="rounded shadow-lg p-4">
+    <div className="rounded shadow-lg p-4 bg-white">
       <div className="border-b text-2xl font-medium">
         Base64 Conversion Demo (imported from @jina-ai/jinajs)
       </div>
