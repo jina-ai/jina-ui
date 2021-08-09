@@ -25,15 +25,15 @@ jobs:
           git config --global user.email "dev-bot@jina.ai"
           git config --global user.name "Jina Dev Bot"
 
-      - name: increment version
-        run: |
-          yarn jinajs version --patch
-
       - name: install dependencies
         run: yarn jinajs install
 
       - name: build jinajs
         run: yarn jinajs build
+
+      - name: increment version
+        run: |
+          yarn jinajs version --patch
 
       - name: publish
         run: yarn jinajs publish
