@@ -5,3 +5,7 @@ export const fileToBase64 = (file: File): Promise<string> =>
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
+
+export const testFunc = ()=>{
+  return console.log("test function")
+}
