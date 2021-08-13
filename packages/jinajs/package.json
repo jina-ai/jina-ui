@@ -12,5 +12,7 @@
   "devDependencies": {
     "typescript": "^4.3.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
 }
