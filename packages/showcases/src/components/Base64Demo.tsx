@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fileToBase64 } from "@jina-ai/jinajs";
+import { utils } from "@jina-ai/jinajs";
 
 export const Base64Demo = () => {
   const [output, setOutput] = useState("");
@@ -7,7 +7,7 @@ export const Base64Demo = () => {
   const handleFileSelect = async (files: FileList | null) => {
     if (!files) return;
     const file = files[0];
-    const generatedOutput = await fileToBase64(file);
+    const generatedOutput = await utils.fileToBase64(file);
     setOutput(generatedOutput);
   };
 
@@ -19,11 +19,13 @@ export const Base64Demo = () => {
       <input
         type="file"
         multiple
-				className="mt-4"
+        className="mt-4"
         id="attach-files-button"
         onChange={(e) => handleFileSelect(e.target.files)}
       />
-      <div className="mt-4 bg-gray-50 rounded p-4 break-words font-mono">{output||"Select file to see its base64 encoding"}</div>
+      <div className="mt-4 bg-gray-50 rounded p-4 break-words font-mono">
+        {output || "Select file to see its base64 encoding"}
+      </div>
     </div>
   );
 };
