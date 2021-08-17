@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import Image from "next/image";
 import magnifyingGlass from "../images/magnifyingGlass.svg";
 import imageIcon from "../images/image.svg";
@@ -16,7 +16,7 @@ const Dropdown = () => {
   );
 };
 
-const SearchInput = () => {
+const SearchInput = ({inputRef}: { inputRef:  any}) => {
   return (
     <div className="flex flex-row items-center h-full">
       <div className="absolute ml-4 h-6 flex">
@@ -33,12 +33,13 @@ const SearchInput = () => {
       <input
         className="rounded-md w-full h-full pl-16 border-none outline-none focus:shadow-lg transition-all duration-200"
         placeholder="Search"
+        ref={inputRef}
       />
     </div>
   );
 };
 
-const SearchButton = ({ onClick }: { onClick: () => void }) => {
+const SearchButton = ({onClick}: { onClick: () => void }) => {
   return (
     <div
       className="text-white px-6 h-full flex items-center font-medium cursor-pointer"
@@ -50,11 +51,15 @@ const SearchButton = ({ onClick }: { onClick: () => void }) => {
 };
 
 export const SearchBar = () => {
-  function search() {}
+  const inputRef = useRef()
+  function search() {
+      console.log((inputRef as any).current.value)
+      // const value = inputRef.current?.value
+  }
   return (
     <div className="p-0.5 w-full bg-primary-500 rounded-lg flex flex-row">
       <div className="relative flex-1 h-12">
-        <SearchInput />
+        <SearchInput inputRef={inputRef} />
         <Dropdown />
       </div>
       <SearchButton onClick={search} />
