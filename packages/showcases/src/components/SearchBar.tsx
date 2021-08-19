@@ -19,7 +19,17 @@ function useFileDrag() {
     }
     function handleDrop(e: DragEvent) {
       e.preventDefault();
+      e.stopPropagation();
       setIsDragging(false);
+      const filesList = e.dataTansfer.files;
+      const files = [];
+
+      for(let i;i<filesList.length;i++){
+            files.push(filesList[i]);
+      }
+
+      setFiles(files);
+      console.log(files);
       console.log("handle drop:", e);
     }
     document.addEventListener("dragenter", showDrag);
@@ -43,7 +53,7 @@ const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
   }
 
   useEffect(() => {
-    if (fileRef.current) fileRef.current?.files = files;
+    //if (fileRef.current) fileRef.current.files = files;
   }, [fileRef, files]);
 
   return (
