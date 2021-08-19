@@ -5,33 +5,46 @@ import imageIcon from "../images/image.svg";
 
 type InputRef = MutableRefObject<HTMLInputElement | null>;
 
-const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
+function useFileDrag() {
   const [isDragging, setIsDragging] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    function showDrag(e: DragEvent) {
+      setIsDragging(true);
+    }
+    function hideDrag(e: DragEvent) {
+      const { clientX, clientY } = e;
+      if (clientX === 0 && clientY === 0) setIsDragging(false);
+    }
+    function handleDrop(e: DragEvent) {
+      e.preventDefault();
+      setIsDragging(false);
+      console.log("handle drop:", e);
+    }
+    document.addEventListener("dragenter", showDrag);
+    document.addEventListener("dragleave", hideDrag);
+    document.addEventListener("drop", handleDrop);
+    return () => {
+      document.removeEventListener("dragenter", showDrag);
+      document.removeEventListener("dragleave", hideDrag);
+      document.removeEventListener("drop", handleDrop);
+    };
+  }, []);
+
+  return { isDragging, files };
+}
+
+const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
+  const { isDragging, files } = useFileDrag();
 
   function selectFiles() {
     fileRef.current?.click();
   }
 
   useEffect(() => {
-    function showDrag(e:any) {
-      
-      setIsDragging(true);
-    }
-    function hideDrag(e:any) {
-      console.log("leave drag",e)
-      setIsDragging(false);
-    }
-    document.addEventListener("dragenter", showDrag);
-    // document.addEventListener("dragstart", showDrag);
-    document.addEventListener("dragleave", hideDrag);
-    return () => {
-      document.removeEventListener("dragenter", showDrag);
-      // document.removeEventListener("dragstart", showDrag);
-      // document.removeEventListener("dragexit", hideDrag);
-      // document.removeEventListener("dragend", hideDrag);
-      // document.removeEventListener("dragleave", hideDrag);
-    };
-  }, []);
+    if (fileRef.current) fileRef.current?.files = files;
+  }, [fileRef, files]);
 
   return (
     <div className="absolute w-full bg-white -mb-7 rounded-md border text-center mt-0.5 shadow-md">
