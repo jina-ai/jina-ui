@@ -137,15 +137,7 @@ const Dropdown = ({
   );
 };
 
-const FilePreview = ({
-  file,
-  small,
-  remove,
-}: {
-  file: File;
-  small?: boolean;
-  remove?: () => void;
-}) => {
+const FilePreview = ({ file, remove }: { file: File; remove?: () => void }) => {
   const [src, setSrc] = useState("");
 
   useEffect(() => {
@@ -270,8 +262,7 @@ export const SearchBar = () => {
   const [files, setFiles] = useState<File[]>([]);
 
   function search() {
-    const text = inputRef.current?.value;
-    
+    alert("search");
   }
 
   const addFiles = useCallback((files: File[]) => {
