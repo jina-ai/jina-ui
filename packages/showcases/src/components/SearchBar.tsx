@@ -1,4 +1,11 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import magnifyingGlass from "../images/magnifyingGlass.svg";
 import imageIcon from "../images/image.svg";
@@ -57,27 +64,31 @@ function useDropZone(ref: MutableRefObject<HTMLDivElement | null>) {
   return { isDragging, files };
 }
 
-const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
+const Dropdown = ({
+  files,
+  addFiles,
+  removeFile,
+}: {
+  files: File[];
+  addFiles: (files: File[]) => void;
+  removeFile: (filename: string) => void;
+}) => {
   const dropAreaRef = useRef<HTMLDivElement>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const { isDragging, files: droppedFiles } = useDropZone(dropAreaRef);
 
   useEffect(() => {
-    setFiles((prev) => {
-      return [...prev, ...droppedFiles];
-    });
-  }, [droppedFiles]);
+    addFiles(droppedFiles);
+  }, [droppedFiles, addFiles]);
 
-  function selectFiles() {
+  function triggerFileSelect() {
     fileRef.current?.click();
   }
 
-  function removeFile(fileName: string) {
-    setFiles((prev) => {
-      let updated = prev.filter((file) => file.name !== fileName);
-      return [...updated];
-    });
+  function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
+    const fileList = e.target.files;
+    if (fileList) addFiles(Array.from(fileList));
   }
 
   return (
@@ -89,7 +100,7 @@ const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
     >
       <div className="h-full w-full p-2">
         <div
-          className={`flex items-center text-center h-full border border-transparent ${
+          className={`p-2 flex items-center text-center h-full border border-transparent ${
             isDragging
               ? "border-primary-500 bg-primary-500 bg-opacity-10 border-dashed"
               : ""
@@ -107,7 +118,7 @@ const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
             <div className="mx-auto">
               <button
                 className="border px-4 py-1.5 rounded mr-4"
-                onClick={selectFiles}
+                onClick={triggerFileSelect}
               >
                 Select Files
               </button>{" "}
@@ -115,7 +126,12 @@ const Dropdown = ({ fileRef }: { fileRef: InputRef }) => {
             </div>
           )}
         </div>
-        <input type="file" ref={fileRef} style={{ display: "none" }} />
+        <input
+          type="file"
+          ref={fileRef}
+          style={{ display: "none" }}
+          onChange={handleSelectFiles}
+        />
       </div>
     </div>
   );
@@ -182,13 +198,32 @@ const MediaPreview = ({
       <img
         src={src}
         alt="Image"
-        className={`max-h-full max-w-full mx-auto${rounded ? " rounded" : ""}`}
+        className={`min-h-12 min-2-12 max-h-full max-w-full mx-auto${
+          rounded ? " rounded" : ""
+        }`}
       />
     );
   return null;
 };
 
-const SearchInput = ({ inputRef }: { inputRef: InputRef }) => {
+const SearchInput = ({
+  inputRef,
+  addFiles,
+}: {
+  inputRef: InputRef;
+  addFiles: (files: File[]) => void;
+}) => {
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function triggerFileSelect() {
+    fileRef.current?.click();
+  }
+
+  function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
+    const fileList = e.target.files;
+    if (fileList) addFiles(Array.from(fileList));
+  }
+
   return (
     <div className="flex flex-row items-center h-full">
       <div className="absolute ml-4 h-6 flex">
@@ -200,6 +235,14 @@ const SearchInput = ({ inputRef }: { inputRef: InputRef }) => {
           alt="image"
           layout="intrinsic"
           className="cursor-pointer"
+          onClick={triggerFileSelect}
+        />
+        <input
+          type="file"
+          multiple
+          ref={fileRef}
+          style={{ display: "none" }}
+          onChange={handleSelectFiles}
         />
       </div>
       <input
@@ -224,18 +267,30 @@ const SearchButton = ({ onClick }: { onClick: () => void }) => {
 
 export const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   function search() {
     const text = inputRef.current?.value;
-    const files = inputRef.current?.files;
+    
+  }
+
+  const addFiles = useCallback((files: File[]) => {
+    setFiles((prev) => {
+      return [...prev, ...files];
+    });
+  }, []);
+
+  function removeFile(filename: string) {
+    setFiles((prev) => {
+      return prev.filter((file) => file.name !== filename);
+    });
   }
 
   return (
     <div className="p-0.5 w-full bg-primary-500 rounded-lg flex flex-row jina-component">
       <div className="relative flex-1 h-12">
-        <SearchInput inputRef={inputRef} />
-        <Dropdown fileRef={fileRef} />
+        <SearchInput inputRef={inputRef} addFiles={addFiles} />
+        <Dropdown files={files} addFiles={addFiles} removeFile={removeFile} />
       </div>
       <SearchButton onClick={search} />
     </div>
