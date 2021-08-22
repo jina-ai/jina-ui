@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Base64Demo } from "../components/Base64Demo";
+import { SearchDemo } from "../components/SearchDemo";
 
 export default function Home() {
   return (
@@ -11,15 +11,7 @@ export default function Home() {
 
       <main>
         <div className="demo-container grid col-span-1 space-y-4">
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
-          <Base64Demo />
+          <SearchDemo />
         </div>
       </main>
     </div>

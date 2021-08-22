@@ -1,11 +1,21 @@
-export const fileToBase64 = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
+import * as utils from "./utils";
+import * as serializer from "./serializer";
+import {
+  SimpleResult,
+  SimpleResults,
+  Base64URI,
+  BaseURL,
+  RawDocumentData,
+} from "./types";
+import { JinaClient } from "./jinaClient";
 
-export const testFunc = ()=>{
-  return console.log("test function")
-}
+export default JinaClient;
+export {
+  utils,
+  serializer,
+  BaseURL,
+  SimpleResult,
+  SimpleResults,
+  Base64URI,
+  RawDocumentData,
+};
