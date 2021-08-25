@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Base64Demo } from "../components/Base64Demo";
-import { SearchBar } from "../components/SearchBar";
+import { SearchBar } from "../components/SearchBar/SearchBar";
 
 export default function Home() {
   return (
