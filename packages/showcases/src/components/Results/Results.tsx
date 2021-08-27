@@ -69,7 +69,7 @@ export const Results = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [view, setView] = useState<ViewType>(preferredView || DEFAULT_VIEW);
 
-  const hasResults = results.length>0;
+  const hasResults = results.length > 0;
   const selectedResults = results[selectedIndex];
 
   return (
@@ -85,9 +85,11 @@ export const Results = ({
         <ViewSelector current={view} type="grid" select={setView} />
       </div>
 
-      {hasResults?selectedResults.map((result, idx) => (
-        <ResultItem result={result} key={idx} />
-      )):"Search for something"}
+      {hasResults
+        ? selectedResults.map((result, idx) => (
+            <ResultItem result={result} key={idx} />
+          ))
+        : "Search for something"}
     </div>
   );
 };
