@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { SearchDemo } from "../components/SearchDemo";
+import { SearchBar } from "../components/SearchBar";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
 
       <main>
         <div className="demo-container grid col-span-1 space-y-4">
-          <SearchDemo />
+          <SearchBar/>
         </div>
       </main>
     </div>
