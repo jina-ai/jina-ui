@@ -23,7 +23,7 @@ export const FilePreview = ({ file, remove }: { file: File; remove?: () => void 
         />
       )}
       <div className="flex-1 overflow-hidden flex items-center">
-        <MediaPreview type={file.type} src={src} />
+        <MediaPreview mimeType={file.type} src={src} />
       </div>
       <div className="p-1">
         <CompactCaption text={file.name} />
