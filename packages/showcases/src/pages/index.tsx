@@ -1,7 +1,7 @@
 import Head from "next/head";
+import { SearchBar } from "../components/SearchBar";
 import { SimpleResults } from "@jina-ai/jinajs";
 import { Results } from "../components/Results";
-import { SearchDemo } from "../components/SearchDemo";
 
 const sampleQueries: SimpleResults = [
   {
@@ -154,6 +154,7 @@ export default function Home() {
 
       <main>
         <div className="demo-container grid col-span-1 space-y-4">
+        <SearchBar/>
           <Results
             queries={sampleQueries}
             results={sampleResults}
