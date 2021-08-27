@@ -1,4 +1,9 @@
-import React, { ChangeEvent, MutableRefObject, useRef } from "react";
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  MutableRefObject,
+  useRef,
+} from "react";
 import Image from "next/image";
 import magnifyingGlass from "../../images/magnifyingGlass.svg";
 import imageIcon from "../../images/image.svg";
@@ -8,9 +13,11 @@ type InputRef = MutableRefObject<HTMLInputElement | null>;
 export const SearchInput = ({
   inputRef,
   addFiles,
+  onEnter,
 }: {
   inputRef: InputRef;
   addFiles: (files: File[]) => void;
+  onEnter?: () => void;
 }) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -21,6 +28,12 @@ export const SearchInput = ({
   function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
     if (fileList) addFiles(Array.from(fileList));
+  }
+
+  function handleKeyPress(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "enter" && onEnter) {
+      return onEnter();
+    }
   }
 
   return (
@@ -48,6 +61,7 @@ export const SearchInput = ({
         className="rounded-md w-full h-full pl-16 border-none outline-none focus:shadow-lg transition-all duration-200"
         placeholder="Search"
         ref={inputRef}
+        onKeyPress={handleKeyPress}
       />
     </div>
   );

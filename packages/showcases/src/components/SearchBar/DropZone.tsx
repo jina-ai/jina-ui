@@ -87,7 +87,7 @@ export const DropZone = ({
 
   return (
     <div
-      className={`box-content ${
+      className={`bg-white z-10 box-content ${
         isDragging || files.length ? "h-40" : "h-0"
       } none overflow-hidden absolute w-full bg-white -mb-7 rounded-md text-center mt-0.5 shadow-md transition-all duration-200`}
       ref={dropAreaRef}
