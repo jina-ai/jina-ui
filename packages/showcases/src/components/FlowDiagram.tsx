@@ -40,7 +40,7 @@ export const FlowDiagram = () => {
       >
         <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto">
           <Image src={getFlowChartAsset(path)} alt="flow" />
-        <div className="justify-self-end self-end  mt-4 flex flor-row items-center cursor-pointer hover:bg-gray-200 p-2 rounded-md tranistion-all duration-200">
+        <div className="justify-self-end self-end w-52 mt-4 flex flor-row items-center cursor-pointer hover:bg-gray-200 p-2 rounded-md tranistion-all duration-200">
           <Image src={github} alt="github" />
           <span className="ml-2">View on Github</span>
         </div>
