@@ -15,7 +15,7 @@ export type ResultsProps = {
 
 export const ResultsList = ({ results }: { results: SimpleResults }) => {
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-4">
       {results.map((result, idx) => (
         <ResultItem result={result} key={idx} />
       ))}
@@ -25,7 +25,7 @@ export const ResultsList = ({ results }: { results: SimpleResults }) => {
 
 export const ResultsGrid = ({ results }: { results: SimpleResults }) => {
   return (
-    <div>
+    <div className="grid grid-cols-4 gap-4">
       {results.map((result, idx) => (
         <ResultItem result={result} key={idx} />
       ))}
@@ -85,11 +85,15 @@ export const Results = ({
         <ViewSelector current={view} type="grid" select={setView} />
       </div>
 
-      {hasResults
-        ? selectedResults.map((result, idx) => (
-            <ResultItem result={result} key={idx} />
-          ))
-        : "Search for something"}
+      {hasResults ? (
+        view === "list" ? (
+          <ResultsList results={selectedResults} />
+        ) : (
+          <ResultsGrid results={selectedResults} />
+        )
+      ) : (
+        "Search for something"
+      )}
     </div>
   );
 };

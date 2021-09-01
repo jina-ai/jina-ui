@@ -4,10 +4,11 @@ import JinaClient, {
   BaseURL,
   RawDocumentData,
   SimpleResults,
-  SimpleQueries
+  SimpleQueries,
 } from "@jina-ai/jinajs";
 import { Results } from "../components/Results";
 import { useEffect, useState } from "react";
+import { Spinner } from "../components/Spinner";
 
 function useJina(url: BaseURL) {
   const [jina, setJina] = useState<JinaClient>();
@@ -36,11 +37,26 @@ function useJina(url: BaseURL) {
   };
 }
 
-export default function Home() {
-  const { results, search,queries } = useJina("http://localhost:45678");
+const EmptyMessage = () => (
+  <div className="text-center text-3xl text-gray-500 py-36">
+    Search for something
+  </div>
+);
 
-  console.log("results:",results);
-  console.log("queries:",queries)
+const Searching = () => (
+  <div className="mx-auto text-3xl py-36 flex flex-row items-center text-primary-500">
+    <Spinner />
+    <span className="animate-pulse">Searching...</span>
+  </div>
+);
+
+export default function Home() {
+  const { results, searching, search, queries } = useJina(
+    "http://localhost:45678"
+  );
+
+  console.log("results:", results);
+  console.log("queries:", queries);
 
   return (
     <div>
@@ -51,11 +67,14 @@ export default function Home() {
 
       <main>
         <div className="demo-container grid col-span-1 space-y-4">
-          <SearchBar search={search} />
-          <Results
-            queries={queries}
-            results={results}
-          />
+          <SearchBar search={search} searching={searching} />
+          {searching ? (
+            <Searching />
+          ) : results.length ? (
+            <Results queries={queries} results={results} />
+          ) : (
+            <EmptyMessage />
+          )}
         </div>
       </main>
     </div>

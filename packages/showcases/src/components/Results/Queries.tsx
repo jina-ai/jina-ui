@@ -18,7 +18,7 @@ export const QueryItem = ({
   return (
     <div
       onClick={onClick}
-      className={`max-h-36 flex-none w-72 overflow-hidden inline-block cursor-pointer border border-gray-200 rounded p-4 mr-2 transition-all duration-200 ${
+      className={`max-h-48 relative flex-none flex items-center w-72 overflow-hidden cursor-pointer border border-gray-200 rounded p-4 mr-2 transition-all duration-200 ${
         selected ? "border-primary-500" : ""
       }`}
     >
