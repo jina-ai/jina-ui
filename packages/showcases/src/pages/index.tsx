@@ -9,15 +9,16 @@ import JinaClient, {
 import { Results } from "../components/Results";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/Spinner";
+import { useRef } from "react";
 
-function useJina(url: BaseURL) {
+function useJina(url?: BaseURL) {
   const [jina, setJina] = useState<JinaClient>();
   const [queries, setQueries] = useState<SimpleQueries>([]);
   const [results, setResults] = useState<SimpleResults[]>([]);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    setJina(new JinaClient(url));
+    if (url) setJina(new JinaClient(url));
   }, [url]);
 
   async function search(...documents: RawDocumentData[]) {
@@ -51,12 +52,17 @@ const Searching = () => (
 );
 
 export default function Home() {
-  const { results, searching, search, queries } = useJina(
-    "http://localhost:45678"
-  );
+  const [url, setURL] = useState<BaseURL | undefined>(undefined);
+  const { results, searching, search, queries } = useJina(url);
+  const urlInputRef = useRef<HTMLInputElement>(null);
 
   console.log("results:", results);
   console.log("queries:", queries);
+
+  const initClient = () => {
+    const inputURL = urlInputRef.current?.value;
+    if (inputURL) setURL(inputURL as BaseURL);
+  };
 
   return (
     <div>
@@ -66,16 +72,32 @@ export default function Home() {
       </Head>
 
       <main>
-        <div className="demo-container grid col-span-1 space-y-4">
-          <SearchBar search={search} searching={searching} />
-          {searching ? (
-            <Searching />
-          ) : results.length ? (
-            <Results queries={queries} results={results} />
-          ) : (
-            <EmptyMessage />
-          )}
-        </div>
+        {url ? (
+          <div className="demo-container grid col-span-1 space-y-4">
+            <SearchBar search={search} searching={searching} />
+            {searching ? (
+              <Searching />
+            ) : results.length ? (
+              <Results queries={queries} results={results} />
+            ) : (
+              <EmptyMessage />
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-row items-center">
+            <input
+              className="border px-4 py-2 rounded"
+              ref={urlInputRef}
+              placeholder="endpoint URL"
+            />
+            <button
+              className="rounded p-2 bg-green-500 px-6 text-white ml-3"
+              onClick={initClient}
+            >
+              Set
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );
