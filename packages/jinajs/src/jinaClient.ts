@@ -25,6 +25,12 @@ export class JinaClient {
     }
   }
 
+  /**
+   * Call jina's search endpoint with requestBody
+   * 
+   * @param document - raw document data
+   * @returns a promise that resolves into results
+   */
   async search(document: RawDocumentData): Promise<SimpleResults>;
   async search(...documents: RawDocumentData[]): Promise<SimpleResults[]>;
   async search(query: any): Promise<any> {
