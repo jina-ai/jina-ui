@@ -9,7 +9,7 @@
     "build": "tsc",
     "autobuild": "tsc --watch",
     "test": "jest --watch",
-    "generate-docs": "typedoc --out docs src/index.ts"
+    "generate-docs": "typedoc"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
