@@ -16,9 +16,10 @@ const SearchButton = ({ onClick }: { onClick: () => void }) => {
 
 type SearchBarProps = {
   search: (...documents: RawDocumentData[]) => void;
+  searching: boolean;
 };
 
-export const SearchBar = ({ search }: SearchBarProps) => {
+export const SearchBar = ({ search, searching }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
 
@@ -47,6 +48,7 @@ export const SearchBar = ({ search }: SearchBarProps) => {
     <div className="p-0.5 w-full bg-primary-500 rounded-lg flex flex-row jina-component">
       <div className="relative flex-1 h-12">
         <SearchInput
+          searching={searching}
           inputRef={inputRef}
           addFiles={addFiles}
           onEnter={handleSearch}
