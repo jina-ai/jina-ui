@@ -20,9 +20,7 @@ export const SearchInput = ({
     }
 
     function deleteInput() {
-        Array.from(document.querySelectorAll("input")).forEach(
-            input => (input.value = "")
-        );
+        if (inputRef.current) inputRef.current.value = ""
     }
 
     function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
