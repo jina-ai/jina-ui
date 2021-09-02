@@ -7,6 +7,8 @@ import {
   SimpleResults,
 } from "./types";
 
+const defaultJinaVersion = "2.0.22"
+
 export class JinaClient {
   private baseURL: string;
   private jinaVersion: string;
@@ -22,7 +24,8 @@ export class JinaClient {
   async init() {
     try {
       const response = await this.client.get("status");
-      this.jinaVersion = response.data.jina.jina;
+      this.jinaVersion = defaultJinaVersion
+      if (response?.data?.jina?.jina) this.jinaVersion = response.data.jina.jina;
     } catch (e) {
       throw new Error(
         `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
