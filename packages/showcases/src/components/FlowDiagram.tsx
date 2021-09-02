@@ -1,11 +1,24 @@
 import React, { useState } from "react";
+import {useRouter} from 'next/router'
 import SampleFlow from "../images/sampleflow.svg";
+import PDFFlow from "../images/pdf-search-flowchart.svg"
+import ECommerceFlow from "../images/e-commerce-flowchart.svg"
 import github from "../images/github.svg";
 import Image from "next/image";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 
+const getFlowChartAsset = (showcase: string) => {
+  switch(showcase) {
+    case "pdf": return PDFFlow
+    case "e-commerce": return ECommerceFlow
+    default: return SampleFlow
+  }
+}
+
 export const FlowDiagram = () => {
   const [show, setShow] = useState(false);
+  const {asPath} = useRouter()
+  const path = asPath.replace('/', '')
   function toggleShow() {
     setShow((prev) => !prev);
   }
@@ -25,13 +38,12 @@ export const FlowDiagram = () => {
           show ? "max-h-screen" : "max-h-0"
         }`}
       >
-        <div className="p-4 bg-white rounded mt-4 overflow-y-auto">
-          <Image src={SampleFlow} alt="flow" />
-        </div>
-        <div></div>
-        <div className="float-right mt-4 flex flor-row items-center cursor-pointer hover:bg-gray-200 p-2 rounded-md tranistion-all duration-200">
+        <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto">
+          <Image src={getFlowChartAsset(path)} alt="flow" />
+        <div className="justify-self-end self-end w-52 mt-4 flex flor-row items-center cursor-pointer hover:bg-gray-200 p-2 rounded-md tranistion-all duration-200">
           <Image src={github} alt="github" />
           <span className="ml-2">View on Github</span>
+        </div>
         </div>
       </div>
     </div>

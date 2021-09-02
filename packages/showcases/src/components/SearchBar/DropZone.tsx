@@ -76,10 +76,6 @@ export const DropZone = ({
     addFiles(droppedFiles);
   }, [droppedFiles, addFiles]);
 
-  function triggerFileSelect() {
-    fileRef.current?.click();
-  }
-
   function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
     if (fileList) addFiles(Array.from(fileList));
@@ -87,39 +83,33 @@ export const DropZone = ({
 
   return (
     <div
-      className={`box-content ${
-        isDragging || files.length ? "h-40" : "h-0"
-      } none overflow-hidden absolute w-full bg-white -mb-7 rounded-md text-center mt-0.5 shadow-md transition-all duration-200`}
       ref={dropAreaRef}
+      className={`bg-white z-10 box-content ${
+        isDragging || files.length ? "h-48" : "h-0"
+      } none overflow-hidden absolute w-full bg-white -mb-7 rounded-md text-center mt-0.5 shadow-md transition-all duration-200`}
     >
-      <div className="h-full w-full p-2">
-        <div
-          className={`p-2 flex items-center text-center h-full border border-transparent ${
-            isDragging
-              ? "border-primary-500 bg-primary-500 bg-opacity-10 border-dashed"
-              : ""
-          }`}
-        >
-          {files.length ? (
-            files.map((file, idx) => (
+      <div className="h-full w-full p-2 relative">
+        {isDragging ? (
+          <div
+            className={`rounded absolute right-0 left-0 top-0 bottom-0 m-2 flex items-center border border-transparent ${
+              isDragging
+                ? "border-primary-500 bg-primary-500 bg-opacity-10 border-dashed"
+                : ""
+            }`}
+          >
+            <div className="mx-auto">Drop files here</div>
+          </div>
+        ) : (
+          <div className="overflow-auto whitespace-nowrap flex flex-row h-full w-full pb-2">
+            {files.map((file, idx) => (
               <FilePreview
                 key={file.name}
                 file={file}
                 remove={() => removeFile(file.name)}
               />
-            ))
-          ) : (
-            <div className="mx-auto">
-              <button
-                className="border px-4 py-1.5 rounded mr-4"
-                onClick={triggerFileSelect}
-              >
-                Select Files
-              </button>{" "}
-              or drop here
-            </div>
-          )}
-        </div>
+            ))}
+          </div>
+        )}
         <input
           type="file"
           ref={fileRef}

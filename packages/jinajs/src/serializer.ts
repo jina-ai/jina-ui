@@ -2,6 +2,8 @@ import { fileToBase64 } from "./utils";
 import {
   AnyObject,
   RawDocumentData,
+  SimpleQueries,
+  SimpleResponse,
   SimpleResult,
   SimpleResults,
 } from "./types";
@@ -20,7 +22,7 @@ export function serializeRequest(
 export function serializeResponse(
   response: AnyObject,
   version: string = DEFAULT_VERSION
-) {
+): SimpleResponse {
   const serialize =
     responseSerializer[version] || responseSerializer[DEFAULT_VERSION];
 
@@ -49,26 +51,31 @@ const requestSerializer: {
 };
 
 const responseSerializer: {
-  [key: string]: (rawResponse: AnyObject) => Promise<SimpleResults[]>;
+  [key: string]: (rawResponse: AnyObject) => SimpleResponse;
 } = {
-  "2": async (rawResponse: AnyObject) => {
+  "2": (rawResponse: AnyObject) => {
     const docs = rawResponse.data.docs;
-    let results: SimpleResults[] = [];
+    const results: SimpleResults[] = [];
+    const queries: SimpleQueries = [];
     docs.forEach((doc: any) => {
+      queries.push({
+        data: doc.text || doc.uri,
+        mimeType: doc.mimeType,
+      });
       const { matches } = doc;
       results.push(
-        matches.map(({ scores, text, uri, mime_type }: any) => {
+        matches.map(({ scores, text, uri, mimeType }: any) => {
           const score = scores.values
             ? scores.values?.value
             : scores.score?.value;
           return {
             data: text || uri,
-            mimeType: mime_type,
+            mimeType,
             score,
           } as SimpleResult;
         })
       );
     });
-    return results;
+    return { queries, results };
   },
 };
