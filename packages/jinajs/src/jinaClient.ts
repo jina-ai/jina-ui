@@ -1,6 +1,11 @@
 import axios, { AxiosInstance } from "axios";
 import { serializeRequest, serializeResponse } from "./serializer";
-import { BaseURL, RawDocumentData, SimpleResults } from "./types";
+import {
+  BaseURL,
+  RawDocumentData,
+  SimpleQueries,
+  SimpleResults,
+} from "./types";
 
 export class JinaClient {
   private baseURL: string;
@@ -25,31 +30,13 @@ export class JinaClient {
     }
   }
 
-  /**
-   * Call jina's search endpoint with requestBody
-   * 
-   * @param document - raw document data
-   * @returns a promise that resolves into results
-   */
-  async search(document: RawDocumentData): Promise<SimpleResults>;
-  async search(...documents: RawDocumentData[]): Promise<SimpleResults[]>;
-  async search(query: any): Promise<any> {
-    if (Array.isArray(query)) {
-      const requestBody = await serializeRequest(query, this.jinaVersion);
-      console.log("request body:", requestBody);
-      const response = await this.client.post("search", requestBody);
-      console.log("response:", response);
-      return serializeResponse(response.data, this.jinaVersion);
-    } else {
-      const requestBody = await serializeRequest([query], this.jinaVersion);
-      console.log("request body:", requestBody);
-      const response = await this.client.post("search", requestBody);
-      console.log("response:", response);
-      const serialized = await serializeResponse(
-        response.data,
-        this.jinaVersion
-      );
-      return serialized[0];
-    }
+  async search(
+    ...documents: RawDocumentData[]
+  ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
+    const requestBody = await serializeRequest(documents, this.jinaVersion);
+    console.log("request body:", requestBody);
+    const response = await this.client.post("search", requestBody);
+    console.log("response:", response);
+    return serializeResponse(response.data, this.jinaVersion);
   }
 }

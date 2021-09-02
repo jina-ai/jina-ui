@@ -6,6 +6,8 @@ import {
   Base64URI,
   BaseURL,
   RawDocumentData,
+  SimpleQueries,
+  SimpleQuery
 } from "./types";
 import { JinaClient } from "./jinaClient";
 
@@ -18,4 +20,6 @@ export {
   SimpleResults,
   Base64URI,
   RawDocumentData,
+  SimpleQuery,
+  SimpleQueries,
 };
