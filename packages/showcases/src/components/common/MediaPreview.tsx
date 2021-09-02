@@ -1,6 +1,8 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
-import React, { ReactNode, useCallback, useState } from "react";
-import { Document, Page } from "react-pdf";
+import React, { useCallback, useState } from "react";
+import dynamic from "next/dynamic";
+
+const PdfViewer = dynamic(() => import("./PdfViewer"), { ssr: false });
 
 /* eslint @next/next/no-img-element: "off" */
 
@@ -52,9 +54,12 @@ const PdfPreview = ({ src }: { src: string }) => {
   return (
     <div className="h-full w-full" ref={container}>
       <div className="overflow-y-auto w-full h-full">
-        <Document file={src} onLoadSuccess={onLoad}>
-          <Page pageNumber={currentPage} width={width} />
-        </Document>
+        <PdfViewer
+          src={src}
+          onLoad={onLoad}
+          width={width}
+          pageNumber={currentPage}
+        />
       </div>
 
       <div className="absolute h-8 left-0 right-0 bottom-0 grid grid-cols-2 gap-2 select-none">
