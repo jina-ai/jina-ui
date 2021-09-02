@@ -1,8 +1,6 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/outline";
 import React, { useCallback, useState } from "react";
-import dynamic from "next/dynamic";
-
-const PdfViewer = dynamic(() => import("./PdfViewer"), { ssr: false });
+import { PdfViewer } from "./PdfViewer";
 
 /* eslint @next/next/no-img-element: "off" */
 
