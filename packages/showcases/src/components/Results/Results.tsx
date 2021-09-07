@@ -9,7 +9,7 @@ type ViewType = "list" | "grid";
 
 export type ResultsProps = {
   results: SimpleResults[];
-  queries: SimpleQueries;
+  queries?: SimpleQueries;
   view?: ViewType;
 };
 
@@ -79,7 +79,7 @@ export const Results = ({
         selectedIndex={selectedIndex}
         select={setSelectedIndex}
       />
-      <div className="mb-2 font-semibold text-xl flex flex-row items-center">
+      <div className="mb-2 pt-3 font-semibold text-xl flex flex-row items-center">
         <div className="flex-1">Results</div>
         <ViewSelector current={view} type="list" select={setView} />
         <ViewSelector current={view} type="grid" select={setView} />

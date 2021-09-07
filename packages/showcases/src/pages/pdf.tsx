@@ -64,7 +64,7 @@ export default function PDF() {
     return (
         <>
             <SearchBar searching={searching} search={search}/>
-            <Results results={results} queries={queries}/>
+            <Results results={results}/>
             <FlowDiagram/>
         </>)
 }
