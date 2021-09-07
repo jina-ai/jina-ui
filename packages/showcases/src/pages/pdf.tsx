@@ -12,6 +12,10 @@ import Results from "../components/Results";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
+type CustomResult = any
+type CustomResults = any
+
+
 const customReqSerializer = (documents: RawDocumentData[], version: string) => {
     return {
         "mime_type": "text",
@@ -20,9 +24,10 @@ const customReqSerializer = (documents: RawDocumentData[], version: string) => {
 }
 
 const customResSerializer = (response: AnyObject, version: string) => {
+
     const docs = response.data
     const queries: SimpleQueries = [];
-    const results: SimpleResults[] = [];
+    const results: CustomResults[] = [];
 
     docs.forEach((doc: any) => {
         queries.push({
@@ -31,16 +36,10 @@ const customResSerializer = (response: AnyObject, version: string) => {
         })
     })
 
-    const result = docs.map((doc: any) => {
-        return {
-            data: doc.pdf,
-            score: doc.score,
-            mimeType: "application/pdf"
-        }
-    })
+    const result = docs
 
     results.push(result)
-    return {queries, results} as SimpleResponse
+    return {queries, results}
 }
 
 
@@ -61,8 +60,23 @@ export default function PDF() {
         setQueries(queries);
     }
 
-    const CustomResultItem = (result: SimpleResult, key: number) => (<div>asdf</div>)
-    
+    const CustomResultItem = (result: CustomResult, key: number) => {
+        console.log(result)
+        const {thumbnail, pdf_name, page} = result.result
+
+        return (
+            <div className="cursor:pointer">
+                <div className="rounded-xl border m-b-3 overflow-hidden h-96">
+                    <img className="" src={thumbnail}/>
+                </div>
+
+                <div className="">
+                    <span>{pdf_name}</span>
+                    <span>Page {parseInt(page) + 1}</span>
+                </div>
+            </div>)
+    }
+
     return (
         <>
             <SearchBar searching={searching} search={search}/>
