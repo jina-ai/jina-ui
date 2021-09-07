@@ -7,7 +7,7 @@ import {
   SimpleResults,
 } from "./types";
 
-const defaultJinaVersion = "2.0.22"
+const defaultJinaVersion = "2"
 
 export class JinaClient {
   private baseURL: string;
