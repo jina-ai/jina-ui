@@ -13,25 +13,44 @@ export type ResultsProps = {
   view?: ViewType;
 };
 
-export const ResultsList = ({ results }: { results: SimpleResults }) => {
-  return (
-    <div className="grid grid-cols-1 gap-4">
-      {results.map((result, idx) => (
-        <ResultItem result={result} key={idx} />
-      ))}
-    </div>
-  );
+
+
+export const ResultsView = ({ results, view }: { results: SimpleResults, view: ViewType }) => {
+
+    const ResultsList = ({ results }: { results: SimpleResults }) => {
+        return (
+            <div className="grid grid-cols-1 gap-4">
+                {results.map((result, idx) => (
+                    <ResultItem result={result} key={idx} />
+                ))}
+            </div>
+        );
+    };
+
+    const ResultsGrid = ({ results }: { results: SimpleResults }) => {
+        return (
+            <div className="grid grid-cols-4 gap-4">
+                {results.map((result, idx) => (
+                    <ResultItem result={result} key={idx} />
+                ))}
+            </div>
+        );
+    };
+
+    switch (view) {
+        case "list":
+            return <ResultsList results={results}/>
+        case "grid":
+            return (
+                <div className="grid grid-cols-4 gap-4">
+                    {results.map((result, idx) => (
+                        <ResultItem result={result} key={idx} />
+                    ))}
+                </div>
+            )
+    }
 };
 
-export const ResultsGrid = ({ results }: { results: SimpleResults }) => {
-  return (
-    <div className="grid grid-cols-4 gap-4">
-      {results.map((result, idx) => (
-        <ResultItem result={result} key={idx} />
-      ))}
-    </div>
-  );
-};
 
 const ViewSelector = ({
   type,
@@ -86,11 +105,7 @@ export const Results = ({
       </div>
 
       {hasResults ? (
-        view === "list" ? (
-          <ResultsList results={selectedResults} />
-        ) : (
-          <ResultsGrid results={selectedResults} />
-        )
+          <ResultsView results={selectedResults} view={view}/>
       ) : (
         "Search for something"
       )}
