@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { SimpleQueries, SimpleResults } from "@jina-ai/jinajs";
+import { SimpleQueries, SimpleResult, SimpleResults } from "@jina-ai/jinajs";
 import { ResultItem } from "./ResultItem";
 import { QuerySelector } from "./Queries";
 import { ViewGridIcon, ViewListIcon } from "@heroicons/react/outline";
@@ -7,31 +7,32 @@ import { ViewGridIcon, ViewListIcon } from "@heroicons/react/outline";
 const DEFAULT_VIEW = "list";
 type ViewType = "list" | "grid";
 
+export type ICustomResultItem = ({result, key}: {result: SimpleResult, key: number}) => JSX.Element
+
 export type ResultsProps = {
   results: SimpleResults[];
   queries?: SimpleQueries;
   view?: ViewType;
+  CustomResultItem? : ICustomResultItem
 };
 
+export const ResultsView = ({ results, view }: { results: SimpleResults, view: ViewType, CustomResultItem?: ICustomResultItem }) => {
 
-
-export const ResultsView = ({ results, view }: { results: SimpleResults, view: ViewType }) => {
-
-    const ResultsList = ({ results }: { results: SimpleResults }) => {
+    const ResultsList = ({ results, CustomResultItem }: { results: SimpleResults, CustomResultItem?: ICustomResultItem }) => {
         return (
             <div className="grid grid-cols-1 gap-4">
                 {results.map((result, idx) => (
-                    <ResultItem result={result} key={idx} />
+                    CustomResultItem ? <CustomResultItem result={result} key={idx}/>  : <ResultItem result={result} key={idx} />
                 ))}
             </div>
         );
     };
 
-    const ResultsGrid = ({ results }: { results: SimpleResults }) => {
+    const ResultsGrid = ({ results, CustomResultItem }: { results: SimpleResults, CustomResultItem?: ICustomResultItem  }) => {
         return (
             <div className="grid grid-cols-4 gap-4">
                 {results.map((result, idx) => (
-                    <ResultItem result={result} key={idx} />
+                    CustomResultItem ? <CustomResultItem result={result} key={idx}/>  : <ResultItem result={result} key={idx} />
                 ))}
             </div>
         );
@@ -105,7 +106,7 @@ export const Results = ({
       </div>
 
       {hasResults ? (
-          <ResultsView results={selectedResults} view={view}/>
+          <ResultsView results={selectedResults} view={view} CustomResultItem/>
       ) : (
         "Search for something"
       )}
