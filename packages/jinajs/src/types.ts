@@ -22,3 +22,6 @@ export type SimpleResponse = {
 };
 
 export type BaseURL = `http://${string}` | `https://${string}`;
+
+export type RequestSerializer = (documents: RawDocumentData[], version: string) => AnyObject
+export type ResponseSerializer = (response: AnyObject, version: string) => SimpleResponse
