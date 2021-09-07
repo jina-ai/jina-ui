@@ -15,7 +15,7 @@ const PDF_API_URL = "http://34.89.253.237:80"
 const customReqSerializer = (documents: RawDocumentData[], version: string) => {
     return {
         "mime_type": "text",
-        "data": "this could be your serach"
+        "data": documents[0]
     }
 }
 
@@ -59,9 +59,6 @@ export default function PDF() {
         setSearching(false);
         setResults(results);
         setQueries(queries);
-        console.log("results", results)
-        console.log("queries", queries)
-
     }
 
     return (
