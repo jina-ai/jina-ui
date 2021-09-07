@@ -35,7 +35,7 @@ const customResSerializer = (response: AnyObject, version: string) => {
         return {
             data: doc.pdf,
             score: doc.score,
-            mimeType: "PDF"
+            mimeType: "application/pdf"
         }
     })
 
