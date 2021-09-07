@@ -61,10 +61,12 @@ export default function PDF() {
         setQueries(queries);
     }
 
+    const CustomResultItem = (result: SimpleResult, key: number) => (<div>asdf</div>)
+    
     return (
         <>
             <SearchBar searching={searching} search={search}/>
-            <Results results={results}/>
+            <Results results={results} CustomResultItem={CustomResultItem}/>
             <FlowDiagram/>
         </>)
 }
