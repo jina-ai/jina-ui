@@ -37,7 +37,6 @@ const customResSerializer = (response: AnyObject, version: string) => {
     })
 
     const result = docs
-
     results.push(result)
     return {queries, results}
 }
@@ -61,17 +60,17 @@ export default function PDF() {
     }
 
     const CustomResultItem = (result: CustomResult, key: number) => {
-        const {thumbnail, pdf_name, page} = result.result
+        const {thumbnail, pdf_name, pdf, page} = result.result
 
         return (
-            <div className="cursor:pointer">
-                <div className="rounded-xl border m-b-3 overflow-hidden h-96">
-                    <img className="" src={thumbnail}/>
+            <div className="cursor-pointer max-w-lg" onClick={() => window.open(pdf, "_blank")}>
+                <div className="rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96">
+                    <img src={thumbnail}/>
                 </div>
 
-                <div className="">
-                    <span>{pdf_name}</span>
-                    <span>Page {parseInt(page) + 1}</span>
+                <div className="px-8 pt-4 flex justify-between">
+                    <div className="font-semibold max-w-xs">{pdf_name}</div>
+                    <div className="float-right text-gray-700">Page {parseInt(page) + 1}</div>
                 </div>
             </div>)
     }
