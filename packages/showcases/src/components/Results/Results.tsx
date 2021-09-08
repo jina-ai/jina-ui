@@ -8,8 +8,7 @@ const DEFAULT_VIEW = "list";
 type ViewType = "list" | "grid";
 
 type CustomResultItemProps = {
-    result: SimpleResult,
-    key: number
+    result: SimpleResult
 }
 export type ICustomResultItem = ComponentType<CustomResultItemProps>
 

@@ -19,8 +19,8 @@ export class JinaClient {
   private serializeResponse: ResponseSerializer
 
   constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer, customSerializeResponse?: ResponseSerializer ) {
-    customSerializeRequest ? this.serializeRequest = customSerializeRequest : this.serializeRequest = serializeRequest
-    customSerializeResponse ? this.serializeResponse = customSerializeResponse : this.serializeResponse = serializeResponse
+    this.serializeRequest = customSerializeRequest || serializeRequest
+    this.serializeResponse = customSerializeResponse || serializeResponse
     this.baseURL = baseURL;
     this.jinaVersion = "";
     this.client = axios.create({ baseURL });

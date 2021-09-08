@@ -5,9 +5,11 @@ import JinaClient, {
     RawDocumentData,
     SimpleResults,
     SimpleQueries,
+    AnyObject,
+    SimpleResponse,
+    SimpleResult
 } from "@jina-ai/jinajs";
 import React, {useState} from "react";
-import {AnyObject, SimpleResponse, SimpleResult} from "../../../../jinajs/dist/types";
 import Results from "../../components/Results";
 
 const PDF_API_URL = "http://34.89.253.237:80"
@@ -32,7 +34,7 @@ const customResSerializer = (response: AnyObject, version: string) => {
     docs.forEach((doc: any) => {
         queries.push({
             data: doc.pdf,
-            mimeType: "PDF"
+            mimeType: "application/pdf"
         })
     })
 
@@ -59,7 +61,7 @@ export default function PDF() {
         setQueries(queries);
     }
 
-    const CustomResultItem = (result: CustomResult, key: number) => {
+    const CustomResultItem = (result: CustomResult) => {
         const {thumbnail, pdf_name, pdf, page} = result.result
 
         return (
