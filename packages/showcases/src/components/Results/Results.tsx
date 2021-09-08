@@ -26,41 +26,13 @@ export const ResultsView = ({
                                 CustomResultItem
                             }: { results: SimpleResults, view: ViewType, CustomResultItem?: ICustomResultItem }) => {
 
-    console.log(CustomResultItem)
-    const ResultsList = ({
-                             results,
-                             CustomResultItem
-                         }: { results: SimpleResults, CustomResultItem?: ICustomResultItem }) => {
-        return (
-            <div className="grid grid-cols-1 gap-4">
-                {results.map((result, idx) => (
-                    CustomResultItem ? <CustomResultItem result={result} key={idx}/> :
-                        <ResultItem result={result} key={idx}/>
-                ))}
-            </div>
-        );
-    };
-
-    const ResultsGrid = ({
-                             results,
-                             CustomResultItem
-                         }: { results: SimpleResults, CustomResultItem?: ICustomResultItem }) => {
-        return (
-            <div className="grid grid-cols-4 gap-4">
-                {results.map((result, idx) => (
-                    CustomResultItem ? <CustomResultItem result={result} key={idx}/> :
-                        <ResultItem result={result} key={idx}/>
-                ))}
-            </div>
-        );
-    };
-
-    switch (view) {
-        case "list":
-            return <ResultsList results={results} CustomResultItem={CustomResultItem}/>
-        case "grid":
-            return <ResultsGrid results={results} CustomResultItem={CustomResultItem}/>
-    }
+    return (
+        <div className={"grid gap-4 " + (view === "grid" ? "grid-cols-4 " : "grid-cols-1")}>
+            {results.map((result, idx) => (
+                CustomResultItem ? <CustomResultItem result={result} key={idx}/> :
+                    <ResultItem result={result} key={idx}/>
+            ))}
+        </div>)
 };
 
 
