@@ -61,7 +61,6 @@ export default function PDF() {
     }
 
     const CustomResultItem = (result: CustomResult, key: number) => {
-        console.log(result)
         const {thumbnail, pdf_name, page} = result.result
 
         return (

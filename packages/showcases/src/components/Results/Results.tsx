@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from "react";
+import React, {ComponentType, ReactNode, useState} from "react";
 import {SimpleQueries, SimpleResult, SimpleResults} from "@jina-ai/jinajs";
 import {ResultItem} from "./ResultItem";
 import {QuerySelector} from "./Queries";
@@ -7,7 +7,11 @@ import {ViewGridIcon, ViewListIcon} from "@heroicons/react/outline";
 const DEFAULT_VIEW = "list";
 type ViewType = "list" | "grid";
 
-export type ICustomResultItem = ({result, key}: { result: SimpleResult, key: number }) => JSX.Element
+type CustomResultItemProps = {
+    result: SimpleResult,
+    key: number
+}
+export type ICustomResultItem = ComponentType<CustomResultItemProps>
 
 export type ResultsProps = {
     results: SimpleResults[];
