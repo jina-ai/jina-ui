@@ -3,6 +3,8 @@ import { serializeRequest, serializeResponse } from "./serializer";
 import {
   BaseURL,
   RawDocumentData,
+  RequestSerializer,
+  ResponseSerializer,
   SimpleQueries,
   SimpleResults,
 } from "./types";
@@ -13,8 +15,12 @@ export class JinaClient {
   private baseURL: string;
   private jinaVersion: string;
   private client: AxiosInstance;
+  private serializeRequest: RequestSerializer
+  private serializeResponse: ResponseSerializer
 
-  constructor(baseURL: BaseURL) {
+  constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer, customSerializeResponse?: ResponseSerializer ) {
+    customSerializeRequest ? this.serializeRequest = customSerializeRequest : this.serializeRequest = serializeRequest
+    customSerializeResponse ? this.serializeResponse = customSerializeResponse : this.serializeResponse = serializeResponse
     this.baseURL = baseURL;
     this.jinaVersion = "";
     this.client = axios.create({ baseURL });
@@ -36,10 +42,10 @@ export class JinaClient {
   async search(
     ...documents: RawDocumentData[]
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
-    const requestBody = await serializeRequest(documents, this.jinaVersion);
+    const requestBody = await this.serializeRequest(documents, this.jinaVersion);
     console.log("request body:", requestBody);
     const response = await this.client.post("search", requestBody);
     console.log("response:", response);
-    return serializeResponse(response.data, this.jinaVersion);
+    return this.serializeResponse(response.data, this.jinaVersion);
   }
 }
