@@ -55,10 +55,7 @@ export default function Home() {
   const [url, setURL] = useState<BaseURL | undefined>(undefined);
   const { results, searching, search, queries } = useJina(url);
   const urlInputRef = useRef<HTMLInputElement>(null);
-
-  console.log("results:", results);
-  console.log("queries:", queries);
-
+  
   const initClient = () => {
     const inputURL = urlInputRef.current?.value;
     if (inputURL) setURL(inputURL as BaseURL);

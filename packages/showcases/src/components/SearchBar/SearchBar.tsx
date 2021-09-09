@@ -45,7 +45,7 @@ export const SearchBar = ({ search, searching }: SearchBarProps) => {
   }
 
   return (
-    <div className="p-0.5 w-full bg-primary-500 rounded-lg flex flex-row jina-component">
+    <div className="p-0.5 w-full bg-primary-500 rounded-lg flex flex-row">
       <div className="relative flex-1 h-12">
         <SearchInput
           searching={searching}

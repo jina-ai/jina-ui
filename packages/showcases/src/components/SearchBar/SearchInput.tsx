@@ -6,7 +6,8 @@ import React, {
 } from "react";
 import Image from "next/image";
 import jinaIcon from "../../images/magnifyingGlass.svg";
-import imageIcon from "../../images/image.svg";
+import crossIcon from "../../images/cross.svg"
+import fileIcon from "../../images/file.svg";
 import searchingIcon from "../../images/searching.gif";
 
 type InputRef = MutableRefObject<HTMLInputElement | null>;
@@ -27,6 +28,10 @@ export const SearchInput = ({
   function triggerFileSelect() {
     fileRef.current?.click();
   }
+
+    function deleteInput() {
+        if (inputRef.current) inputRef.current.value = ""
+    }
 
   function handleSelectFiles(e: ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
@@ -49,9 +54,18 @@ export const SearchInput = ({
           objectFit="contain"
         />
       </div>
-      <div className="absolute right-0 mr-4 mb-0 flex border-l border-gray-400 pl-4 h-6">
+      <div className="absolute right-0 mr-4 mb-0 flex pl-4 h-6">
         <Image
-          src={imageIcon}
+            src={crossIcon}
+            alt="image"
+            layout="intrinsic"
+            className="cursor-pointer"
+            onClick={deleteInput}
+        />
+        <div className='border-l border-gray-400 mx-2'/>
+
+        <Image
+          src={fileIcon}
           alt="image"
           layout="intrinsic"
           className="cursor-pointer"

@@ -12,7 +12,7 @@ export const ResultItem = ({
 }) => {
   const { data, mimeType } = result;
 
-  let isText = !mimeType.startsWith("data:") && !data.startsWith("data:");
+  let isText = mimeType.includes("text")
 
   return (
     <div

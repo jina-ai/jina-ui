@@ -7,7 +7,9 @@ import {
   BaseURL,
   RawDocumentData,
   SimpleQueries,
-  SimpleQuery
+  SimpleQuery,
+  AnyObject,
+  SimpleResponse
 } from "./types";
 import { JinaClient } from "./jinaClient";
 
@@ -22,4 +24,6 @@ export {
   RawDocumentData,
   SimpleQuery,
   SimpleQueries,
+  AnyObject,
+  SimpleResponse
 };

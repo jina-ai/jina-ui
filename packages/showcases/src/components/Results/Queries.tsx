@@ -36,11 +36,11 @@ export const QuerySelector = ({
   selectedIndex,
   select,
 }: {
-  queries: SimpleQueries;
+  queries?: SimpleQueries;
   selectedIndex: number;
   select: (index: number) => void;
 }) => {
-  return (
+  return ( queries ?
     <div className="mb-4">
       <div className="mb-2 font-semibold text-xl">Queries</div>
       <div className="w-full overflow-auto whitespace-nowrap pb-2 flex flex-row">
@@ -53,6 +53,6 @@ export const QuerySelector = ({
           />
         ))}
       </div>
-    </div>
+    </div> : <></>
   );
 };
