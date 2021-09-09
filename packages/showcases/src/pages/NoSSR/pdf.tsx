@@ -67,7 +67,14 @@ export default function PDF() {
         return (
             <div className="cursor-pointer max-w-lg" onClick={() => window.open(pdf, "_blank")}>
                 <div className="rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96">
-                    <img src={thumbnail}/>
+                    <img className="thumpnail" src={thumbnail}/>
+                    <style jsx>
+                        {`
+                          .thumpnail:hover {
+                            filter: brightness(60%);
+                          }
+                        `}
+                    </style>
                 </div>
 
                 <div className="px-8 pt-4 flex justify-between">
