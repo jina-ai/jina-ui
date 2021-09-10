@@ -40,7 +40,7 @@ export const PdfViewer = ({
         const [currentPage, setCurrentPage] = useState(1);
 
         const container = useCallback((node) => {
-            if (node) setWidth(node.getBoundingClientRect().width - 20);
+
         }, []);
 
 
@@ -61,18 +61,26 @@ export const PdfViewer = ({
 
 
         return (
-            <div className="h-full w-full" ref={container}>
-                <div className="overflow-y-auto w-full h-full">
-                    <Document file={src} onLoadSuccess={onLoad}>
-                        <Page pageNumber={currentPage} width={width}/>
-                    </Document>
-                </div>
+            <>
+                <Document file={src} onLoadSuccess={onLoad}>
+                    <Page pageNumber={currentPage} width={width}/>
+                </Document>
+                <style jsx>
+                    {
+                        `
+                          .react-pdf__Page__annotations annotationLayer {
+                            display: none;
+                          }
+
+                        `
+                    }
+                </style>
 
                 <div className="absolute h-8 left-0 right-0 bottom-0 grid grid-cols-2 gap-2 select-none">
                     <PageButton action={prevPage} canAct={hasPrevPage}/>
                     <PageButton action={nextPage} canAct={hasNextPage} next/>
                 </div>
-            </div>
+            </>
         )
     }
 ;

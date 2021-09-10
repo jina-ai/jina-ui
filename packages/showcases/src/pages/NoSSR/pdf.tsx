@@ -13,6 +13,8 @@ import React, {useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
 import Image from "next/image";
+import Modal from 'react-modal';
+import { PdfViewer } from "../../components/common/PdfViewer";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -45,13 +47,23 @@ const customResSerializer = (response: AnyObject, version: string) => {
     return {queries, results}
 }
 
+const customStyles = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+    },
+};
 
 export default function PDF() {
 
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
-
+    const [viewedPDF, setViewedPDF] = useState<string>("")
 
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
@@ -63,10 +75,21 @@ export default function PDF() {
         setQueries(queries);
     }
 
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function closeModal() {
+        setIsOpen(false);
+    }
+
     const CustomResultItem = (result: CustomResult) => {
         const {thumbnail, pdf_name, pdf, page} = result.result
         const [hovered, setHovered] = useState<boolean>(false)
-        
+
+
         return (
             <div className="max-w-lg">
                 <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
@@ -74,7 +97,10 @@ export default function PDF() {
                      onMouseLeave={() => setHovered(false)}
                 >
                     <img className={"cursor-pointer " + (hovered && "thumpnail-hovered ")} src={thumbnail}
-
+                    onClick={() => {
+                        setViewedPDF(pdf)
+                        openModal()
+                    }}
                     />
                     <style jsx>
                         {`
@@ -102,6 +128,23 @@ export default function PDF() {
 
     return (
         <>
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="PDF"
+            >
+                <div className="modal flex flex-col items-center">
+                    <PdfViewer src={viewedPDF}/>
+                    <style jsx>
+                        {`
+                          .modal {
+                            width: 60vh;
+                          }
+                        `}
+                    </style>
+                </div>
+            </Modal>
             <SearchBar searching={searching} search={search}/>
             <Results results={results} CustomResultItem={CustomResultItem}/>
             <FlowDiagram/>
