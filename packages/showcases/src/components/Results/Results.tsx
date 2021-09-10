@@ -96,7 +96,7 @@ export const Results = ({
                 select={setSelectedIndex}
             />
             <div className="mb-2 pt-3 font-semibold text-xl flex flex-row items-center">
-                <div className="flex-1">Results</div>
+                <div className="flex-1"></div>
                 <ViewSelector current={view} type="list" select={setView}/>
                 <ViewSelector current={view} type="grid" select={setView}/>
             </div>
@@ -104,7 +104,7 @@ export const Results = ({
             {hasResults ? (
                 <ResultsView results={selectedResults} view={view} CustomResultItem={CustomResultItem}/>
             ) : (
-                "Search for something"
+                <></>
             )}
         </div>
     );

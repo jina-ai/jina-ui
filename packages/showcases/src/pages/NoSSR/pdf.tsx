@@ -78,11 +78,17 @@ export default function PDF() {
     const [searching, setSearching] = useState(false);
     const [viewedPDF, setViewedPDF] = useState<string>("")
     const [viewedPDFName, setViewedPDFName] = useState<string>("")
-
+    const [searchedDocumentName, setSearchedDocumentName] = useState<string>("")
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function search(...documents: RawDocumentData[]) {
         setSearching(true);
+        if(typeof documents[0] === "string"){
+            setSearchedDocumentName(documents[0])
+        }
+        else{
+            setSearchedDocumentName(documents[0].name)
+        }
         const {results, queries} = await jinaClient.search(...documents)
         setSearching(false);
         setResults(results);
@@ -105,7 +111,7 @@ export default function PDF() {
 
 
         return (
-            <div className="customResultItem">
+            <div className="customResultItem mb-3">
                 <style jsx>
                     {`
                       .thumpnail-hovered:hover {
@@ -113,7 +119,7 @@ export default function PDF() {
                       }
 
                       .customResultItem {
-                        width: 40rem;
+                        width: 30rem;
                       }
                     `}
                 </style>
@@ -147,7 +153,7 @@ export default function PDF() {
     }
 
     return (
-        <>
+        <div className="max-w-screen-2xl">
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -181,7 +187,11 @@ export default function PDF() {
                 </div>
             </Modal>
             <SearchBar searching={searching} search={search}/>
-            <Results results={results} CustomResultItem={CustomResultItem}/>
+            <div className="border-b-2 border-t-2 py-8 mt-6">
+                <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
+            </div>
+                <Results results={results} CustomResultItem={CustomResultItem}/>
+
             <FlowDiagram/>
-        </>)
+        </div>)
 }
