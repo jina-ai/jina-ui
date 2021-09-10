@@ -26,11 +26,24 @@ export const ResultsView = ({
                             }: { results: SimpleResults, view: ViewType, CustomResultItem?: ICustomResultItem }) => {
 
     return (
-        <div className={"grid gap-4 " + (view === "grid" ? "grid-cols-4 " : "grid-cols-1")}>
+        <div className={"flex flex-wrap"}>
             {results.map((result, idx) => (
-                CustomResultItem ? <CustomResultItem result={result} key={idx}/> :
-                    <ResultItem result={result} key={idx}/>
+                CustomResultItem ?
+                    <div className="resultItem">
+                        <CustomResultItem result={result} key={idx}/>
+                    </div>
+                    :
+                    <div className="resultItem">
+                        <ResultItem result={result} key={idx}/>
+                    </div>
             ))}
+            <style jsx>
+                {`
+                  .resultItem{
+                    flex: 1 0 ${view === "grid"? "33%" : "100%"}; 
+                  }
+                `}
+            </style>
         </div>)
 };
 

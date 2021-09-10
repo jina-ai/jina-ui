@@ -94,7 +94,17 @@ export default function PDF() {
 
 
         return (
-            <div className="max-w-lg">
+            <div className="customResultItem">
+                <style jsx>
+                    {`
+                          .thumpnail-hovered:hover {
+                            filter: brightness(60%);
+                          }
+                          .customResultItem {
+                            width: 40rem;
+                          }
+                        `}
+                </style>
                 <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
                      onMouseOver={() => setHovered(true)}
                      onMouseLeave={() => setHovered(false)}
@@ -106,13 +116,7 @@ export default function PDF() {
                              openModal()
                          }}
                     />
-                    <style jsx>
-                        {`
-                          .thumpnail-hovered:hover {
-                            filter: brightness(60%);
-                          }
-                        `}
-                    </style>
+
                     <a
                         className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
                         href={pdf}
