@@ -61,26 +61,19 @@ export const PdfViewer = ({
 
 
         return (
-            <>
-                <Document file={src} onLoadSuccess={onLoad}>
-                    <Page pageNumber={currentPage} width={width}/>
-                </Document>
-                <style jsx>
-                    {
-                        `
-                          .react-pdf__Page__annotations annotationLayer {
-                            display: none;
-                          }
+            <div className="flex flex-col items-center">
+              <div className="border-4 border-gray-500 mb-3">
+                  <Document file={src} onLoadSuccess={onLoad}>
+                      <Page pageNumber={currentPage} width={width}/>
+                  </Document>
+              </div>
 
-                        `
-                    }
-                </style>
-
-                <div className="absolute h-8 left-0 right-0 bottom-0 grid grid-cols-2 gap-2 select-none">
+                <div className="flex">
                     <PageButton action={prevPage} canAct={hasPrevPage}/>
+                    {currentPage} / {totalPages}
                     <PageButton action={nextPage} canAct={hasNextPage} next/>
                 </div>
-            </>
+            </div>
         )
     }
 ;

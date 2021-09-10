@@ -12,9 +12,11 @@ import JinaClient, {
 import React, {useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
+import downloadButtonBig from '../../images/download-button-big.svg'
+import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
-import { PdfViewer } from "../../components/common/PdfViewer";
+import {PdfViewer} from "../../components/common/PdfViewer";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -64,6 +66,7 @@ export default function PDF() {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [viewedPDF, setViewedPDF] = useState<string>("")
+    const [viewedPDFName, setViewedPDFName] = useState<string>("")
 
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
@@ -97,10 +100,11 @@ export default function PDF() {
                      onMouseLeave={() => setHovered(false)}
                 >
                     <img className={"cursor-pointer " + (hovered && "thumpnail-hovered ")} src={thumbnail}
-                    onClick={() => {
-                        setViewedPDF(pdf)
-                        openModal()
-                    }}
+                         onClick={() => {
+                             setViewedPDF(pdf)
+                             setViewedPDFName(pdf_name)
+                             openModal()
+                         }}
                     />
                     <style jsx>
                         {`
@@ -135,14 +139,29 @@ export default function PDF() {
                 contentLabel="PDF"
             >
                 <div className="modal flex flex-col items-center">
-                    <PdfViewer src={viewedPDF}/>
                     <style jsx>
                         {`
                           .modal {
-                            width: 60vh;
+                            height: 80vh;
                           }
                         `}
                     </style>
+                    <div className="w-full px-6 flex justify-between">
+                        <div className="cursor-pointer max-w-12" onClick={closeModal}>
+                            <Image src={CrossIcon}/>
+                        </div>
+                        <a className="cursor-pointer"
+                           href={viewedPDF}
+                           target="_blank"
+                        >
+                            <Image src={downloadButtonBig}/>
+                        </a>
+                    </div>
+                    <p className="font-semibold text-xl mb-3">{viewedPDFName}</p>
+                    <div className="mx-96 mb-12">
+                        <PdfViewer src={viewedPDF}/>
+                    </div>
+
                 </div>
             </Modal>
             <SearchBar searching={searching} search={search}/>
