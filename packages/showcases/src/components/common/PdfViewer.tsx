@@ -18,7 +18,7 @@ const PageButton = ({
         <div
             className={`${next ? "" : "ml-auto"} ${
                 canAct ? "" : "opacity-40"
-            } h-6 w-6 bg-white bg-opacity-80 shadow-md p-1 rounded-full transition-all duration-200 cursor-pointer`}
+            } h-6 w-6 bg-white bg-opacity-80 shadow-md p-1 mx-3 rounded-full transition-all duration-200 cursor-pointer`}
             onClick={canAct ? action : undefined}
         >
             {next ? <ArrowRightIcon/> : <ArrowLeftIcon/>}
