@@ -15,7 +15,11 @@
   "dependencies": {
     "@heroicons/react": "^1.0.3",
     "@jina-ai/jinajs": "*",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
     "next": "11.0.1",
+    "prettier": "^2.4.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-pdf": "^5.3.2",
