@@ -7,7 +7,8 @@ import JinaClient, {
     SimpleQueries,
     AnyObject,
     SimpleResponse,
-    SimpleResult
+    SimpleResult,
+    fileToBase64
 } from "@jina-ai/jinajs";
 import React, {useState} from "react";
 import Results from "../../components/Results";
@@ -24,10 +25,20 @@ type CustomResult = any
 type CustomResults = any
 
 
-const customReqSerializer = (documents: RawDocumentData[], version: string) => {
-    return {
-        "mime_type": "text",
-        "data": documents[0]
+const customReqSerializer = async (documents: RawDocumentData[], version: string) => {
+    const doc = documents[0]
+    if (doc instanceof File) {
+        const uri = await fileToBase64(doc)
+        const cleanedUri = uri.substring(uri.indexOf(',')+1)
+        return {
+            "mime_type": "pdf",
+            "data": cleanedUri
+        }
+    } else {
+        return {
+            "mime_type": "text",
+            "data": doc
+        }
     }
 }
 
@@ -97,13 +108,14 @@ export default function PDF() {
             <div className="customResultItem">
                 <style jsx>
                     {`
-                          .thumpnail-hovered:hover {
-                            filter: brightness(60%);
-                          }
-                          .customResultItem {
-                            width: 40rem;
-                          }
-                        `}
+                      .thumpnail-hovered:hover {
+                        filter: brightness(60%);
+                      }
+
+                      .customResultItem {
+                        width: 40rem;
+                      }
+                    `}
                 </style>
                 <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
                      onMouseOver={() => setHovered(true)}
