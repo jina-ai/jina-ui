@@ -60,7 +60,7 @@ const ViewSelector = ({
     const selected = current === type;
     return (
         <div
-            className={`cursor-pointer hover:bg-gray-100 rounded p-1 ml-2 transition-all duration-200 ${
+            className={`invisible md:visible cursor-pointer hover:bg-gray-100 rounded p-1 ml-2 transition-all duration-200 ${
                 selected
                     ? "bg-primary-500 hover:bg-primary-600 bg-opacity-50 hover:bg-opacity-50"
                     : ""

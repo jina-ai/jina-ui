@@ -18,7 +18,7 @@ import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
-import { response } from "../../mockedData/pdf";
+import {response} from "../../mockedData/pdf";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -30,7 +30,7 @@ const customReqSerializer = async (documents: RawDocumentData[], version: string
     const doc = documents[0]
     if (doc instanceof File) {
         const uri = await fileToBase64(doc)
-        const cleanedUri = uri.substring(uri.indexOf(',')+1)
+        const cleanedUri = uri.substring(uri.indexOf(',') + 1)
         return {
             "mime_type": "pdf",
             "data": cleanedUri
@@ -80,14 +80,14 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState<string>("")
     const [viewedPDFName, setViewedPDFName] = useState<string>("")
     const [searchedDocumentName, setSearchedDocumentName] = useState<string>("")
+
     //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function search(...documents: RawDocumentData[]) {
         setSearching(true);
-        if(typeof documents[0] === "string"){
+        if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
-        }
-        else{
+        } else {
             setSearchedDocumentName(documents[0].name)
         }
         const {results, queries} = await customResSerializer(response, "2")
@@ -122,6 +122,12 @@ export default function PDF() {
                       .customResultItem {
                         width: 30rem;
                       }
+
+                      @media only screen and (max-width: 600px) {
+                        .customResultItem {
+                          width: 90vw;
+                        }
+                      }
                     `}
                 </style>
                 <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
@@ -148,9 +154,9 @@ export default function PDF() {
                 </div>
                 <div>
                 </div>
-                <div className="px-8 pt-4 flex justify-between">
-                    <div className="font-semibold max-w-xs">{pdf_name}</div>
-                    <div className="float-right text-gray-700">Page {parseInt(page) + 1}</div>
+                <div className="px-2 md:px-8 pt-4 flex justify-between">
+                    <div className="text-sm md:text-base font-semibold max-w-xs">{pdf_name}</div>
+                    <div className="float-right text-gray-700 min-w-max">Page {parseInt(page) + 1}</div>
                 </div>
             </div>)
     }
@@ -191,10 +197,10 @@ export default function PDF() {
                 </div>
             </Modal>
             <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-8 mt-6">
+            <div className="border-b-2 border-t-2 py-3 md:py-8 mt-6">
                 <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
             </div>
-                <Results results={results} CustomResultItem={CustomResultItem}/>
+            <Results results={results} CustomResultItem={CustomResultItem}/>
 
             <FlowDiagram/>
         </div>)

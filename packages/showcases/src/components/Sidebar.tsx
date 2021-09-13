@@ -9,7 +9,7 @@ type SidebarItemProps = {
 const SidebarItem = ({ children, url, selected }: SidebarItemProps) => {
   return (
     <a
-      className={`block text-gray-600 my-8 p-2${
+      className={`block text-gray-600 md:my-8 p-2${
         selected ? " font-bold text-primary-500" : ""
       }`}
       href={url}
@@ -28,7 +28,7 @@ const items = [
 export const Sidebar = () => {
   const { asPath } = useRouter();
   return (
-    <div className="bg-gray-50 w-72 px-6">
+    <div className="bg-gray-50 md:w-72 px-6">
       {items.map(({ url, title }) => (
         <SidebarItem url={url} selected={url === asPath} key={url}>
           {title}
