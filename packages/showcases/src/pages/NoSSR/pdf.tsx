@@ -18,6 +18,7 @@ import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
+import { response } from "../../mockedData/pdf";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -89,7 +90,7 @@ export default function PDF() {
         else{
             setSearchedDocumentName(documents[0].name)
         }
-        const {results, queries} = await jinaClient.search(...documents)
+        const {results, queries} = await customResSerializer(response, "2")
         setSearching(false);
         setResults(results);
         setQueries(queries);
