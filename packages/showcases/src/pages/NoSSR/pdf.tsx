@@ -80,7 +80,7 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState<string>("")
     const [viewedPDFName, setViewedPDFName] = useState<string>("")
     const [searchedDocumentName, setSearchedDocumentName] = useState<string>("")
-    const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+    //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function search(...documents: RawDocumentData[]) {
         setSearching(true);
