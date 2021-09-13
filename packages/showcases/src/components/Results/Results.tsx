@@ -4,9 +4,6 @@ import {ResultItem} from "./ResultItem";
 import {QuerySelector} from "./Queries";
 import {ViewGridIcon, ViewListIcon} from "@heroicons/react/outline";
 
-const DEFAULT_VIEW = "list";
-type ViewType = "list" | "grid";
-
 type CustomResultItemProps = {
     result: SimpleResult
 }
@@ -15,15 +12,13 @@ export type ICustomResultItem = ComponentType<CustomResultItemProps>
 export type ResultsProps = {
     results: SimpleResults[];
     queries?: SimpleQueries;
-    view?: ViewType;
     CustomResultItem?: ICustomResultItem
 };
 
 export const ResultsView = ({
                                 results,
-                                view,
                                 CustomResultItem
-                            }: { results: SimpleResults, view: ViewType, CustomResultItem?: ICustomResultItem }) => {
+                            }: { results: SimpleResults, CustomResultItem?: ICustomResultItem }) => {
 
     return (
         <div className={"flex flex-wrap"}>
@@ -40,50 +35,19 @@ export const ResultsView = ({
             <style jsx>
                 {`
                   .resultItem{
-                    flex: 1 0 ${view === "grid"? "33%" : "100%"}; 
+                    flex: 1 0 33%; 
                   }
                 `}
             </style>
         </div>)
 };
 
-
-const ViewSelector = ({
-                          type,
-                          select,
-                          current,
-                      }: {
-    type: ViewType;
-    current: ViewType;
-    select: (view: ViewType) => void;
-}) => {
-    const selected = current === type;
-    return (
-        <div
-            className={`cursor-pointer hover:bg-gray-100 rounded p-1 ml-2 transition-all duration-200 ${
-                selected
-                    ? "bg-primary-500 hover:bg-primary-600 bg-opacity-50 hover:bg-opacity-50"
-                    : ""
-            }`}
-            onClick={() => select(type)}
-        >
-            {type === "list" ? (
-                <ViewListIcon className="h-6"/>
-            ) : (
-                <ViewGridIcon className="h-6"/>
-            )}
-        </div>
-    );
-};
-
 export const Results = ({
                             results,
-                            view: preferredView,
                             queries,
                             CustomResultItem
                         }: ResultsProps) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
-    const [view, setView] = useState<ViewType>(preferredView || DEFAULT_VIEW);
 
     const hasResults = results.length > 0;
     const selectedResults = results[selectedIndex];
@@ -95,14 +59,27 @@ export const Results = ({
                 selectedIndex={selectedIndex}
                 select={setSelectedIndex}
             />
-            <div className="mb-2 pt-3 font-semibold text-xl flex flex-row items-center">
-                <div className="flex-1"></div>
-                <ViewSelector current={view} type="list" select={setView}/>
-                <ViewSelector current={view} type="grid" select={setView}/>
-            </div>
 
             {hasResults ? (
-                <ResultsView results={selectedResults} view={view} CustomResultItem={CustomResultItem}/>
+                <div className={"flex flex-wrap"}>
+                    {selectedResults.map((result, idx) => (
+                        CustomResultItem ?
+                            <div className="resultItem">
+                                <CustomResultItem result={result} key={idx}/>
+                            </div>
+                            :
+                            <div className="resultItem">
+                                <ResultItem result={result} key={idx}/>
+                            </div>
+                    ))}
+                    <style jsx>
+                        {`
+                  .resultItem{
+                    flex: 1 0 33%; 
+                  }
+                `}
+                    </style>
+                </div>
             ) : (
                 <></>
             )}
