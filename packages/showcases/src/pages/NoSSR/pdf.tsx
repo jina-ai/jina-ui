@@ -175,6 +175,12 @@ export default function PDF() {
                           .modal {
                             height: 80vh;
                           }
+
+                          @media only screen and (max-width: 600px) {
+                            .modal {
+                              width: 90vw;
+                            }
+                          }
                         `}
                     </style>
                     <div className="w-full px-6 flex justify-between">
