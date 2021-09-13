@@ -17,7 +17,7 @@ import downloadButtonBig from '../../images/download-button-big.svg'
 import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
-import {PdfViewer} from "../../components/common/PdfViewer";
+import PdfViewer from "../../components/common/PdfViewer";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -140,6 +140,7 @@ export default function PDF() {
                         className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
                         href={pdf}
                         target="_blank"
+                        rel="noreferrer"
                     >
                         <Image src={downloadButton} alt="download"/>
                     </a>
@@ -176,6 +177,7 @@ export default function PDF() {
                         <a className="cursor-pointer"
                            href={viewedPDF}
                            target="_blank"
+                           rel="noreferrer"
                         >
                             <Image src={downloadButtonBig}/>
                         </a>

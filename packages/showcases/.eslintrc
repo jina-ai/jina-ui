@@ -1,6 +1,6 @@
 {
   "plugins": ["@typescript-eslint"],
-  "extends": ["next", "prettier"],
+  "extends": ["next"],
   "rules": {
     "@next/next/no-img-element": "off",
     "jsx-a11y/anchor-is-valid": "off", // Next.js use his own internal link system
