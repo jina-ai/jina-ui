@@ -11,6 +11,16 @@ type ResultItemProps = {
     className?: string
 }
 
+// add model-viewer to JSX.IntrinsicElements
+// model-viewer is a web component we're adding in the pages where we're using this component
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            "model-viewer": any
+        }
+    }
+}
+
 export default function MeshResultItem ({resultItem, className}: ResultItemProps) {
     const {uri} = resultItem
     return (
