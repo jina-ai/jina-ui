@@ -13,7 +13,6 @@ import JinaClient, {
 import React, {useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
-import downloadButtonBig from '../../images/download-button-big.svg'
 import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
@@ -77,9 +76,9 @@ export default function PDF() {
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
-    const [viewedPDF, setViewedPDF] = useState<string>("")
-    const [viewedPDFName, setViewedPDFName] = useState<string>("")
-    const [searchedDocumentName, setSearchedDocumentName] = useState<string>("")
+    const [viewedPDF, setViewedPDF] = useState("")
+    const [viewedPDFName, setViewedPDFName] = useState("")
+    const [searchedDocumentName, setSearchedDocumentName] = useState("")
     //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function search(...documents: RawDocumentData[]) {
@@ -137,14 +136,16 @@ export default function PDF() {
                          alt="pdf thumbnail"
                     />
 
-                    <a
-                        className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
-                        href={pdf}
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        <Image src={downloadButton} alt="download"/>
-                    </a>
+                   <button>
+                       <a
+                           className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
+                           href={pdf}
+                           target="_blank"
+                           rel="noreferrer"
+                       >
+                           <Image src={downloadButton} alt="download"/>
+                       </a>
+                   </button>
                 </div>
                 <div>
                 </div>
@@ -175,12 +176,13 @@ export default function PDF() {
                         <div className="cursor-pointer max-w-12" onClick={closeModal}>
                             <Image src={CrossIcon}/>
                         </div>
-                        <a className="cursor-pointer"
+                        <a className="cursor-pointer bg-primary-500 rounded-lg flex items-center pr-4 py-1"
                            href={viewedPDF}
                            target="_blank"
                            rel="noreferrer"
                         >
-                            <Image src={downloadButtonBig}/>
+                            <Image src={downloadButton}/>
+                            <p className="text-white font-bold">Download</p>
                         </a>
                     </div>
                     <p className="font-semibold text-xl mb-3">{viewedPDFName}</p>
