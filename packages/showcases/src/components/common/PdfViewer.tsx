@@ -31,7 +31,7 @@ export type PdfViewerProps = {
     src: string;
 }
 
-export const PdfViewer = ({
+const PdfViewer = ({
                               src,
                           }: PdfViewerProps) => {
 
@@ -76,3 +76,5 @@ export const PdfViewer = ({
         )
     }
 ;
+
+export default PdfViewer

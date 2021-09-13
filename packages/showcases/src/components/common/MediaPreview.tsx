@@ -1,11 +1,8 @@
+import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
-import { PdfViewer } from "./PdfViewer";
-
-/* eslint @next/next/no-img-element: "off" */
-
+const PdfViewer = dynamic(() => import('./PdfViewer'), {ssr: false})
 
 const PdfPreview = ({ src }: { src: string }) => {
-
   return (
    <PdfViewer src={src}/>
   );
