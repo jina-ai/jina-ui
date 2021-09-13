@@ -133,6 +133,7 @@ export default function PDF() {
                              setViewedPDFName(pdf_name)
                              openModal()
                          }}
+                         alt="pdf thumbnail"
                     />
 
                     <a

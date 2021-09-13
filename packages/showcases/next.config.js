@@ -1,11 +1,12 @@
-var webpack = require('webpack')
-
 module.exports = {
   reactStrictMode: true,
-  webpack(config, options) {
-    config.plugins.push(
-      new webpack.IgnorePlugin(/canvas|jsdom/)
-    )
-    return config
-  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.resolve.fallback = {
+        canvas: false
+      }
+    }
+
+    return config;
+  }
 }
