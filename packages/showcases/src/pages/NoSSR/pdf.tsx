@@ -65,7 +65,7 @@ type ModalProps = {
     viewedPDFName: string,
     setIsOpen: (value: boolean) => void,
     modalIsOpen: boolean,
-    getSimiliarResults:  (url: string) => Promise<SimpleResults>
+    getSimiliarResults: (url: string) => Promise<SimpleResults>
 }
 
 function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults}: ModalProps) {
@@ -73,7 +73,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
     const [similiarResults, setSimiliarResults] = useState<any>([])
 
     useEffect(() => {
-        getSimiliarResults(viewedPDFName).then(results =>setSimiliarResults(results))
+        getSimiliarResults(viewedPDFName).then(results => setSimiliarResults(results))
     }, []);
     const customStyles = {
         content: {
@@ -99,6 +99,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                 style={customStyles}
                 contentLabel="PDF"
             >
+
                 <div className="modal flex flex-col items-center">
                     <style jsx>
                         {`
@@ -132,7 +133,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
                                         <div
-                                            className="relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
+                                            className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
                                             <img src={thumbnail}/>
                                         </div>
                                     )
@@ -158,7 +159,7 @@ export default function PDF() {
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
-        const { results } = await jinaClient.search(url)
+        const {results} = await jinaClient.search(url)
         return results[0].slice(1, 4)
     }
 
