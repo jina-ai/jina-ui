@@ -129,10 +129,11 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                         <div className="mx-48">
                             <p className="ml-6 font-semibold my-6">Similiar documents</p>
                             <div className="flex justify-between">
-                                {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }) => {
+                                {similiarResults.map(([result, idx]: [{ thumbnail: string; pdf_name: string; pdf: string; page: number; }, number]) => {
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
                                         <div
+                                            key={`similiar-document-${idx}`}
                                             className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
                                             <img src={thumbnail} alt="similiar-document"/>
                                         </div>
