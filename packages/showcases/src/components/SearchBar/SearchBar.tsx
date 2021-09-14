@@ -6,7 +6,7 @@ import { RawDocumentData } from "@jina-ai/jinajs";
 const SearchButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <div
-      className="text-white px-6 h-full flex items-center font-medium cursor-pointer"
+      className="text-white px-6 h-12 font-medium cursor-pointer flex justify-center items-center text-lg"
       onClick={onClick}
     >
       Search
