@@ -19,7 +19,7 @@ import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {response} from "../../mockedData/pdf";
 
-const PDF_API_URL = "http://34.89.253.237:80"
+const PDF_API_URL = "http://34.107.117.194:80"
 
 type CustomResult = any
 type CustomResults = any
@@ -60,16 +60,21 @@ const customResSerializer = (response: AnyObject, version: string) => {
     return {queries, results}
 }
 
-type ModalProps = { viewedPDF: string, viewedPDFName: string, setIsOpen: (value: boolean) => void, modalIsOpen: boolean }
+type ModalProps = {
+    viewedPDF: string,
+    viewedPDFName: string,
+    setIsOpen: (value: boolean) => void,
+    modalIsOpen: boolean,
+    getSimiliarResults:  (url: string) => Promise<SimpleResults>
+}
 
-function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen}: ModalProps) {
+function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults}: ModalProps) {
 
     const [similiarResults, setSimiliarResults] = useState<any>([])
 
     useEffect(() => {
-        const {results} = customResSerializer(response, "2")
-        setSimiliarResults(results[0].slice(0, 3))
-    },[]);
+        getSimiliarResults(viewedPDFName).then(results =>setSimiliarResults(results))
+    }, []);
     const customStyles = {
         content: {
             top: '50%',
@@ -120,19 +125,20 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen}: ModalProps
                         <PdfViewer src={viewedPDF}/>
                     </div>
                     <div className="border-t mt-6">
-                    <div className="mx-48">
-                        <p className="ml-6 font-semibold my-6">Similiar documents</p>
-                        <div className="flex justify-between">
-                            {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }) => {
-                                const {thumbnail, pdf_name, pdf, page} = result
-                                return (
-                                    <div className="relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
-                                        <img src={thumbnail}/>
-                                    </div>
-                                )
-                            })}
+                        <div className="mx-48">
+                            <p className="ml-6 font-semibold my-6">Similiar documents</p>
+                            <div className="flex justify-between">
+                                {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }) => {
+                                    const {thumbnail, pdf_name, pdf, page} = result
+                                    return (
+                                        <div
+                                            className="relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
+                                            <img src={thumbnail}/>
+                                        </div>
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </Modal>
@@ -149,7 +155,12 @@ export default function PDF() {
     const [viewedPDFName, setViewedPDFName] = useState("")
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
-    //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+
+    async function getSimiliarResults(url: string) {
+        const { results } = await jinaClient.search(url)
+        return results[0].slice(1, 4)
+    }
 
     async function search(...documents: RawDocumentData[]) {
         setSearching(true);
@@ -158,7 +169,7 @@ export default function PDF() {
         } else {
             setSearchedDocumentName(documents[0].name)
         }
-        const {results, queries} = await customResSerializer(response, "2")
+        const {results, queries} = await jinaClient.search(documents[0])
         setSearching(false);
         setResults(results);
         setQueries(queries);
@@ -223,7 +234,8 @@ export default function PDF() {
     return (
         <div className="max-w-screen-2xl">
             {modalIsOpen && <PDFModal viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
-                                      modalIsOpen={modalIsOpen}/>}
+                                      modalIsOpen={modalIsOpen}
+                                      getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
             <div className="border-b-2 border-t-2 py-8 mt-6">
                 <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
