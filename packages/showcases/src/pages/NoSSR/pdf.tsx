@@ -10,14 +10,14 @@ import JinaClient, {
     SimpleResult,
     fileToBase64
 } from "@jina-ai/jinajs";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
 import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
-import { response } from "../../mockedData/pdf";
+import {response} from "../../mockedData/pdf";
 
 const PDF_API_URL = "http://34.89.253.237:80"
 
@@ -29,7 +29,7 @@ const customReqSerializer = async (documents: RawDocumentData[], version: string
     const doc = documents[0]
     if (doc instanceof File) {
         const uri = await fileToBase64(doc)
-        const cleanedUri = uri.substring(uri.indexOf(',')+1)
+        const cleanedUri = uri.substring(uri.indexOf(',') + 1)
         return {
             "mime_type": "pdf",
             "data": cleanedUri
@@ -60,104 +60,34 @@ const customResSerializer = (response: AnyObject, version: string) => {
     return {queries, results}
 }
 
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-    },
-};
+type ModalProps = { viewedPDF: string, viewedPDFName: string, setIsOpen: (value: boolean) => void, modalIsOpen: boolean }
 
-export default function PDF() {
+function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen}: ModalProps) {
 
-    const [queries, setQueries] = useState<SimpleQueries>([]);
-    const [results, setResults] = useState<SimpleResults[]>([]);
-    const [searching, setSearching] = useState(false);
-    const [viewedPDF, setViewedPDF] = useState("")
-    const [viewedPDFName, setViewedPDFName] = useState("")
-    const [searchedDocumentName, setSearchedDocumentName] = useState("")
-    //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+    const [similiarResults, setSimiliarResults] = useState<any>([])
 
-    async function search(...documents: RawDocumentData[]) {
-        setSearching(true);
-        if(typeof documents[0] === "string"){
-            setSearchedDocumentName(documents[0])
-        }
-        else{
-            setSearchedDocumentName(documents[0].name)
-        }
-        const {results, queries} = await customResSerializer(response, "2")
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
-    }
+    useEffect(() => {
+        const {results} = customResSerializer(response, "2")
+        setSimiliarResults(results[0].slice(0, 3))
+    },[]);
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+        },
+    };
 
-    const [modalIsOpen, setIsOpen] = React.useState(false);
-
-    function openModal() {
-        setIsOpen(true);
-    }
 
     function closeModal() {
         setIsOpen(false);
     }
 
-    const CustomResultItem = (result: CustomResult) => {
-        const {thumbnail, pdf_name, pdf, page} = result.result
-        const [hovered, setHovered] = useState<boolean>(false)
-
-
-        return (
-            <div className="customResultItem mb-3">
-                <style jsx>
-                    {`
-                      .thumpnail-hovered:hover {
-                        filter: brightness(60%);
-                      }
-
-                      .customResultItem {
-                        width: 30rem;
-                      }
-                    `}
-                </style>
-                <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
-                     onMouseOver={() => setHovered(true)}
-                     onMouseLeave={() => setHovered(false)}
-                >
-                    <img className={"cursor-pointer " + (hovered && "thumpnail-hovered ")} src={thumbnail}
-                         onClick={() => {
-                             setViewedPDF(pdf)
-                             setViewedPDFName(pdf_name)
-                             openModal()
-                         }}
-                         alt="pdf thumbnail"
-                    />
-
-                   <button>
-                       <a
-                           className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
-                           href={pdf}
-                           target="_blank"
-                           rel="noreferrer"
-                       >
-                           <Image src={downloadButton} alt="download"/>
-                       </a>
-                   </button>
-                </div>
-                <div>
-                </div>
-                <div className="px-8 pt-4 flex justify-between">
-                    <div className="font-semibold max-w-xs">{pdf_name}</div>
-                    <div className="float-right text-gray-700">Page {parseInt(page) + 1}</div>
-                </div>
-            </div>)
-    }
-
     return (
-        <div className="max-w-screen-2xl">
+        <div>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -186,17 +116,119 @@ export default function PDF() {
                         </a>
                     </div>
                     <p className="font-semibold text-xl mb-3">{viewedPDFName}</p>
-                    <div className="mx-96 mb-12">
+                    <div className="mx-96 mb-3">
                         <PdfViewer src={viewedPDF}/>
                     </div>
-
+                    <div className="border-t mt-6">
+                    <div className="mx-48">
+                        <p className="ml-6 font-semibold my-6">Similiar documents</p>
+                        <div className="flex justify-between">
+                            {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }) => {
+                                const {thumbnail, pdf_name, pdf, page} = result
+                                return (
+                                    <div className="relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
+                                        <img src={thumbnail}/>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </Modal>
+        </div>
+    )
+}
+
+export default function PDF() {
+
+    const [queries, setQueries] = useState<SimpleQueries>([]);
+    const [results, setResults] = useState<SimpleResults[]>([]);
+    const [searching, setSearching] = useState(false);
+    const [viewedPDF, setViewedPDF] = useState("")
+    const [viewedPDFName, setViewedPDFName] = useState("")
+    const [searchedDocumentName, setSearchedDocumentName] = useState("")
+
+    //const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+
+    async function search(...documents: RawDocumentData[]) {
+        setSearching(true);
+        if (typeof documents[0] === "string") {
+            setSearchedDocumentName(documents[0])
+        } else {
+            setSearchedDocumentName(documents[0].name)
+        }
+        const {results, queries} = await customResSerializer(response, "2")
+        setSearching(false);
+        setResults(results);
+        setQueries(queries);
+    }
+
+    const [modalIsOpen, setIsOpen] = React.useState(false);
+
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    const CustomResultItem = (result: CustomResult) => {
+        const {thumbnail, pdf_name, pdf, page} = result.result
+        const [hovered, setHovered] = useState<boolean>(false)
+
+        return (
+            <div className="customResultItem mb-3">
+                <style jsx>
+                    {`
+                      .thumpnail-hovered:hover {
+                        filter: brightness(60%);
+                      }
+
+                      .customResultItem {
+                        width: 30rem;
+                      }
+                    `}
+                </style>
+                <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
+                     onMouseOver={() => setHovered(true)}
+                     onMouseLeave={() => setHovered(false)}
+                >
+                    <img className={"cursor-pointer " + (hovered && "thumpnail-hovered ")} src={thumbnail}
+                         onClick={() => {
+                             setViewedPDF(pdf)
+                             setViewedPDFName(pdf_name)
+                             openModal()
+                         }}
+                         alt="pdf thumbnail"
+                    />
+
+                    <button>
+                        <a
+                            className={'absolute top-80 right-6 cursor-pointer ' + (!hovered && "hidden")}
+                            href={pdf}
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            <Image src={downloadButton} alt="download"/>
+                        </a>
+                    </button>
+                </div>
+                <div>
+                </div>
+                <div className="px-8 pt-4 flex justify-between">
+                    <div className="font-semibold max-w-xs">{pdf_name}</div>
+                    <div className="float-right text-gray-700">Page {parseInt(page) + 1}</div>
+                </div>
+            </div>)
+    }
+
+    return (
+        <div className="max-w-screen-2xl">
+            {modalIsOpen && <PDFModal viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
+                                      modalIsOpen={modalIsOpen}/>}
             <SearchBar searching={searching} search={search}/>
             <div className="border-b-2 border-t-2 py-8 mt-6">
                 <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
             </div>
-                <Results results={results} CustomResultItem={CustomResultItem}/>
+            <Results results={results} CustomResultItem={CustomResultItem}/>
 
             <FlowDiagram/>
         </div>)
