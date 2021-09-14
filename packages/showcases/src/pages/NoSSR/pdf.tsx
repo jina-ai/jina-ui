@@ -18,6 +18,7 @@ import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {response} from "../../mockedData/pdf";
+import {checkIfQuestion} from "../../utils/utils";
 
 const PDF_API_URL = "http://34.107.117.194:80"
 
@@ -156,6 +157,7 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState("")
     const [viewedPDFName, setViewedPDFName] = useState("")
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
+    const [error, setError] = useState("")
 
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
@@ -165,16 +167,22 @@ export default function PDF() {
     }
 
     async function search(...documents: RawDocumentData[]) {
-        setSearching(true);
+        let validQuestion = true
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
+            if (!checkIfQuestion(documents[0])) validQuestion = false
         } else {
             setSearchedDocumentName(documents[0].name)
         }
-        const {results, queries} = await jinaClient.search(documents[0])
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
+        if (validQuestion) {
+            setError("")
+            setSearching(true);
+            const {results, queries} = await jinaClient.search(documents[0])
+            setSearching(false);
+            setResults(results);
+            setQueries(queries);
+        } else setError("Please provide a valid question")
+
     }
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -234,13 +242,41 @@ export default function PDF() {
     }
 
     return (
-        <div className="max-w-screen-2xl">
+        <div className="max-w-screen-xl">
+            <h1 className="font-bold text-5xl">
+                Ask a paper anything!
+            </h1>
             {modalIsOpen && <PDFModal viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
                                       modalIsOpen={modalIsOpen}
                                       getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-8 mt-6">
-                <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
+            <div className="border-b-2 border-t-2 py-3 mt-6">
+
+
+                <h2 className="font-bold text-xl mb-3">Examples:</h2>
+
+                <div className="ml-3 text-primary-500 font-semibold">
+                    <p
+                        className="mb-3 cursor-pointer"
+                        onClick={() => search("What is the meaning of life?")}
+                    >What is the meaning of life?</p>
+                    <p className="mb-3 cursor-pointer"
+                       onClick={() => search("What is a paper?")}
+                    >What is a paper?</p>
+                    <p className="mb-3 cursor-pointer"
+                       onClick={() => search("What does the fox say?")}
+                    >What does the fox say?</p>
+                </div>
+                {error === "" ?
+                    <p className="font-semibold">
+                        Results for: <span
+                        className="text-xl">{searchedDocumentName}</span>
+                    </p> :
+                    <p className="font-semibold text-xl text-red-500">
+                        {error}
+                    </p>
+                }
+
             </div>
             <Results results={results} CustomResultItem={CustomResultItem}/>
 
