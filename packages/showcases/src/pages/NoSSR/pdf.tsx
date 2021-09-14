@@ -67,9 +67,10 @@ type ModalProps = {
     setIsOpen: (value: boolean) => void,
     modalIsOpen: boolean,
     getSimiliarResults: (url: string) => Promise<SimpleResults>
+    search: (name: string) => void
 }
 
-function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults}: ModalProps) {
+function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults, search}: ModalProps) {
 
     const [similiarResults, setSimiliarResults] = useState<any>([])
 
@@ -134,6 +135,10 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
                                         <div
+                                            onClick={() => {
+                                                search(pdf_name)
+                                                closeModal()
+                                            }}
                                             key={`similiar-document-${idx}`}
                                             className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
                                             <img src={thumbnail} alt="similiar-document"/>
@@ -246,9 +251,11 @@ export default function PDF() {
             <h1 className="font-bold text-5xl">
                 Ask a paper anything!
             </h1>
-            {modalIsOpen && <PDFModal viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
-                                      modalIsOpen={modalIsOpen}
-                                      getSimiliarResults={getSimiliarResults}/>}
+            {modalIsOpen && <PDFModal
+                search={search}
+                viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
+                modalIsOpen={modalIsOpen}
+                getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
             <div className="border-b-2 border-t-2 py-3 mt-6">
 
