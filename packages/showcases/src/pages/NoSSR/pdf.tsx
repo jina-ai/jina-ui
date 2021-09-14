@@ -134,7 +134,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                                     return (
                                         <div
                                             className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
-                                            <img src={thumbnail}/>
+                                            <img src={thumbnail} alt="similiar-document"/>
                                         </div>
                                     )
                                 })}
