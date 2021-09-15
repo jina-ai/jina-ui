@@ -10,13 +10,23 @@ import {
 
 const DEFAULT_VERSION = "2";
 
-export function serializeRequest(
+export async function serializeRequest<IRequest>(
   documents: RawDocumentData[],
-  version: string = DEFAULT_VERSION
 ) {
-  const serialize =
-    requestSerializer[version] || requestSerializer[DEFAULT_VERSION];
-  return serialize(documents);
+  const request: any = {
+    data: [],
+  };
+  for (let doc of documents) {
+    if (doc instanceof File) {
+      const uri = await fileToBase64(doc);
+      request.data.push({ uri });
+    } else if (doc.startsWith("data:")) {
+      request.data.push({ uri: doc });
+    } else {
+      request.data.push({ text: doc });
+    }
+  }
+  return request as IRequest;
 }
 
 export function serializeResponse(
@@ -28,27 +38,6 @@ export function serializeResponse(
 
   return serialize(response);
 }
-
-const requestSerializer: {
-  [key: string]: (documents: RawDocumentData[]) => Promise<AnyObject>;
-} = {
-  "2": async (documents: RawDocumentData[]) => {
-    const request: any = {
-      data: [],
-    };
-    for (let doc of documents) {
-      if (doc instanceof File) {
-        const uri = await fileToBase64(doc);
-        request.data.push({ uri });
-      } else if (doc.startsWith("data:")) {
-        request.data.push({ uri: doc });
-      } else {
-        request.data.push({ text: doc });
-      }
-    }
-    return request;
-  },
-};
 
 const responseSerializer: {
   [key: string]: (rawResponse: AnyObject) => SimpleResponse;

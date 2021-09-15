@@ -9,21 +9,18 @@ import {
   SimpleResults,
 } from "./types";
 
-const defaultJinaVersion = "2"
 
-export class JinaClient<IResponse> {
+export class JinaClient<IRequest,IResponse> {
 
   private baseURL: string;
-  private jinaVersion: string;
   private client: AxiosInstance;
-  private serializeRequest: RequestSerializer
+  private serializeRequest: RequestSerializer<IRequest>
   private serializeResponse: ResponseSerializer<IResponse>
 
-  constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer, customSerializeResponse?: ResponseSerializer<IResponse> ) {
+  constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse
     this.baseURL = baseURL;
-    this.jinaVersion = "";
     this.client = axios.create({ baseURL });
     this.init();
   }
@@ -31,8 +28,7 @@ export class JinaClient<IResponse> {
   async init() {
     try {
       const response = await this.client.get("status");
-      this.jinaVersion = defaultJinaVersion
-      if (response?.data?.jina?.jina) this.jinaVersion = response.data.jina.jina;
+      if (response?.data?.jina?.jina) console.log("connected!")
     } catch (e) {
       throw new Error(
         `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
@@ -43,10 +39,10 @@ export class JinaClient<IResponse> {
   async search(
     ...documents: RawDocumentData[]
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
-    const requestBody = await this.serializeRequest(documents, this.jinaVersion);
+    const requestBody = await this.serializeRequest(documents);
     console.log("request body:", requestBody);
     const response = await this.client.post("search", requestBody);
     console.log("response:", response);
-    return this.serializeResponse(response.data, this.jinaVersion);
+    return this.serializeResponse(response.data);
   }
 }
