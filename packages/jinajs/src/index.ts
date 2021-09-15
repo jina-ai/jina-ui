@@ -12,6 +12,8 @@ import {
   SimpleResponse
 } from "./types";
 import { JinaClient } from "./jinaClient";
+import { fileToBase64 } from "./utils"
+
 
 export default JinaClient;
 export {
@@ -25,5 +27,6 @@ export {
   SimpleQuery,
   SimpleQueries,
   AnyObject,
-  SimpleResponse
+  SimpleResponse,
+  fileToBase64
 };

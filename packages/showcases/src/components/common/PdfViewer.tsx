@@ -18,7 +18,7 @@ const PageButton = ({
         <div
             className={`${next ? "" : "ml-auto"} ${
                 canAct ? "" : "opacity-40"
-            } h-6 w-6 bg-white bg-opacity-80 shadow-md p-1 rounded-full transition-all duration-200 cursor-pointer`}
+            } h-6 w-6 bg-white bg-opacity-80 shadow-md p-1 mx-3 rounded-full transition-all duration-200 cursor-pointer`}
             onClick={canAct ? action : undefined}
         >
             {next ? <ArrowRightIcon/> : <ArrowLeftIcon/>}
@@ -40,7 +40,7 @@ const PdfViewer = ({
         const [currentPage, setCurrentPage] = useState(1);
 
         const container = useCallback((node) => {
-            if (node) setWidth(node.getBoundingClientRect().width - 20);
+
         }, []);
 
 
@@ -61,15 +61,16 @@ const PdfViewer = ({
 
 
         return (
-            <div className="h-full w-full" ref={container}>
-                <div className="overflow-y-auto w-full h-full">
-                    <Document file={src} onLoadSuccess={onLoad}>
-                        <Page pageNumber={currentPage} width={width}/>
-                    </Document>
-                </div>
+            <div className="flex flex-col items-center">
+              <div className="border-4 border-gray-500 mb-3">
+                  <Document file={src} onLoadSuccess={onLoad}>
+                      <Page pageNumber={currentPage} width={width}/>
+                  </Document>
+              </div>
 
-                <div className="absolute h-8 left-0 right-0 bottom-0 grid grid-cols-2 gap-2 select-none">
+                <div className="flex">
                     <PageButton action={prevPage} canAct={hasPrevPage}/>
+                    {currentPage} / {totalPages}
                     <PageButton action={nextPage} canAct={hasNextPage} next/>
                 </div>
             </div>

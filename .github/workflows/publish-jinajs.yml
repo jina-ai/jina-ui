@@ -31,19 +31,13 @@ jobs:
       - name: build jinajs
         run: yarn jinajs build
 
-      - name: increment version
-        run: |
-          yarn jinajs version --patch
-
-      - name: publish
-        run: yarn jinajs publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # set this in your repo settings
-
-      - name: run git status
-        run: git status
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd packages/jinajs/
+          npx semantic-release
 
       - name: Push changes
         uses: ad-m/github-push-action@master
