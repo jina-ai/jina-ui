@@ -4755,6 +4755,11 @@ onigasm@^2.2.5:
   dependencies:
     lru-cache "^5.1.1"
 
+openapi-types@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-9.3.0.tgz#2d90549edb928cf06cf83018485a1a5961fbd2b9"
+  integrity sha512-sR23YjmuwDSMsQVZDHbV9mPgi0RyniQlqR0AQxTC2/F3cpSjRFMH3CFPjoWvNqhC4OxPkDYNb2l8Mc1Me6D/KQ==
+
 openapi-typescript@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/openapi-typescript/-/openapi-typescript-4.0.2.tgz#65fc1bf094ddc2f17b136d7e40cc802a1f665145"

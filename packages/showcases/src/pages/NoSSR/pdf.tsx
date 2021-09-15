@@ -19,6 +19,8 @@ import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import { components } from "../../types/pdf/schema"
 import { RequestSerializer } from "../../../../jinajs/dist/types";
+import schema from "../../types/pdf/schema.json"
+import { OpenAPIV3 } from "openapi-types";
 
 const PDF_API_URL = "http://34.107.117.194:80"
 
@@ -46,7 +48,7 @@ const customReqSerializer = async (documents: RawDocumentData[]) => {
 }
 
 const customResSerializer = (response: IResponse) => {
-
+    console.log("RESPONSE IN SERIAILITYWER",response)
     const docs = response.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
@@ -158,7 +160,7 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState("")
     const [viewedPDFName, setViewedPDFName] = useState("")
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
-    const jinaClient = new JinaClient<IRequest,IResponse>(PDF_API_URL, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient<IRequest,IResponse>(PDF_API_URL, schema as OpenAPIV3.Document, true, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
         const {results} = await jinaClient.search(url)
@@ -173,6 +175,7 @@ export default function PDF() {
             setSearchedDocumentName(documents[0].name)
         }
         const {results, queries} = await jinaClient.search(documents[0])
+        console.log("results", results)
         setSearching(false);
         setResults(results);
         setQueries(queries);
