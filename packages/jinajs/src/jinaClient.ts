@@ -11,14 +11,15 @@ import {
 
 const defaultJinaVersion = "2"
 
-export class JinaClient {
+export class JinaClient<IResponse> {
+
   private baseURL: string;
   private jinaVersion: string;
   private client: AxiosInstance;
   private serializeRequest: RequestSerializer
-  private serializeResponse: ResponseSerializer
+  private serializeResponse: ResponseSerializer<IResponse>
 
-  constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer, customSerializeResponse?: ResponseSerializer ) {
+  constructor(baseURL: BaseURL, customSerializeRequest?: RequestSerializer, customSerializeResponse?: ResponseSerializer<IResponse> ) {
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse
     this.baseURL = baseURL;

@@ -17,12 +17,13 @@ import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
-import {response} from "../../mockedData/pdf";
+import { components } from "../../types/pdf/schema"
 
 const PDF_API_URL = "http://34.107.117.194:80"
 
 type CustomResult = any
 type CustomResults = any
+type IResponse = components["schemas"]["MatchData"]
 
 
 const customReqSerializer = async (documents: RawDocumentData[], version: string) => {
@@ -42,13 +43,12 @@ const customReqSerializer = async (documents: RawDocumentData[], version: string
     }
 }
 
-const customResSerializer = (response: AnyObject, version: string) => {
+const customResSerializer = (response: IResponse, version: string) => {
 
     const docs = response.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
-
-    docs.forEach((doc: any) => {
+    docs?.forEach((doc: any) => {
         queries.push({
             data: doc.pdf,
             mimeType: "application/pdf"
@@ -156,8 +156,7 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState("")
     const [viewedPDFName, setViewedPDFName] = useState("")
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
-
-    const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient<IResponse>(PDF_API_URL, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
         const {results} = await jinaClient.search(url)
