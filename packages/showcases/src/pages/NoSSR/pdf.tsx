@@ -48,7 +48,6 @@ const customReqSerializer = async (documents: RawDocumentData[]) => {
 }
 
 const customResSerializer = (response: IResponse) => {
-    console.log("RESPONSE IN SERIAILITYWER",response)
     const docs = response.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
