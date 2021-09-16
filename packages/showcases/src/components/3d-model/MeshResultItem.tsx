@@ -30,7 +30,8 @@ export default function MeshResultItem ({resultItem, className}: ResultItemProps
                 alt="result mesh"
                 ar ar-modes="webxr scene-viewer quick-look"
                 environment-image="neutral"
-                auto-rotate
+                interaction-policy="allow-when-focused"
+                interaction-prompt="when-focused"
                 camera-controls />
         </div>
     )
