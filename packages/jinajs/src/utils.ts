@@ -9,7 +9,6 @@ export const fileToBase64 = (file: File): Promise<string> =>
     });
 
 export const schemaToMock = (schema: OpenAPIV3.SchemaObject) => {
-
     let mockedResponse = {
         ...schema?.properties
     } as OpenAPIV3.SchemaObject
