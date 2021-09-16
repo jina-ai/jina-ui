@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance } from "axios";
 import { serializeRequest, serializeResponse } from "./serializer";
 import MockedClient from './MockedClient'
 import {
