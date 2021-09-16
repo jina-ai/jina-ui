@@ -78,9 +78,9 @@
           "id": {"title": "Id", "type": "string", "default": "doc_id"},
           "score": {"title": "Score", "type": "number", "default": 1.0},
           "page": {"title": "Page", "type": "string", "default": "1"},
-          "pdf": {"title": "Pdf", "type": "string", "default": "url_of_pdf"},
+          "pdf": {"title": "Pdf", "type": "string", "default": "https://storage.googleapis.com/jina-showcase-datasource/Transfer learning extensions for the probabilistic classification vector machine.pdf"},
           "pdf_name": {"title": "Pdf Name", "type": "string", "default": "pdf_name"},
-          "thumbnail": {"title": "Thumbnail", "type": "string", "default": "url_of_preview_image"},
+          "thumbnail": {"title": "Thumbnail", "type": "string", "default": "https://storage.googleapis.com/jina-showcase-state/jpg/Transfer learning extensions for the probabilistic classification vector machine---page0.jpg"},
           "coordinates": {
             "title": "Coordinates",
             "type": "array",

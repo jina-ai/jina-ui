@@ -23,8 +23,6 @@ export class JinaClient<IRequest,IResponse> {
 
   constructor(baseURL: BaseURL, schema: OpenAPIV3.Document, debugMode: boolean, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
     this.schema =  schema
-    console.log("constructor", schema)
-    console.log("debugMode", debugMode)
     this.debugMode = debugMode
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse

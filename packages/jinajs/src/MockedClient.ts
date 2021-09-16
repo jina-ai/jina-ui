@@ -1,7 +1,6 @@
 import {OpenAPIV3} from "openapi-types";
 import { AnyObject } from "types";
 import { schemaToMock } from "./utils";
-import {MockedResponse} from "./mockedResponse"
 
 export default class MockedClient {
     private schema: OpenAPIV3.Document
@@ -11,12 +10,10 @@ export default class MockedClient {
     }
 
     async post(url: string, requestBody: AnyObject) {
-        console.log(requestBody) //todo validate this
         switch(url){
             case "search":
-                const mocked = schemaToMock(this.schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject)
-                console.log(mocked)
-                return MockedResponse
+                console.log("search",requestBody)
+                return schemaToMock(this.schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject)
                 break
             default:
                 return {}
