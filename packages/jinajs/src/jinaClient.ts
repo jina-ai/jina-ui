@@ -13,7 +13,7 @@ import {
 import { OpenAPIV3 } from "openapi-types";
 
 
-export class JinaClient<IRequest = AnyObject ,IResponse = AxiosResponse> {
+export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
 
   private baseURL: string;
   private client: AxiosInstance;
