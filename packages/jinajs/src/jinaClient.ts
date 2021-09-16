@@ -2,6 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { serializeRequest, serializeResponse } from "./serializer";
 import MockedClient from './MockedClient'
 import {
+  AnyObject,
   BaseURL,
   RawDocumentData,
   RequestSerializer,
@@ -12,7 +13,7 @@ import {
 import { OpenAPIV3 } from "openapi-types";
 
 
-export class JinaClient<IRequest = Request ,IResponse = AxiosResponse> {
+export class JinaClient<IRequest = AnyObject ,IResponse = AxiosResponse> {
 
   private baseURL: string;
   private client: AxiosInstance;
