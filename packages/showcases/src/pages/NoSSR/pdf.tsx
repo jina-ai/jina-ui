@@ -21,7 +21,6 @@ import { components } from "../../types/pdf/schema"
 import { RequestSerializer } from "../../../../jinajs/dist/types";
 import schema from "../../types/pdf/schema.json"
 import { OpenAPIV3 } from "openapi-types";
-import {response} from "../../mockedData/pdf";
 import {checkIfQuestion} from "../../utils/utils";
 
 const PDF_API_URL = "http://34.107.117.194:80"
@@ -252,7 +251,7 @@ export default function PDF() {
 
     return (
         <div className="max-w-screen-xl">
-            <h1 className="font-bold text-5xl">
+            <h1 className="font-bold text-5xl mb-3">
                 Ask a paper anything!
             </h1>
             {modalIsOpen && <PDFModal
