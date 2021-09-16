@@ -19,16 +19,16 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
   private client: AxiosInstance;
   private serializeRequest: RequestSerializer<IRequest>
   private serializeResponse: ResponseSerializer<IResponse>
-  private schema: OpenAPIV3.Document
+  private schema: OpenAPIV3.Document | undefined
   private debugMode: boolean
 
-  constructor(baseURL: BaseURL, schema: OpenAPIV3.Document, debugMode: boolean, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
+  constructor(baseURL: BaseURL, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
     this.schema =  schema
-    this.debugMode = debugMode
+    this.debugMode = debugMode || false
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse
     this.baseURL = baseURL;
-    if(debugMode) this.client = new MockedClient(this.schema) as unknown as AxiosInstance
+    if(debugMode && this.schema) this.client = new MockedClient(this.schema) as unknown as AxiosInstance
     else this.client = axios.create({ baseURL })
 
     this.init();
