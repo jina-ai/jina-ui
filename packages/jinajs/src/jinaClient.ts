@@ -33,9 +33,10 @@ export class JinaClient {
       this.jinaVersion = defaultJinaVersion
       if (response?.data?.jina?.jina) this.jinaVersion = response.data.jina.jina;
     } catch (e) {
-      throw new Error(
-        `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
-      );
+      // throw new Error(
+      //   `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
+      // );
+      console.log(e, this.baseURL)
     }
   }
 

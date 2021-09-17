@@ -1,13 +1,13 @@
 type ResultItem = {
-    id: string
-    uri: string
+    id?: string
+    data: string
     tags?: any
     adjacency?: number
     scores?: any    
 }
 
 type ResultItemProps = {
-    resultItem: ResultItem
+    result: ResultItem
     className?: string
 }
 
@@ -21,12 +21,12 @@ declare global {
     }
 }
 
-export default function MeshResultItem ({resultItem, className}: ResultItemProps) {
-    const {uri} = resultItem
+export default function MeshResultItem ({result, className}: ResultItemProps) {
+    const {data} = result
     return (
         <div className={className}>
             <model-viewer
-                src={uri}
+                src={data}
                 alt="result mesh"
                 ar ar-modes="webxr scene-viewer quick-look"
                 environment-image="neutral"
