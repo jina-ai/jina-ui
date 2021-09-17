@@ -30,7 +30,6 @@ type CustomResults = any
 type IRequest = components["schemas"]["SearchData"]
 type IResponse = components["schemas"]["MatchData"]
 
-
 const customReqSerializer = async (documents: RawDocumentData[]) => {
     const doc = documents[0]
     if (doc instanceof File) {
