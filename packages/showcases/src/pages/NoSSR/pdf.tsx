@@ -18,6 +18,7 @@ import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {response} from "../../mockedData/pdf";
+import {checkIfQuestion} from "../../utils/utils";
 
 const PDF_API_URL = "http://34.107.117.194:80"
 
@@ -66,9 +67,10 @@ type ModalProps = {
     setIsOpen: (value: boolean) => void,
     modalIsOpen: boolean,
     getSimiliarResults: (url: string) => Promise<SimpleResults>
+    search: (name: string) => void
 }
 
-function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults}: ModalProps) {
+function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliarResults, search}: ModalProps) {
 
     const [similiarResults, setSimiliarResults] = useState<any>([])
 
@@ -143,10 +145,14 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                         <div className="mx-48">
                             <p className="ml-6 font-semibold my-6">Similiar documents</p>
                             <div className="flex justify-between">
-                                {similiarResults.map(([result, idx]: [{ thumbnail: string; pdf_name: string; pdf: string; page: number; }, number]) => {
+                                {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }, idx: number) => {
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
                                         <div
+                                            onClick={() => {
+                                                search(pdf_name)
+                                                closeModal()
+                                            }}
                                             key={`similiar-document-${idx}`}
                                             className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
                                             <img src={thumbnail} alt="similiar-document"/>
@@ -170,6 +176,7 @@ export default function PDF() {
     const [viewedPDF, setViewedPDF] = useState("")
     const [viewedPDFName, setViewedPDFName] = useState("")
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
+    const [error, setError] = useState("")
 
     const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
 
@@ -179,16 +186,22 @@ export default function PDF() {
     }
 
     async function search(...documents: RawDocumentData[]) {
-        setSearching(true);
+        let validQuestion = true
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
+            if (!checkIfQuestion(documents[0])) validQuestion = false
         } else {
             setSearchedDocumentName(documents[0].name)
         }
-        const {results, queries} = await jinaClient.search(documents[0])
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
+        if (validQuestion) {
+            setError("")
+            setSearching(true);
+            const {results, queries} = await jinaClient.search(documents[0])
+            setSearching(false);
+            setResults(results);
+            setQueries(queries);
+        } else setError("Please provide a valid question")
+
     }
 
     const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -254,13 +267,43 @@ export default function PDF() {
     }
 
     return (
-        <div className="max-w-screen-2xl">
-            {modalIsOpen && <PDFModal viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
-                                      modalIsOpen={modalIsOpen}
-                                      getSimiliarResults={getSimiliarResults}/>}
+        <div className="max-w-screen-xl">
+            <h1 className="font-bold text-5xl">
+                Ask a paper anything!
+            </h1>
+            {modalIsOpen && <PDFModal
+                search={search}
+                viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
+                modalIsOpen={modalIsOpen}
+                getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-3 md:py-8 mt-6">
-                <p className="font-semibold">Results for: <span className="text-xl">{searchedDocumentName}</span></p>
+            <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
+
+
+                <h2 className="font-bold text-xl mb-3">Examples:</h2>
+
+                <div className="ml-3 text-primary-500 font-semibold">
+                    <p
+                        className="mb-3 cursor-pointer"
+                        onClick={() => search("What is the meaning of life?")}
+                    >What is the meaning of life?</p>
+                    <p className="mb-3 cursor-pointer"
+                       onClick={() => search("What is a paper?")}
+                    >What is a paper?</p>
+                    <p className="mb-3 cursor-pointer"
+                       onClick={() => search("What does the fox say?")}
+                    >What does the fox say?</p>
+                </div>
+                {error === "" ?
+                    <p className="font-semibold">
+                        Results for: <span
+                        className="text-xl">{searchedDocumentName}</span>
+                    </p> :
+                    <p className="font-semibold text-xl text-red-500">
+                        {error}
+                    </p>
+                }
+
             </div>
             <Results results={results} CustomResultItem={CustomResultItem}/>
 
