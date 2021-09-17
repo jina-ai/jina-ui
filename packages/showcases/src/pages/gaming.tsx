@@ -20,7 +20,7 @@ const GAMING_ENDPOINT = 'https://europe-west3-jina-showcase.cloudfunctions.net/p
 
 export default function GamingShowcase() {
     const [queries, setQueries] = useState<SimpleQueries>([]);
-    const [results, setResults] = useState<SimpleResult[]>([]);
+    const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
