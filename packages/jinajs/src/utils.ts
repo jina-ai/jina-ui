@@ -21,22 +21,33 @@ export const schemaToMock = (schema: OpenAPIV3.SchemaObject) => {
 }
 
 export const schemaToResTypeObject = (schema: OpenAPIV3.Document) => {
-    const copy = schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject
-
+    const properties = (schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject).properties
     let resTypeObject = {
-        ...copy.properties
+        ...properties
     } as OpenAPIV3.SchemaObject
     Object.keys(resTypeObject).forEach((key) => {
         const keyTyped = key as keyof OpenAPIV3.SchemaObject
-
-        console.log("here", resTypeObject[keyTyped].type)
-        switch (resTypeObject[keyTyped].type){
+        switch (resTypeObject[keyTyped].type) {
             case "string":
-                console.log("ASDFL:AKHSDFGLV:KANSJDFG")
+                resTypeObject[keyTyped] = "string"
+                break
+            case "object":
+                resTypeObject[keyTyped] = {}
+                break
+            case "number":
+                resTypeObject[keyTyped] = 1
                 break
             case "array":
+                switch (resTypeObject[keyTyped].items.type) {
+                    case "number":
+                        resTypeObject[keyTyped] = [1]
+                        break
+                    case "string":
+                        resTypeObject[keyTyped] = ["string"]
+                }
         }
     })
+    console.log("resTypeObject", resTypeObject)
     return resTypeObject
 
 }
