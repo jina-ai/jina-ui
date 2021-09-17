@@ -11,6 +11,7 @@ import {
   SimpleResults,
 } from "./types";
 import { OpenAPIV3 } from "openapi-types";
+import { schemaToResTypeObject } from "./utils";
 
 
 export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
@@ -23,7 +24,8 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
   private debugMode: boolean
 
   constructor(baseURL: BaseURL, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
-    this.schema =  schema
+    this.schema = schema
+    if(schema) console.log(schemaToResTypeObject(schema))
     this.debugMode = debugMode || false
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse
