@@ -102,8 +102,9 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                 contentLabel="PDF"
             >
 
-                <style jsx>
-                    {`
+                <div className="modal flex flex-col items-center">
+                    <style jsx>
+                        {`
                           .modal {
                             height: 80vh;
                           }
@@ -112,15 +113,6 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                             .modal {
                               width: 90vw;
                             }
-                          }
-                        `}
-                </style>
-
-                <div className="modal flex flex-col items-center">
-                    <style jsx>
-                        {`
-                          .modal {
-                            height: 80vh;
                           }
                         `}
                     </style>
@@ -268,7 +260,7 @@ export default function PDF() {
 
     return (
         <div className="max-w-screen-xl">
-            <h1 className="font-bold text-5xl">
+            <h1 className="font-bold text-2xl md:text-5xl mb-3">
                 Ask a paper anything!
             </h1>
             {modalIsOpen && <PDFModal
