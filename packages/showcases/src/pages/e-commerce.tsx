@@ -78,13 +78,19 @@ const Filter = ({
     >
       <option value="">Any {title}</option>
       {options.map((item) => (
-        <option value={item} key={item}>{item}</option>
+        <option value={item} key={item}>
+          {item}
+        </option>
       ))}
     </select>
   </div>
 );
 
-const Filters = ({ onFilter }: { onFilter: (filters: any) => void }) => {
+const Filters = ({
+  onFilter,
+}: {
+  onFilter: (filters: FilterCondition[]) => void;
+}) => {
   const [season, setSeason] = useState("");
   const [price, setPrice] = useState("");
   const [gender, setGender] = useState("");
@@ -92,7 +98,7 @@ const Filters = ({ onFilter }: { onFilter: (filters: any) => void }) => {
   const [category, setCategory] = useState("");
 
   useEffect(() => {
-    const filters: any[] = [];
+    const filters: FilterCondition[] = [];
     if (season)
       filters.push({ attribute: "season", operator: "eq", value: season });
     if (price === "Under $500")
@@ -106,7 +112,7 @@ const Filters = ({ onFilter }: { onFilter: (filters: any) => void }) => {
     if (category)
       filters.push({ attribute: "category", operator: "eq", value: category });
 
-    if (filters.length) return onFilter(filters);
+    return onFilter(filters);
   }, [season, price, gender, color, category]);
 
   return (
@@ -127,7 +133,7 @@ const Filters = ({ onFilter }: { onFilter: (filters: any) => void }) => {
         title="Gender"
         current={gender}
         onSelect={setGender}
-        options={["boys", "girls","men","women"]}
+        options={["boys", "girls", "men", "women"]}
       />
       <Filter
         title="color"
@@ -200,10 +206,17 @@ const Searching = () => (
   </div>
 );
 
+type FilterCondition = {
+  attribute: string;
+  operator: "eq" | "ne" | "lt" | "gt" | "le" | "ge";
+  value: string | number;
+};
+
 export default function Home() {
   const [url, setURL] = useState<BaseURL | undefined>(
     "http://35.246.253.36/shop-the-look/"
   );
+  const [filters, setFilters] = useState<FilterCondition[] | undefined>();
   const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
     []
   );
@@ -213,7 +226,8 @@ export default function Home() {
 
   const handleSearch = (...documents: RawDocumentData[]) => {
     setOriginalDocuments(documents);
-    return search(...documents);
+    if (filters) searchWithParameters(documents, { conditions: filters });
+    else search(...documents);
   };
 
   const initClient = () => {
@@ -221,10 +235,14 @@ export default function Home() {
     if (inputURL) setURL(inputURL as BaseURL);
   };
 
-  const filter = (filters: AnyObject) => {
-    console.log("filtering with",originalDocuments,filters)
-    searchWithParameters(originalDocuments, { conditions: filters });
+  const filter = (filters: FilterCondition[]) => {
+    console.log("filtering with", originalDocuments, filters);
+    if (originalDocuments.length)
+      searchWithParameters(originalDocuments, { conditions: filters });
+    setFilters([...filters]);
   };
+
+  console.log("results",results)
 
   return (
     <div>
@@ -246,7 +264,7 @@ export default function Home() {
                   queries={queries}
                   results={results}
                   CustomResultItem={ProductResult}
-                />{" "}
+                />
               </>
             ) : (
               <EmptyMessage />
