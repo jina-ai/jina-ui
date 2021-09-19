@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import { AnyObject } from "index";
 import { serializeRequest, serializeResponse } from "./serializer";
 import {
   BaseURL,
@@ -48,4 +49,16 @@ export class JinaClient {
     console.log("response:", response);
     return this.serializeResponse(response.data, this.jinaVersion);
   }
+
+  async searchWithParameters(
+    documents: RawDocumentData[],
+    parameters: AnyObject
+  ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
+    const requestBody = await this.serializeRequest(documents, this.jinaVersion,parameters);
+    console.log("request body:", requestBody);
+    const response = await this.client.post("search", requestBody);
+    console.log("response:", response);
+    return this.serializeResponse(response.data, this.jinaVersion);
+  }
+  
 }

@@ -11,6 +11,7 @@ export type SimpleResult = {
   data: string | Base64URI;
   score: number;
   mimeType: string;
+  tags?:AnyObject;
 };
 
 export type SimpleResults = SimpleResult[];
@@ -23,5 +24,5 @@ export type SimpleResponse = {
 
 export type BaseURL = `http://${string}` | `https://${string}`;
 
-export type RequestSerializer = (documents: RawDocumentData[], version: string) => AnyObject
+export type RequestSerializer = (documents: RawDocumentData[], version: string,parameters?:AnyObject) => AnyObject
 export type ResponseSerializer = (response: AnyObject, version: string) => SimpleResponse

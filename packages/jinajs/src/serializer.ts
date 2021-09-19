@@ -12,11 +12,12 @@ const DEFAULT_VERSION = "2";
 
 export function serializeRequest(
   documents: RawDocumentData[],
-  version: string = DEFAULT_VERSION
+  version: string = DEFAULT_VERSION,
+  options?:AnyObject
 ) {
   const serialize =
     requestSerializer[version] || requestSerializer[DEFAULT_VERSION];
-  return serialize(documents);
+  return serialize(documents,options);
 }
 
 export function serializeResponse(
@@ -30,9 +31,9 @@ export function serializeResponse(
 }
 
 const requestSerializer: {
-  [key: string]: (documents: RawDocumentData[]) => Promise<AnyObject>;
+  [key: string]: (documents: RawDocumentData[],parameters?:AnyObject) => Promise<AnyObject>;
 } = {
-  "2": async (documents: RawDocumentData[]) => {
+  "2": async (documents: RawDocumentData[],parameters?:AnyObject) => {
     const request: any = {
       data: [],
     };
@@ -46,6 +47,8 @@ const requestSerializer: {
         request.data.push({ text: doc });
       }
     }
+    if(parameters)
+      request.parameters = parameters;
     return request;
   },
 };
@@ -64,7 +67,7 @@ const responseSerializer: {
       });
       const { matches } = doc;
       results.push(
-        matches.map(({ scores, text, uri, mimeType }: any) => {
+        matches.map(({ scores, text, uri, mimeType,tags }: any) => {
           const score = scores.values
             ? scores.values?.value
             : scores.score?.value;
@@ -72,6 +75,7 @@ const responseSerializer: {
             data: text || uri,
             mimeType,
             score,
+            tags
           } as SimpleResult;
         })
       );
