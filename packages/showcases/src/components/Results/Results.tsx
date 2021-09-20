@@ -34,7 +34,7 @@ export const Results = ({
             />
 
             {hasResults ? (
-                <div className={"flex flex-wrap justify-center"}>
+                <div className={"flex flex-wrap justify-center 2xl:justify-start"}>
                     {selectedResults.map((result, idx) => (
                         CustomResultItem ?
                             <CustomResultItem result={result} key={idx}/>

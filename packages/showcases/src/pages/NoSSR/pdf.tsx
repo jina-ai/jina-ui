@@ -118,7 +118,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                           }
                         `}
                     </style>
-                    <div className="w-full px-6 flex justify-between">
+                    <div className="w-full md:px-6 flex justify-between flex items-center">
                         <div className="cursor-pointer max-w-12" onClick={closeModal}>
                             <Image src={CrossIcon}/>
                         </div>
@@ -136,9 +136,9 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                         <PdfViewer src={viewedPDF}/>
                     </div>
                     <div className="border-t mt-6">
-                        <div className="mx-48">
+                        <div className="md:mx-48">
                             <p className="ml-6 font-semibold my-6">Similiar documents</p>
-                            <div className="flex justify-between">
+                            <div className="flex flex-col md:flex-row justify-start md:justify-between">
                                 {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }, idx: number) => {
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
@@ -148,7 +148,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                                                 closeModal()
                                             }}
                                             key={`similiar-document-${idx}`}
-                                            className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
+                                            className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg  mx-3 mb-3">
                                             <img src={thumbnail} alt="similiar-document"/>
                                         </div>
                                     )
