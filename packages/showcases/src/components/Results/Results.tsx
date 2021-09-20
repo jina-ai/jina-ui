@@ -15,33 +15,6 @@ export type ResultsProps = {
     CustomResultItem?: ICustomResultItem
 };
 
-export const ResultsView = ({
-                                results,
-                                CustomResultItem
-                            }: { results: SimpleResults, CustomResultItem?: ICustomResultItem }) => {
-
-    return (
-        <div className={"flex flex-wrap"}>
-            {results.map((result, idx) => (
-                CustomResultItem ?
-                    <div className="resultItem">
-                        <CustomResultItem result={result} key={idx}/>
-                    </div>
-                    :
-                    <div className="resultItem">
-                        <ResultItem result={result} key={idx}/>
-                    </div>
-            ))}
-            <style jsx>
-                {`
-                  .resultItem{
-                    flex: 1 0 33%; 
-                  }
-                `}
-            </style>
-        </div>)
-};
-
 export const Results = ({
                             results,
                             queries,
@@ -61,24 +34,13 @@ export const Results = ({
             />
 
             {hasResults ? (
-                <div className={"flex flex-wrap"}>
+                <div className={"flex flex-wrap justify-center"}>
                     {selectedResults.map((result, idx) => (
                         CustomResultItem ?
-                            <div className="resultItem">
-                                <CustomResultItem result={result} key={idx}/>
-                            </div>
+                            <CustomResultItem result={result} key={idx}/>
                             :
-                            <div className="resultItem">
-                                <ResultItem result={result} key={idx}/>
-                            </div>
+                            <ResultItem result={result} key={idx}/>
                     ))}
-                    <style jsx>
-                        {`
-                  .resultItem{
-                    flex: 1 0 33%; 
-                  }
-                `}
-                    </style>
                 </div>
             ) : (
                 <></>
