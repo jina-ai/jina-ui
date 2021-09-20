@@ -209,7 +209,7 @@ export default function PDF() {
         const [hovered, setHovered] = useState<boolean>(false)
 
         return (
-            <div className="customResultItem mb-3">
+            <div className="customResultItem m-3">
                 <style jsx>
                     {`
                       .thumpnail-hovered:hover {
@@ -261,7 +261,7 @@ export default function PDF() {
     }
 
     return (
-        <div className="max-w-screen-xl">
+        <div className="">
             <h1 className="font-bold text-2xl md:text-5xl mb-3">
                 Ask a paper anything!
             </h1>
