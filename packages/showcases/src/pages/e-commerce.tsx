@@ -213,9 +213,7 @@ type FilterCondition = {
 };
 
 export default function Home() {
-  const [url, setURL] = useState<BaseURL | undefined>(
-    "http://35.246.253.36/shop-the-look/"
-  );
+  const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
   const [filters, setFilters] = useState<FilterCondition[] | undefined>();
   const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
     []
@@ -228,11 +226,6 @@ export default function Home() {
     setOriginalDocuments(documents);
     if (filters) searchWithParameters(documents, { conditions: filters });
     else search(...documents);
-  };
-
-  const initClient = () => {
-    const inputURL = urlInputRef.current?.value;
-    if (inputURL) setURL(inputURL as BaseURL);
   };
 
   const filter = (filters: FilterCondition[]) => {
@@ -252,39 +245,23 @@ export default function Home() {
       </Head>
 
       <main>
-        {url ? (
-          <div className="demo-container grid col-span-1 space-y-4 mb-16">
-            <SearchBar search={handleSearch} searching={searching} />
-            <Filters onFilter={filter} />
-            {searching ? (
-              <Searching />
-            ) : results.length ? (
-              <>
-                <Results
-                  queries={queries}
-                  results={results}
-                  CustomResultItem={ProductResult}
-                />
-              </>
-            ) : (
-              <EmptyMessage />
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-row items-center">
-            <input
-              className="border px-4 py-2 rounded"
-              ref={urlInputRef}
-              placeholder="endpoint URL"
-            />
-            <button
-              className="rounded p-2 bg-green-500 px-6 text-white ml-3"
-              onClick={initClient}
-            >
-              Set
-            </button>
-          </div>
-        )}
+        <div className="demo-container grid col-span-1 space-y-4 mb-16">
+          <SearchBar search={handleSearch} searching={searching} />
+          <Filters onFilter={filter} />
+          {searching ? (
+            <Searching />
+          ) : results.length ? (
+            <>
+              <Results
+                queries={queries}
+                results={results}
+                CustomResultItem={ProductResult}
+              />
+            </>
+          ) : (
+            <EmptyMessage />
+          )}
+        </div>
       </main>
     </div>
   );
