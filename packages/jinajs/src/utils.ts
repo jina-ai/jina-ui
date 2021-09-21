@@ -10,12 +10,12 @@ export const fileToBase64 = (file: File): Promise<string> =>
 
 export function urlToBase64(url: string) {
   return new Promise(function (resolve, reject) {
-    var xhr = new XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
     xhr.responseType = "arraybuffer";
     xhr.open("GET", `${url}`);
 
     xhr.onload = function () {
-      var base64, binary, bytes, mediaType;
+      let base64, binary, bytes, mediaType;
 
       bytes = new Uint8Array(xhr.response);
       //NOTE String.fromCharCode.apply(String, ...
@@ -41,13 +41,6 @@ export function urlToBase64(url: string) {
     xhr.send();
   });
 }
-
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (error) => reject(error);
-    });
 
 export const schemaToMock = (schema: OpenAPIV3.SchemaObject) => {
     let mockedResponse = {

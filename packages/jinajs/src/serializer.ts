@@ -44,7 +44,7 @@ export function serializeResponse(
     });
     const { matches } = doc;
     results.push(
-        matches.map(({ scores, text, uri, mimeType }: any) => {
+        matches.map(({ scores, text, uri, mimeType, tags }: any) => {
           const score = scores.values
               ? scores.values?.value
               : scores.score?.value;
