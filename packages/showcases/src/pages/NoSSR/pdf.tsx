@@ -17,16 +17,20 @@ import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
-import {response} from "../../mockedData/pdf";
+import { components } from "../../types/pdf/schema"
+import { RequestSerializer } from "../../../../jinajs/dist/types";
+import schema from "../../types/pdf/schema.json"
+import { OpenAPIV3 } from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
 
 const PDF_API_URL = "http://34.107.117.194:80"
 
 type CustomResult = any
 type CustomResults = any
+type IRequest = components["schemas"]["SearchData"]
+type IResponse = components["schemas"]["MatchData"]
 
-
-const customReqSerializer = async (documents: RawDocumentData[], version: string) => {
+const customReqSerializer = async (documents: RawDocumentData[]) => {
     const doc = documents[0]
     if (doc instanceof File) {
         const uri = await fileToBase64(doc)
@@ -43,13 +47,11 @@ const customReqSerializer = async (documents: RawDocumentData[], version: string
     }
 }
 
-const customResSerializer = (response: AnyObject, version: string) => {
-
+const customResSerializer = (response: IResponse) => {
     const docs = response.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
-
-    docs.forEach((doc: any) => {
+    docs?.forEach((doc: any) => {
         queries.push({
             data: doc.pdf,
             mimeType: "application/pdf"
@@ -108,9 +110,15 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                           .modal {
                             height: 80vh;
                           }
+
+                          @media only screen and (max-width: 600px) {
+                            .modal {
+                              width: 90vw;
+                            }
+                          }
                         `}
                     </style>
-                    <div className="w-full px-6 flex justify-between">
+                    <div className="w-full md:px-6 flex justify-between flex items-center">
                         <div className="cursor-pointer max-w-12" onClick={closeModal}>
                             <Image src={CrossIcon}/>
                         </div>
@@ -128,9 +136,9 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                         <PdfViewer src={viewedPDF}/>
                     </div>
                     <div className="border-t mt-6">
-                        <div className="mx-48">
+                        <div className="md:mx-48">
                             <p className="ml-6 font-semibold my-6">Similiar documents</p>
-                            <div className="flex justify-between">
+                            <div className="flex flex-col md:flex-row justify-start md:justify-between">
                                 {similiarResults.map((result: { thumbnail: string; pdf_name: string; pdf: string; page: number; }, idx: number) => {
                                     const {thumbnail, pdf_name, pdf, page} = result
                                     return (
@@ -140,7 +148,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                                                 closeModal()
                                             }}
                                             key={`similiar-document-${idx}`}
-                                            className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg mx-3">
+                                            className="cursor-pointer relative rounded-xl border border-gray-500  overflow-hidden h-96 max-w-lg  mx-3 mb-3">
                                             <img src={thumbnail} alt="similiar-document"/>
                                         </div>
                                     )
@@ -164,7 +172,7 @@ export default function PDF() {
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
     const [error, setError] = useState("")
 
-    const jinaClient = new JinaClient(PDF_API_URL, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient<IRequest,IResponse>(PDF_API_URL, schema as OpenAPIV3.Document, true, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
         const {results} = await jinaClient.search(url)
@@ -201,7 +209,7 @@ export default function PDF() {
         const [hovered, setHovered] = useState<boolean>(false)
 
         return (
-            <div className="customResultItem mb-3">
+            <div className="customResultItem m-3">
                 <style jsx>
                     {`
                       .thumpnail-hovered:hover {
@@ -210,6 +218,12 @@ export default function PDF() {
 
                       .customResultItem {
                         width: 30rem;
+                      }
+
+                      @media only screen and (max-width: 600px) {
+                        .customResultItem {
+                          width: 90vw;
+                        }
                       }
                     `}
                 </style>
@@ -239,16 +253,16 @@ export default function PDF() {
                 </div>
                 <div>
                 </div>
-                <div className="px-8 pt-4 flex justify-between">
-                    <div className="font-semibold max-w-xs">{pdf_name}</div>
-                    <div className="float-right text-gray-700">Page {parseInt(page) + 1}</div>
+                <div className="px-2 md:px-8 pt-4 flex justify-between">
+                    <div className="text-sm md:text-base font-semibold max-w-xs">{pdf_name}</div>
+                    <div className="float-right text-gray-700 min-w-max">Page {parseInt(page) + 1}</div>
                 </div>
             </div>)
     }
 
     return (
-        <div className="max-w-screen-xl">
-            <h1 className="font-bold text-5xl">
+        <div className="">
+            <h1 className="font-bold text-2xl md:text-5xl mb-3">
                 Ask a paper anything!
             </h1>
             {modalIsOpen && <PDFModal
@@ -257,7 +271,7 @@ export default function PDF() {
                 modalIsOpen={modalIsOpen}
                 getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-3 mt-6">
+            <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
 
 
                 <h2 className="font-bold text-xl mb-3">Examples:</h2>
