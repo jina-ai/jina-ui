@@ -175,6 +175,7 @@ export default function PDF() {
     }
 
     async function search(...documents: RawDocumentData[]) {
+        setResults([])
         let validQuestion = true
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
