@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import {OpenAPIV3} from "openapi-types";
 
 export const fileToBase64 = (file: File): Promise<string> =>
@@ -42,7 +43,7 @@ export function urlToBase64(url: string) {
   });
 }
 
-export const schemaToMock = (schema: OpenAPIV3.SchemaObject) => {
+export function schemaToMock<IResponseData>  (schema: OpenAPIV3.SchemaObject): AxiosResponse<IResponseData> {
     let mockedResponse = {
         ...schema?.properties
     } as OpenAPIV3.SchemaObject
@@ -51,5 +52,12 @@ export const schemaToMock = (schema: OpenAPIV3.SchemaObject) => {
         if (mockedResponse) mockedResponse[keyTyped] = mockedResponse[keyTyped].default
     })
     const mockedData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => mockedResponse)
-    return {data: mockedData}
+    const data: IResponseData = {data: mockedData} as unknown as IResponseData
+    return {
+        data,
+        status: 200,
+        statusText: "searched successfully",
+        headers: "",
+        config: {}
+    }
 }

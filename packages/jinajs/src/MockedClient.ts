@@ -1,22 +1,32 @@
+import { AxiosResponse } from "axios";
 import {OpenAPIV3} from "openapi-types";
 import { AnyObject } from "types";
 import { schemaToMock } from "./utils";
 
-export default class MockedClient {
+export default class MockedClient<IResponse> {
     private schema: OpenAPIV3.Document
 
     constructor(schema: OpenAPIV3.Document) {
         this.schema = schema
     }
 
-    async post(url: string, requestBody: AnyObject) {
+    async post(url: string, requestBody: AnyObject): Promise<AxiosResponse<IResponse>> {
         switch(url){
             case "search":
                 console.log("search",requestBody)
-                return schemaToMock(this.schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject)
+                return schemaToMock<IResponse>(this.schema.components?.schemas?.JinaData as OpenAPIV3.SchemaObject)
                 break
             default:
-                return {}
+                return {
+                    data: {
+                        something: "went wrong"
+                    } as unknown as IResponse,
+                    status: 500,
+                    statusText: "error",
+                    headers: "",
+                    config: {}
+
+                }
         }
     }
 
