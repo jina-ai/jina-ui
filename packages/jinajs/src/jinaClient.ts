@@ -13,22 +13,22 @@ import {
 import { OpenAPIV3 } from "openapi-types";
 
 
-export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
+export class JinaClient<IRequestBody = AnyObject ,IResponseData = AnyObject> {
 
   private baseURL: string;
   private client: AxiosInstance;
-  private serializeRequest: RequestSerializer<IRequest>
-  private serializeResponse: ResponseSerializer<IResponse>
+  private serializeRequest: RequestSerializer<IRequestBody>
+  private serializeResponse: ResponseSerializer<IResponseData>
   private schema: OpenAPIV3.Document | undefined
   private debugMode: boolean
 
-  constructor(baseURL: BaseURL, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequest>, customSerializeResponse?: ResponseSerializer<IResponse> ) {
+  constructor(baseURL: BaseURL, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequestBody>, customSerializeResponse?: ResponseSerializer<IResponseData> ) {
     this.schema = schema
     this.debugMode = debugMode || false
     this.serializeRequest = customSerializeRequest || serializeRequest
     this.serializeResponse = customSerializeResponse || serializeResponse
     this.baseURL = baseURL;
-    if(debugMode && this.schema) this.client = new MockedClient(this.schema) as unknown as AxiosInstance
+    if(debugMode && this.schema) this.client = new MockedClient<IResponseData>(this.schema) as unknown as AxiosInstance
     else this.client = axios.create({ baseURL })
 
     this.init();
@@ -52,7 +52,7 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
     const requestBody = await this.serializeRequest(documents);
     console.log("request body:", requestBody);
-    const response = await this.client.post("search", requestBody) as IResponse;
+    const response = await this.client.post("search", requestBody);
     console.log("response:", response);
     return this.serializeResponse(response);
   }

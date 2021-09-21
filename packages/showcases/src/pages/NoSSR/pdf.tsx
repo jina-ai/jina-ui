@@ -17,13 +17,14 @@ import CrossIcon from '../../images/cross.svg'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
-import { components } from "../../types/pdf/schema"
-import { RequestSerializer } from "../../../../jinajs/dist/types";
+import {components} from "../../types/pdf/schema"
+import {RequestSerializer} from "../../../../jinajs/dist/types";
 import schema from "../../types/pdf/schema.json"
-import { OpenAPIV3 } from "openapi-types";
+import {OpenAPIV3} from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
+import {AxiosResponse} from 'axios'
 
-const PDF_API_URL = "http://34.107.117.194:80"
+const PDF_API_URL = "http://34.107.89.185:80"
 
 type CustomResult = any
 type CustomResults = any
@@ -47,8 +48,8 @@ const customReqSerializer = async (documents: RawDocumentData[]) => {
     }
 }
 
-const customResSerializer = (response: IResponse) => {
-    const docs = response.data
+const customResSerializer = (response: AxiosResponse<IResponse>) => {
+    const docs = response.data.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
     docs?.forEach((doc: any) => {
@@ -166,7 +167,7 @@ export default function PDF() {
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
     const [error, setError] = useState("")
 
-    const jinaClient = new JinaClient<IRequest,IResponse>(PDF_API_URL, schema as OpenAPIV3.Document, true, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient<IRequest, IResponse>(PDF_API_URL, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
         const {results} = await jinaClient.search(url)
