@@ -24,7 +24,7 @@ export default function GamingShowcase() {
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
-    const jinaClient = new JinaClient(GAMING_ENDPOINT, customRequestSerializer)
+    const jinaClient = new JinaClient(GAMING_ENDPOINT, customRequestSerializer, customReponseSerializer)
 
 
     async function search(...documents: RawDocumentData[]) {
@@ -76,3 +76,29 @@ const customRequestSerializer = async (documents: RawDocumentData[], version: st
         }
     }
 }
+
+const customReponseSerializer = (rawResponse: AnyObject) => {
+    const docs = rawResponse.data.docs;
+    const results: SimpleResults[] = [];
+    const queries: SimpleQueries = [];
+    docs.forEach((doc: any) => {
+      queries.push({
+        data: doc.text || doc.uri,
+        mimeType: doc.mimeType,
+      });
+      const { matches } = doc;
+      results.push(
+        matches.sort((match1, match2) => match1.scores.cosine.value - match2.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
+          const score = scores.cosine.value
+            ? scores.cosine.value
+            : scores.score?.value;
+          return {
+            data: text || uri,
+            mimeType,
+            score,
+          } as SimpleResult;
+        })
+      );
+    });
+    return { queries, results };
+  }
