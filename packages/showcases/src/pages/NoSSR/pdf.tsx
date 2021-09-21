@@ -28,8 +28,8 @@ const PDF_API_URL = "http://34.107.89.185:80"
 
 type CustomResult = any
 type CustomResults = any
-type IRequest = components["schemas"]["SearchData"]
-type IResponse = components["schemas"]["MatchData"]
+type IRequestBody = components["schemas"]["SearchData"]
+type IResponseData = components["schemas"]["MatchData"]
 
 const customReqSerializer = async (documents: RawDocumentData[]) => {
     const doc = documents[0]
@@ -48,7 +48,7 @@ const customReqSerializer = async (documents: RawDocumentData[]) => {
     }
 }
 
-const customResSerializer = (response: AxiosResponse<IResponse>) => {
+const customResSerializer = (response: AxiosResponse<IResponseData>) => {
     const docs = response.data.data
     const queries: SimpleQueries = [];
     const results: CustomResults[] = [];
