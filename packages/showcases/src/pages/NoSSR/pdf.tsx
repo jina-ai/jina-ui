@@ -173,7 +173,7 @@ export default function PDF() {
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
     const [error, setError] = useState("")
 
-    const jinaClient = new JinaClient<IRequest, IResponse>(PDF_API_URL, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
+    const jinaClient = new JinaClient<IRequestBody, IResponseData>(PDF_API_URL, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
         const {results} = await jinaClient.search(url)
