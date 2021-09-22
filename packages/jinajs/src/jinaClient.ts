@@ -44,6 +44,14 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
     }
   }
 
+  /**
+   * 
+   * @param documents can be for type Base64 encoded URI, strings or files
+   * 
+   * ```typescript
+   * const { results, queries } = await jinaClient.search('searchQuery')
+   * ```
+   */
   async search(
     ...documents: RawDocumentData[]
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
