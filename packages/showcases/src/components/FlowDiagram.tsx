@@ -19,7 +19,7 @@ const getFlowChartAsset = (showcase: string) => {
 }
 
 export const FlowDiagram = () => {
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(true);
     const {asPath} = useRouter()
     const path = asPath.replace('/', '')
 
