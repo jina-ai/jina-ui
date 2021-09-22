@@ -176,7 +176,8 @@ export default function PDF() {
     const jinaClient = new JinaClient<IRequestBody, IResponseData>(PDF_API_URL, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
-        const {results} = await jinaClient.search(url)
+
+        const {results} = await jinaClient.search(url.split('.')[0])
         return results[0].slice(1, 4)
     }
 
@@ -281,14 +282,15 @@ export default function PDF() {
                 <div className="ml-3 text-primary-500 font-semibold">
                     <p
                         className="mb-3 cursor-pointer"
-                        onClick={() => search("What is the meaning of life?")}
-                    >What is the meaning of life?</p>
+                        onClick={() => search("What is machine learning?")}
+                    >
+                        What is machine learning?</p>
                     <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What is a paper?")}
-                    >What is a paper?</p>
+                       onClick={() => search("What is transfer learning?")}
+                    >What is transfer learning?</p>
                     <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What does the fox say?")}
-                    >What does the fox say?</p>
+                       onClick={() => search("What is reinforcement learning?")}
+                    >What is reinforcement learning?</p>
                 </div>
                 {error === "" ?
                     <p className="font-semibold">
