@@ -18,6 +18,8 @@ const getFlowChartAsset = (showcase: string) => {
     }
 }
 
+
+
 export const FlowDiagram = () => {
     const [show, setShow] = useState(true);
     const {asPath} = useRouter()
@@ -28,16 +30,16 @@ export const FlowDiagram = () => {
     }
 
     return (
-        <div className="flowDiagram fixed bottom-0 w-full bg-gray-100 p-4 py-2">
-            <div className="items-center flex fex-row">
-                <a
+        <div className={"fixed bottom-0 w-full bg-gray-100 p-4 py-2 " + (!show && "bg-opacity-0")}>
+            <div className={"items-center flex fex-row " + (!show && "flex-row-reverse ")}>
+                {show && <a
                     href="https://get.jina.ai"
                     target="_blank"
                     className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">
                     <Image src={github} alt="github"/>
                     <span className="ml-2">Jina on Github</span>
-                </a>
-                <div className="md:text-lg md:mt-2 flex-1 font-medium text-center">How it works</div>
+                </a>}
+                {show && <div className="md:text-lg md:mt-2 flex-1 font-medium text-center">How it works</div>}
                 <ChevronUpIcon
                     onClick={toggleShow}
                     className={`md:mt-2 h-10 p-2 rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 transform ${
