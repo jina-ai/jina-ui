@@ -31,14 +31,14 @@ export const FlowDiagram = () => {
         <div className="fixed bottom-0 w-full bg-gray-100 p-4 py-2">
             <div className="items-center flex fex-row">
                 <div
-                    className="md:mt-4 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">
+                    className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">
                     <Image src={github} alt="github"/>
                     <span className="ml-2">View on Github</span>
                 </div>
-                <div className="md:text-lg flex-1 font-medium text-center">How it works</div>
+                <div className="md:text-lg md:mt-2 flex-1 font-medium text-center">How it works</div>
                 <ChevronUpIcon
                     onClick={toggleShow}
-                    className={`h-10 p-2 rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 transform ${
+                    className={`md:mt-2 h-10 p-2 rounded-full hover:bg-gray-200 cursor-pointer transition-all duration-200 transform ${
                         show ? "rotate-180" : "rotate-0"
                     }`}
                 />
