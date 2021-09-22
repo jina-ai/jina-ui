@@ -19,13 +19,12 @@ import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 
 
-
 function useJina(url?: BaseURL) {
     const [jina, setJina] = useState<JinaClient>();
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
-
+    const [error, setError] = useState("")
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
         console.log("documents", documents)
@@ -38,7 +37,7 @@ function useJina(url?: BaseURL) {
                 }
             ],
             "parameters": {
-                "top_k": 1
+                "top_k": 10
             }
         }
     }
@@ -48,7 +47,13 @@ function useJina(url?: BaseURL) {
     }, [url]);
 
     async function search(...documents: RawDocumentData[]) {
+        setError("")
+        setResults([])
         if (!jina) return;
+        if (!documents.every(doc => doc instanceof File)) {
+            setError("Please provide an image!")
+            return;
+        }
         setSearching(true);
         const {results, queries} = await jina.search(...documents);
         setSearching(false);
@@ -60,7 +65,13 @@ function useJina(url?: BaseURL) {
         documents: RawDocumentData[],
         parameters: AnyObject
     ) {
+        setResults([])
+        setError("")
         if (!jina) return;
+        if (!documents.every(doc => doc instanceof File)) {
+            setError("Please provide an image!")
+            return;
+        }
         setSearching(true);
         const {results, queries} = await jina.searchWithParameters(
             documents,
@@ -77,6 +88,7 @@ function useJina(url?: BaseURL) {
         searching,
         search,
         searchWithParameters,
+        error
     };
 }
 
@@ -240,7 +252,7 @@ export default function Home() {
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
         []
     );
-    const {results, searching, search, searchWithParameters, queries} =
+    const {results, searching, search, searchWithParameters, queries, error} =
         useJina(url);
     const urlInputRef = useRef<HTMLInputElement>(null);
 
@@ -269,12 +281,14 @@ export default function Home() {
 
             <SearchBar search={handleSearch} searching={searching}/>
             <Filters onFilter={filter}/>
+            <div className="h-6 text-red-500">
+                {error}
+            </div>
             {searching ? (
                 <Searching/>
             ) : results.length ? (
                 <>
                     <Results
-                        queries={queries}
                         results={results}
                         CustomResultItem={ProductResult}
                     />
