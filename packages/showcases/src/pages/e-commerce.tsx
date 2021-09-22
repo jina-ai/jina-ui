@@ -15,6 +15,10 @@ import {useRef} from "react";
 import {MediaPreview} from "../components/common/MediaPreview";
 import {TextPreview} from "../components/common/TextPreview";
 import {ShoppingCartIcon} from "@heroicons/react/outline";
+import schema from "../types/e-commerce/schema.json"
+import {OpenAPIV3} from "openapi-types";
+
+
 
 function useJina(url?: BaseURL) {
     const [jina, setJina] = useState<JinaClient>();
@@ -22,8 +26,25 @@ function useJina(url?: BaseURL) {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
 
+
+    const customReqSerializer = async (documents: RawDocumentData[]) => {
+        console.log("documents", documents)
+        const doc = documents[0]
+        return {
+            "data": [
+                {
+                    "uri": "https://storage.googleapis.com/showcase-ecommerce/images/20000.jpg",
+                    "text": "t-shirt"
+                }
+            ],
+            "parameters": {
+                "top_k": 1
+            }
+        }
+    }
+
     useEffect(() => {
-        if (url) setJina(new JinaClient(url));
+        if (url) setJina(new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer));
     }, [url]);
 
     async function search(...documents: RawDocumentData[]) {
