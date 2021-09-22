@@ -28,7 +28,7 @@ export const FlowDiagram = () => {
     }
 
     return (
-        <div className="fixed bottom-0 w-full bg-gray-100 p-4 py-2">
+        <div className="flowDiagram fixed bottom-0 w-full bg-gray-100 p-4 py-2">
             <div className="items-center flex fex-row">
                 <div
                     className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">

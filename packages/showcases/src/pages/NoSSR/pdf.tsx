@@ -304,7 +304,5 @@ export default function PDF() {
 
             </div>
             <Results results={results} CustomResultItem={CustomResultItem}/>
-
-            <FlowDiagram/>
         </div>)
 }
