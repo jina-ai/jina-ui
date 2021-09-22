@@ -67,8 +67,12 @@ function useJina(url?: BaseURL) {
     ) {
         setResults([])
         setError("")
+        let containsFile = false
+        documents.forEach(doc => {
+            if (doc instanceof File) containsFile = true
+        })
         if (!jina) return;
-        if (!documents.every(doc => doc instanceof File)) {
+        if (!containsFile) {
             setError("Please provide an image!")
             return;
         }
