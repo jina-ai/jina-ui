@@ -31,5 +31,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: ./packages/jinajs/docs
-          target-folder: docs
 
