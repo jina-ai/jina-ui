@@ -48,8 +48,6 @@ export default function GamingShowcase() {
                 <link rel="icon" href="/favicon.ico" />
                 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
             </Head>
-
-            <SearchBar searching={searching} search={search} />
             <SampleQueries handleSelectExample={search} />
             <h2 className="font-bold text-xl mb-3">
                 Results: 
@@ -80,7 +78,7 @@ const customRequestSerializer = async (documents: RawDocumentData[]) => {
 }
 
 const customReponseSerializer = (rawResponse: AnyObject) => {
-    const docs = rawResponse.data.docs;
+    const docs = rawResponse.data.data.docs;
     const results: SimpleResults[] = [];
     const queries: SimpleQueries = [];
     docs.forEach((doc: any) => {
