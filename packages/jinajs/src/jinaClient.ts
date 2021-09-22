@@ -34,6 +34,10 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
     this.init();
   }
 
+  /**
+  * Initializes JinaClient.
+  * Makes a request to endpoint/status to check if service is up
+  */
   async init() {
     try {
       const response = await this.client.get("status");
