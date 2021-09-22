@@ -39,11 +39,8 @@ export class JinaClient<IRequest = AnyObject ,IResponse = AnyObject> {
       const response = await this.client.get("status");
       if (response?.data?.jina?.jina) console.log("connected!")
     } catch (e) {
-        if(this.debugMode) console.log("jina client started in debug mode!")
-      else throw new Error(
-            `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
-        );
-
+      console.log(e, this.baseURL)
+      if(this.debugMode) console.log("jina client started in debug mode!")
     }
   }
 
