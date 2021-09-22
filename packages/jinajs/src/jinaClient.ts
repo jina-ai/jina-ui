@@ -52,7 +52,11 @@ export class JinaClient<IRequestBody = AnyObject ,IResponseData = AnyObject> {
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
     const requestBody = await this.serializeRequest(documents);
     console.log("request body:", requestBody);
-    const response = await this.client.post("search", requestBody);
+    const response = await this.client.post("search", requestBody, {
+      headers: {
+        'content-type': ''
+      }
+    });
     console.log("response:", response);
     return this.serializeResponse(response);
   }
@@ -64,7 +68,11 @@ export class JinaClient<IRequestBody = AnyObject ,IResponseData = AnyObject> {
     console.log(parameters)
     const requestBody = await this.serializeRequest(documents);
     console.log("request body:", requestBody);
-    const response = await this.client.post("search", requestBody);
+    const response = await this.client.post("search", requestBody, {
+      headers: {
+        'content-type': ''
+      }
+    });
     console.log("response:", response);
     return this.serializeResponse(response.data);
   }
