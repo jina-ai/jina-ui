@@ -10,6 +10,8 @@ import JinaClient, {
     SimpleResult,
     fileToBase64
 } from "@jina-ai/jinajs";
+import { OpenAPIV3 } from "openapi-types";
+import schema from "../types/pdf/schema.json"
 import { mockData } from '../gaming-response-mock-data'
 import Results from "../components/Results";
 import { SearchBar } from "../components/SearchBar";
@@ -24,7 +26,7 @@ export default function GamingShowcase() {
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
-    const jinaClient = new JinaClient(GAMING_ENDPOINT, customRequestSerializer, customReponseSerializer)
+    const jinaClient = new JinaClient(GAMING_ENDPOINT, schema as OpenAPIV3.Document, false,  customRequestSerializer, customReponseSerializer)
 
 
     async function search(...documents: RawDocumentData[]) {
@@ -57,7 +59,7 @@ export default function GamingShowcase() {
     )
 }
 
-const customRequestSerializer = async (documents: RawDocumentData[], version: string) => {
+const customRequestSerializer = async (documents: RawDocumentData[]) => {
     const doc = documents[0]
     if (doc instanceof File) {
         const uri = await fileToBase64(doc)
@@ -88,7 +90,7 @@ const customReponseSerializer = (rawResponse: AnyObject) => {
       });
       const { matches } = doc;
       results.push(
-        matches.sort((match1, match2) => match1.scores.cosine.value - match2.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
+        matches.sort((match1: any, match2 : any) => match1.scores.cosine.value - match2.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
           const score = scores.cosine.value
             ? scores.cosine.value
             : scores.score?.value;
