@@ -197,6 +197,7 @@ export default function PDF() {
             setSearching(false);
             setResults(results);
             setQueries(queries);
+            if(results[0].length === 0) setError("No results found")
         } else setError("Please provide a valid question")
 
     }
@@ -301,7 +302,6 @@ export default function PDF() {
                         {error}
                     </p>
                 }
-
             </div>
             <Results results={results} CustomResultItem={CustomResultItem}/>
         </div>)
