@@ -18,8 +18,10 @@ import {TextPreview} from "../components/common/TextPreview";
 import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
-import {useDropzone} from 'react-dropzone'
-
+import Dropzone from 'react-dropzone'
+import SearchIcon from '../images/searching.gif'
+import Image from "next/image";
+import Picture from "../images/image.svg"
 
 function useJina(url?: BaseURL) {
     const [jina, setJina] = useState<JinaClient>();
@@ -32,13 +34,13 @@ function useJina(url?: BaseURL) {
         console.log("documents", documents)
         let uri = ""
         let text = ""
-        if(typeof documents[0] === "string") {
+        if (typeof documents[0] === "string") {
             uri = await fileToBase64(documents[1] as File)
             text = documents[0] as string
         } else {
             uri = await fileToBase64(documents[0] as File)
         }
-        
+
         console.log("uri", uri)
         return {
             "data": [
@@ -293,8 +295,40 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
+            <div className="mt-6">
+                <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
+                <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+                    {({getRootProps, getInputProps}) => (
+                        <div {...getRootProps()}
+                             className="border-b-0 cursor-pointer border border-primary-500 rounded-t flex flex-col items-center p-8 ">
+                            <div className="h-8 w-8 mb-3">
+                                <Image src={SearchIcon}/>
+                            </div>
+                            <input {...getInputProps()} />
+                            <p className="font-bold w-72 text-center">Drag and drop your image here or <span
+                                className="text-primary-500">Browse</span> to select a file
+                            </p>
+                            <div className="flex items-center">
+                                <div className="w-6 h-6">
+                                    <Image src={Picture}/>
+                                </div>
+                                <p className="text-gray-500 text-sm">Limit 200 MB per file</p>
+                            </div>
+                        </div>
+                    )}
+                </Dropzone>
+                <input
+                    className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    id="grid-first-name" type="text" placeholder="Add additional description"/>
+                <style jsx>
+                    {`
+                  .textInput {
+                    border-top-color: #E5E5E5;
+                  }
+                `}
+                </style>
+            </div>
 
-            <SearchBar search={handleSearch} searching={searching}/>
             <Filters onFilter={filter}/>
             <div className="h-6 text-red-500">
                 {error}
