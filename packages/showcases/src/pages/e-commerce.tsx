@@ -7,6 +7,7 @@ import JinaClient, {
     SimpleQueries,
     SimpleResult,
     AnyObject,
+    fileToBase64,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
 import {useEffect, useState} from "react";
@@ -17,6 +18,7 @@ import {TextPreview} from "../components/common/TextPreview";
 import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
+import {useDropzone} from 'react-dropzone'
 
 
 function useJina(url?: BaseURL) {
@@ -28,12 +30,15 @@ function useJina(url?: BaseURL) {
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
         console.log("documents", documents)
-        const doc = documents[0]
+        const uri = await fileToBase64(documents[1] as File)
+        const text = documents[0] as string
+
+        console.log("uri", uri)
         return {
             "data": [
                 {
-                    "uri": "https://storage.googleapis.com/showcase-ecommerce/images/20000.jpg",
-                    "text": "t-shirt"
+                    uri,
+                    text
                 }
             ],
             "parameters": {
