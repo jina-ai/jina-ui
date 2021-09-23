@@ -296,6 +296,13 @@ export default function Home() {
 
             <Filters onFilter={onFilter}/>
 
+            <div className="mt-12">
+                <h2 className="font-bold mb-6">Click on example queries:</h2>
+                <div>
+                    <img className="w-36 h-auto" src={"https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"}/>
+                </div>
+            </div>
+
             {searching ? (
                 <Searching/>
             ) : results.length ? (
