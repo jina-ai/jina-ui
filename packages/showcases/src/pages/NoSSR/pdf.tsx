@@ -24,6 +24,7 @@ import schema from "../../types/pdf/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
+import About from "../../components/common/About";
 
 const PDF_API_URL = "http://34.89.149.65:80"
 
@@ -167,6 +168,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
 export default function PDF() {
 
     const [queries, setQueries] = useState<SimpleQueries>([]);
+    const [firstTimeSearched, setFirstTimeSearched] = useState(false)
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [viewedPDF, setViewedPDF] = useState("")
@@ -183,6 +185,7 @@ export default function PDF() {
     }
 
     async function search(...documents: RawDocumentData[]) {
+        setFirstTimeSearched(true)
         setResults([])
         let validQuestion = true
         if (typeof documents[0] === "string") {
@@ -276,34 +279,41 @@ export default function PDF() {
                 modalIsOpen={modalIsOpen}
                 getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
 
+            {firstTimeSearched ?
+                <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
+                    <h2 className="font-bold text-xl mb-3">Examples:</h2>
 
-                <h2 className="font-bold text-xl mb-3">Examples:</h2>
+                    <div className="ml-3 text-primary-500 font-semibold">
+                        <p
+                            className="mb-3 cursor-pointer"
+                            onClick={() => search("What is machine learning?")}
+                        >
+                            What is machine learning?</p>
+                        <p className="mb-3 cursor-pointer"
+                           onClick={() => search("What is transfer learning?")}
+                        >What is transfer learning?</p>
+                        <p className="mb-3 cursor-pointer"
+                           onClick={() => search("What is reinforcement learning?")}
+                        >What is reinforcement learning?</p>
+                    </div>
+                    {error === "" ?
+                        <p className="font-semibold">
+                            Results for: <span
+                            className="text-xl">{searchedDocumentName}</span>
+                        </p> :
+                        <p className="font-semibold text-xl text-red-500">
+                            {error}
+                        </p>
+                    }
+                </div> :
+                <About className="mt-12" aboutPoints={[
+                    "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                    <span>Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
+                    "Relevant papers to understand the depth how it works"
+                ]}/>
+            }
 
-                <div className="ml-3 text-primary-500 font-semibold">
-                    <p
-                        className="mb-3 cursor-pointer"
-                        onClick={() => search("What is machine learning?")}
-                    >
-                        What is machine learning?</p>
-                    <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What is transfer learning?")}
-                    >What is transfer learning?</p>
-                    <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What is reinforcement learning?")}
-                    >What is reinforcement learning?</p>
-                </div>
-                {error === "" ?
-                    <p className="font-semibold">
-                        Results for: <span
-                        className="text-xl">{searchedDocumentName}</span>
-                    </p> :
-                    <p className="font-semibold text-xl text-red-500">
-                        {error}
-                    </p>
-                }
-            </div>
             {searching &&
             <div className="w-full flex justify-center">
                 <div className="w-64">
