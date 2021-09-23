@@ -23,7 +23,15 @@ class MockedClient {
                     return utils_1.schemaToMock((_b = (_a = this.schema.components) === null || _a === void 0 ? void 0 : _a.schemas) === null || _b === void 0 ? void 0 : _b.JinaData);
                     break;
                 default:
-                    return {};
+                    return {
+                        data: {
+                            something: "went wrong"
+                        },
+                        status: 500,
+                        statusText: "error",
+                        headers: "",
+                        config: {}
+                    };
             }
         });
     }
