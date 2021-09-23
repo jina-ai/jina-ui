@@ -278,7 +278,7 @@ export default function PDF() {
                 viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
                 modalIsOpen={modalIsOpen}
                 getSimiliarResults={getSimiliarResults}/>}
-            <SearchBar searching={searching} search={search} placeholder={"Type in your question"}/>
+            <SearchBar searching={searching} search={search} placeholder={"Ask here"}/>
 
             {firstTimeSearched ?
                 <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
@@ -310,7 +310,7 @@ export default function PDF() {
                 <About className="mt-12" aboutPoints={[
                     "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
                     <span>Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
-                    "Relevant papers to understand the depth how it works"
+                    "Try it out and ask a paper anything!"
                 ]}/>
             }
 
