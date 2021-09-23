@@ -34,19 +34,28 @@ export class JinaClient<IRequestBody = AnyObject ,IResponseData = AnyObject> {
     this.init();
   }
 
+  /**
+  * Initializes JinaClient.
+  * Makes a request to endpoint/status to check if service is up
+  */
   async init() {
     try {
       const response = await this.client.get("status");
       if (response?.data?.jina?.jina) console.log("connected!")
     } catch (e) {
-        if(this.debugMode) console.log("jina client started in debug mode!")
-      else throw new Error(
-            `Could not reach flow at ${this.baseURL}. Check the URL and make sure CORS is enabled.`
-        );
-
+      console.log(e, this.baseURL)
+      if(this.debugMode) console.log("jina client started in debug mode!")
     }
   }
 
+  /**
+   * 
+   * @param documents can be for type Base64 encoded URI, strings or files
+   * 
+   * ```typescript
+   * const { results, queries } = await jinaClient.search('searchQuery')
+   * ```
+   */
   async search(
     ...documents: RawDocumentData[]
   ): Promise<{ results: SimpleResults[]; queries: SimpleQueries }> {
