@@ -278,7 +278,7 @@ export default function PDF() {
                 viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
                 modalIsOpen={modalIsOpen}
                 getSimiliarResults={getSimiliarResults}/>}
-            <SearchBar searching={searching} search={search}/>
+            <SearchBar searching={searching} search={search} placeholder={"Type in your question"}/>
 
             {firstTimeSearched ?
                 <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
