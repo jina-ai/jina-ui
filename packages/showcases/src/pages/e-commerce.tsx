@@ -24,100 +24,6 @@ import SearchIcon from '../images/searching.gif'
 import Image from "next/image";
 import Picture from "../images/image.svg"
 
-function useJina(url?: BaseURL) {
-    const [jina, setJina] = useState<JinaClient>();
-    const [queries, setQueries] = useState<SimpleQueries>([]);
-    const [results, setResults] = useState<SimpleResults[]>([]);
-    const [searching, setSearching] = useState(false);
-    const [error, setError] = useState("")
-
-    const customReqSerializer = async (documents: RawDocumentData[]) => {
-
-        console.log("documents in serializer", documents)
-        let uri = ""
-        let text = null
-        if (typeof documents[0] === "string") {
-            uri = await fileToBase64(documents[1] as File)
-            text = documents[0] as string
-        } else {
-            uri = await fileToBase64(documents[0] as File)
-        }
-
-        const request = {
-            "data": [
-                {
-                    uri,
-                    text
-                }
-            ],
-            "parameters": {
-                "top_k": 10,
-                'conditions': [{'attribute': 'price', 'operator': 'lt', 'value': 500}]
-            }
-        }
-        console.log("request here",request);
-        return request
-    }
-
-    const customResSerializer = (response: AnyObject) => {
-        console.log("response in serializer", response.data.data.docs[0].matches)
-        return {
-            queries: [],
-            results: [response.data.data.docs[0].matches]
-        }
-    }
-
-    useEffect(() => {
-        if (url) setJina(new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer));
-    }, [url]);
-
-    async function search(...documents: RawDocumentData[]) {
-        console.log("docs in search", documents)
-        setError("")
-        setResults([])
-        if (!jina) return;
-        setSearching(true);
-        const {results, queries} = await jina.search(...documents);
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
-    }
-
-    async function searchWithParameters(
-        documents: RawDocumentData[],
-        parameters: AnyObject
-    ) {
-        setResults([])
-        setError("")
-        let containsFile = false
-        documents.forEach(doc => {
-            if (doc instanceof File) containsFile = true
-        })
-        if (!jina) return;
-        if (!containsFile) {
-            setError("Please provide an image!")
-            return;
-        }
-        setSearching(true);
-        const {results, queries} = await jina.searchWithParameters(
-            documents,
-            parameters
-        );
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
-    }
-
-    return {
-        results,
-        queries,
-        searching,
-        search,
-        searchWithParameters,
-        error
-    };
-}
-
 const Filter = ({
                     title,
                     onSelect,
@@ -279,21 +185,72 @@ export default function Home() {
         []
     );
     const [addDesc, setAddDesc] = useState("")
-    const {results, searching, search, searchWithParameters, queries, error} =
-        useJina(url);
+    const [queries, setQueries] = useState<SimpleQueries>([]);
+    const [results, setResults] = useState<SimpleResults[]>([]);
+    const [searching, setSearching] = useState(false);
+
+    const customReqSerializer = async (documents: RawDocumentData[]) => {
+
+        console.log("documents in serializer", documents)
+        let uri = ""
+        let text = null
+        if (typeof documents[0] === "string") {
+            uri = await fileToBase64(documents[1] as File)
+            text = documents[0] as string
+        } else {
+            uri = await fileToBase64(documents[0] as File)
+        }
+
+        const request = {
+            "data": [
+                {
+                    uri,
+                    text
+                }
+            ],
+            "parameters": {
+                "top_k": 10,
+                'conditions': [{'attribute': 'price', 'operator': 'lt', 'value': 500}]
+            }
+        }
+        console.log("request here",request);
+        return request
+    }
+
+    const customResSerializer = (response: AnyObject) => {
+        console.log("response in serializer", response.data.data.docs[0].matches)
+        return {
+            queries: [],
+            results: [response.data.data.docs[0].matches]
+        }
+    }
+
+    const jina = new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
+
+
+    async function search(...documents: RawDocumentData[]) {
+        console.log("docs in search", documents)
+        setResults([])
+        setSearching(true);
+        const {results, queries} = await jina.search(...documents);
+        setSearching(false);
+        setResults(results);
+        setQueries(queries);
+    }
+
     const urlInputRef = useRef<HTMLInputElement>(null);
 
 
     const handleSearch = (...documents: RawDocumentData[]) => {
         setOriginalDocuments(documents);
-        if (filters) searchWithParameters(documents, {conditions: filters});
+        if (filters) search(...documents);
         else search(...documents);
     };
 
     const filter = (filters: FilterCondition[]) => {
         console.log("filtering with", originalDocuments, filters);
         if (originalDocuments.length)
-            searchWithParameters(originalDocuments, {conditions: filters});
+            search(...originalDocuments);
         setFilters([...filters]);
     };
 
@@ -345,9 +302,7 @@ export default function Home() {
             </div>
 
             <Filters onFilter={filter}/>
-            <div className="h-6 text-red-500">
-                {error}
-            </div>
+
             {searching ? (
                 <Searching/>
             ) : results.length ? (
