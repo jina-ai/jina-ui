@@ -8,6 +8,7 @@ import JinaClient, {
     SimpleResult,
     AnyObject,
     fileToBase64,
+    SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
 import {useEffect, useState} from "react";
@@ -31,9 +32,10 @@ function useJina(url?: BaseURL) {
     const [error, setError] = useState("")
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
-        console.log("documents", documents)
+
+        console.log("documents in serializer", documents)
         let uri = ""
-        let text = ""
+        let text = null
         if (typeof documents[0] === "string") {
             uri = await fileToBase64(documents[1] as File)
             text = documents[0] as string
@@ -41,8 +43,7 @@ function useJina(url?: BaseURL) {
             uri = await fileToBase64(documents[0] as File)
         }
 
-        console.log("uri", uri)
-        return {
+        const request = {
             "data": [
                 {
                     uri,
@@ -53,10 +54,20 @@ function useJina(url?: BaseURL) {
                 "top_k": 10
             }
         }
+        console.log("request here",request);
+        return request
+    }
+
+    const customResSerializer = (response: AnyObject) => {
+        console.log("response in serializer", response.data.data.docs[0].matches)
+        return {
+            queries: [],
+            results: [response.data.data.docs[0].matches]
+        }
     }
 
     useEffect(() => {
-        if (url) setJina(new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer));
+        if (url) setJina(new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer));
     }, [url]);
 
     async function search(...documents: RawDocumentData[]) {
@@ -297,7 +308,10 @@ export default function Home() {
 
             <div className="mt-6">
                 <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
-                <Dropzone onDrop={acceptedFiles => console.log(acceptedFiles)}>
+                <Dropzone onDrop={acceptedFiles => {
+                    console.log(acceptedFiles)
+                    search(...acceptedFiles)
+                }}>
                     {({getRootProps, getInputProps}) => (
                         <div {...getRootProps()}
                              className="border-b-0 cursor-pointer border border-primary-500 rounded-t flex flex-col items-center p-8 ">
@@ -322,10 +336,10 @@ export default function Home() {
                     id="grid-first-name" type="text" placeholder="Add additional description"/>
                 <style jsx>
                     {`
-                  .textInput {
-                    border-top-color: #E5E5E5;
-                  }
-                `}
+                      .textInput {
+                        border-top-color: #E5E5E5;
+                      }
+                    `}
                 </style>
             </div>
 
