@@ -34,6 +34,7 @@ export const FlowDiagram = () => {
             <div className={"items-center flex fex-row " + (!show && "flex-row-reverse ")}>
                 {show && <a
                     href="https://get.jina.ai"
+                    rel="noreferrer"
                     target="_blank"
                     className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">
                     <Image src={github} alt="github"/>
