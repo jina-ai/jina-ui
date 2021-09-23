@@ -36,6 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
+          export NPM_CONFIG_REGISTRY=https://registry.npmjs.org:8443/
           cd packages/jinajs/
           npx semantic-release
 
