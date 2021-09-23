@@ -309,7 +309,7 @@ export default function PDF() {
                 </div> :
                 <About className="mt-12" aboutPoints={[
                     "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                    <span>Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
+                    <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
                     "Try it out and ask a paper anything!"
                 ]}/>
             }
