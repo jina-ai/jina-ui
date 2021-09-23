@@ -30,9 +30,15 @@ function useJina(url?: BaseURL) {
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
         console.log("documents", documents)
-        const uri = await fileToBase64(documents[1] as File)
-        const text = documents[0] as string
-
+        let uri = ""
+        let text = ""
+        if(typeof documents[0] === "string") {
+            uri = await fileToBase64(documents[1] as File)
+            text = documents[0] as string
+        } else {
+            uri = await fileToBase64(documents[0] as File)
+        }
+        
         console.log("uri", uri)
         return {
             "data": [
