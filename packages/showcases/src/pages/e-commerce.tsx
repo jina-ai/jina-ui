@@ -72,13 +72,10 @@ function useJina(url?: BaseURL) {
     }, [url]);
 
     async function search(...documents: RawDocumentData[]) {
+        console.log("docs in search", documents)
         setError("")
         setResults([])
         if (!jina) return;
-        if (!documents.every(doc => doc instanceof File)) {
-            setError("Please provide an image!")
-            return;
-        }
         setSearching(true);
         const {results, queries} = await jina.search(...documents);
         setSearching(false);
@@ -281,9 +278,11 @@ export default function Home() {
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
         []
     );
+    const [addDesc, setAddDesc] = useState("")
     const {results, searching, search, searchWithParameters, queries, error} =
         useJina(url);
     const urlInputRef = useRef<HTMLInputElement>(null);
+
 
     const handleSearch = (...documents: RawDocumentData[]) => {
         setOriginalDocuments(documents);
@@ -310,8 +309,8 @@ export default function Home() {
             <div className="mt-6">
                 <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
                 <Dropzone onDrop={acceptedFiles => {
-                    console.log(acceptedFiles)
-                    search(...acceptedFiles)
+                    console.log(acceptedFiles, addDesc)
+                    search(addDesc,...acceptedFiles)
                 }}>
                     {({getRootProps, getInputProps}) => (
                         <div {...getRootProps()}
@@ -333,6 +332,7 @@ export default function Home() {
                     )}
                 </Dropzone>
                 <input
+                    onChange={(event) => setAddDesc(event.target.value)}
                     className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                     id="grid-first-name" type="text" placeholder="Add additional description"/>
                 <style jsx>
