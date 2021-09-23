@@ -51,7 +51,8 @@ function useJina(url?: BaseURL) {
                 }
             ],
             "parameters": {
-                "top_k": 10
+                "top_k": 10,
+                'conditions': [{'attribute': 'price', 'operator': 'lt', 'value': 500}]
             }
         }
         console.log("request here",request);
