@@ -189,9 +189,15 @@ export default function Home() {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
 
-    const customReqSerializer = async (documents: RawDocumentData[]) => {
+    useEffect(() => {
+        if (originalDocuments.length){
+            search(addDesc, ...originalDocuments);
+        }
+    }, [filters]);
 
-        console.log("documents in serializer", documents)
+    const customReqSerializer = async (documents: RawDocumentData[]) => {
+        console.log("filters in ReqSer", filters)
+
         let uri = ""
         let text = null
         if (typeof documents[0] === "string") {
@@ -210,15 +216,14 @@ export default function Home() {
             ],
             "parameters": {
                 "top_k": 10,
-                'conditions': [{'attribute': 'price', 'operator': 'lt', 'value': 500}]
+                'conditions': filters
             }
         }
-        console.log("request here",request);
         return request
     }
 
     const customResSerializer = (response: AnyObject) => {
-        console.log("response in serializer", response.data.data.docs[0].matches)
+
         return {
             queries: [],
             results: [response.data.data.docs[0].matches]
@@ -229,7 +234,7 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
-        console.log("docs in search", documents)
+        console.log("filters in searc", filters)
         setResults([])
         setSearching(true);
         const {results, queries} = await jina.search(...documents);
@@ -238,23 +243,11 @@ export default function Home() {
         setQueries(queries);
     }
 
-    const urlInputRef = useRef<HTMLInputElement>(null);
 
-
-    const handleSearch = (...documents: RawDocumentData[]) => {
-        setOriginalDocuments(documents);
-        if (filters) search(...documents);
-        else search(...documents);
-    };
-
-    const filter = (filters: FilterCondition[]) => {
-        console.log("filtering with", originalDocuments, filters);
-        if (originalDocuments.length)
-            search(...originalDocuments);
+    const onFilter = (filters: FilterCondition[]) => {
         setFilters([...filters]);
     };
 
-    console.log("results", results)
 
     return (
         <>
@@ -266,7 +259,7 @@ export default function Home() {
             <div className="mt-6">
                 <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
                 <Dropzone onDrop={acceptedFiles => {
-                    console.log(acceptedFiles, addDesc)
+                    setOriginalDocuments(acceptedFiles)
                     search(addDesc,...acceptedFiles)
                 }}>
                     {({getRootProps, getInputProps}) => (
@@ -301,7 +294,7 @@ export default function Home() {
                 </style>
             </div>
 
-            <Filters onFilter={filter}/>
+            <Filters onFilter={onFilter}/>
 
             {searching ? (
                 <Searching/>
