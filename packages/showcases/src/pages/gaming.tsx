@@ -88,7 +88,7 @@ const customReponseSerializer = (rawResponse: AnyObject) => {
       });
       const { matches } = doc;
       results.push(
-        matches.sort((match1: any, match2 : any) => match1.scores.cosine.value - match2.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
+        matches.sort((match1: any, match2 : any) => match2.scores.cosine.value - match1.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
           const score = scores.cosine.value
             ? scores.cosine.value
             : scores.score?.value;
