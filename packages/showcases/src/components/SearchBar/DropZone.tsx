@@ -101,7 +101,7 @@ export const DropZone = ({
           </div>
         ) : (
           <div className="overflow-auto whitespace-nowrap flex flex-row h-full w-full pb-2">
-            {files.map((file, idx) => (
+            {files.map((file) => (
               <FilePreview
                 key={file.name}
                 file={file}

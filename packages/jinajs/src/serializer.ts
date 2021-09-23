@@ -10,6 +10,7 @@ import {
 
 export async function serializeRequest<IRequest>(
   documents: RawDocumentData[],
+  parameters?:AnyObject
 ) {
   const request: any = {
     data: [],
@@ -24,6 +25,8 @@ export async function serializeRequest<IRequest>(
       request.data.push({ text: doc });
     }
   }
+  if(parameters)
+    request.parameters = parameters;
   return request as IRequest;
 }
 
@@ -41,7 +44,7 @@ export function serializeResponse(
     });
     const { matches } = doc;
     results.push(
-        matches.map(({ scores, text, uri, mimeType }: any) => {
+        matches.map(({ scores, text, uri, mimeType, tags }: any) => {
           const score = scores.values
               ? scores.values?.value
               : scores.score?.value;
@@ -49,6 +52,7 @@ export function serializeResponse(
             data: text || uri,
             mimeType,
             score,
+            tags
           } as SimpleResult;
         })
     );
