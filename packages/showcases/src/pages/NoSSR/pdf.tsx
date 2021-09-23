@@ -14,6 +14,7 @@ import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
 import CrossIcon from '../../images/cross.svg'
+import JinaLoading from '../../images/jina-loading.gif'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
@@ -24,7 +25,7 @@ import {OpenAPIV3} from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
 
-const PDF_API_URL = "http://34.107.89.185:80"
+const PDF_API_URL = "http://34.89.149.65:80"
 
 type CustomResult = any
 type CustomResults = any
@@ -197,7 +198,7 @@ export default function PDF() {
             setSearching(false);
             setResults(results);
             setQueries(queries);
-            if(results[0].length === 0) setError("No results found")
+            if (results[0].length === 0) setError("No results found")
         } else setError("Please provide a valid question")
 
     }
@@ -303,6 +304,12 @@ export default function PDF() {
                     </p>
                 }
             </div>
+            {searching &&
+            <div className="w-full flex justify-center">
+                <div className="w-64">
+                    <Image src={JinaLoading}/>
+                </div>
+            </div>}
             <Results results={results} CustomResultItem={CustomResultItem}/>
         </div>)
 }
