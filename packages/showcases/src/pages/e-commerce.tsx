@@ -277,8 +277,9 @@ export default function Home() {
                 <img className="w-56 h-auto" src={url}/>
                 <div className="flex items-center justify-center">
                     <Image src={SearchIcon}/>
-                    <span className="ml-1">Image</span>
-                    {color && <span> + "{color}"</span>}
+                    <p className="ml-1">
+                        Image {color && <span>+ <q>{color}</q></span>}
+                    </p>
                 </div>
             </div>
         )
