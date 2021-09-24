@@ -7,9 +7,11 @@ import JinaClient, {
     SimpleQueries,
     SimpleResult,
     AnyObject,
+    fileToBase64,
+    SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Spinner} from "../components/Spinner";
 import {useRef} from "react";
 import {MediaPreview} from "../components/common/MediaPreview";
@@ -17,84 +19,13 @@ import {TextPreview} from "../components/common/TextPreview";
 import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
-
-
-function useJina(url?: BaseURL) {
-    const [jina, setJina] = useState<JinaClient>();
-    const [queries, setQueries] = useState<SimpleQueries>([]);
-    const [results, setResults] = useState<SimpleResults[]>([]);
-    const [searching, setSearching] = useState(false);
-    const [error, setError] = useState("")
-
-    const customReqSerializer = async (documents: RawDocumentData[]) => {
-        console.log("documents", documents)
-        const doc = documents[0]
-        return {
-            "data": [
-                {
-                    "uri": "https://storage.googleapis.com/showcase-ecommerce/images/20000.jpg",
-                    "text": "t-shirt"
-                }
-            ],
-            "parameters": {
-                "top_k": 10
-            }
-        }
-    }
-
-    useEffect(() => {
-        if (url) setJina(new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer));
-    }, [url]);
-
-    async function search(...documents: RawDocumentData[]) {
-        setError("")
-        setResults([])
-        if (!jina) return;
-        if (!documents.every(doc => doc instanceof File)) {
-            setError("Please provide an image!")
-            return;
-        }
-        setSearching(true);
-        const {results, queries} = await jina.search(...documents);
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
-    }
-
-    async function searchWithParameters(
-        documents: RawDocumentData[],
-        parameters: AnyObject
-    ) {
-        setResults([])
-        setError("")
-        let containsFile = false
-        documents.forEach(doc => {
-            if (doc instanceof File) containsFile = true
-        })
-        if (!jina) return;
-        if (!containsFile) {
-            setError("Please provide an image!")
-            return;
-        }
-        setSearching(true);
-        const {results, queries} = await jina.searchWithParameters(
-            documents,
-            parameters
-        );
-        setSearching(false);
-        setResults(results);
-        setQueries(queries);
-    }
-
-    return {
-        results,
-        queries,
-        searching,
-        search,
-        searchWithParameters,
-        error
-    };
-}
+import Dropzone from 'react-dropzone'
+import SearchingIcon from '../images/searching.gif'
+import SearchIcon from '../images/searchIcon.svg'
+import Image from "next/image";
+import Picture from "../images/image.svg"
+import {isValidHttpUrl} from "../utils/utils";
+import About from "../components/common/About";
 
 const Filter = ({
                     title,
@@ -192,11 +123,11 @@ const Tag = ({children}: { children: string }) => (
     <div className="px-2 bg-gray-500 rounded-full text-white">{children}</div>
 );
 
-const ProductResult = ({result}: { result: SimpleResult }) => {
+const ProductResult = ({result}: { result: any }) => {
     return (
         <div className="rounded border h-full flex flex-col">
             <div className="border-b">
-                <MediaPreview src={result.data} mimeType={result.mimeType}/>
+                <MediaPreview src={result.uri} mimeType={result.mimeType}/>
             </div>
             {result.tags && (
                 <div className="flex-1 flex flex-col p-3">
@@ -256,52 +187,195 @@ export default function Home() {
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
         []
     );
-    const {results, searching, search, searchWithParameters, queries, error} =
-        useJina(url);
-    const urlInputRef = useRef<HTMLInputElement>(null);
+    const [addDesc, setAddDesc] = useState("")
+    const [queries, setQueries] = useState<SimpleQueries>([]);
+    const [results, setResults] = useState<SimpleResults[]>([]);
+    const [searching, setSearching] = useState(false);
+    const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
 
-    const handleSearch = (...documents: RawDocumentData[]) => {
-        setOriginalDocuments(documents);
-        if (filters) searchWithParameters(documents, {conditions: filters});
-        else search(...documents);
-    };
+    useEffect(() => {
 
-    const filter = (filters: FilterCondition[]) => {
-        console.log("filtering with", originalDocuments, filters);
-        if (originalDocuments.length)
-            searchWithParameters(originalDocuments, {conditions: filters});
+        if (originalDocuments.length) {
+            if (addDesc !== "") search(addDesc, ...originalDocuments);
+            else search(...originalDocuments)
+        }
+    }, [filters]);
+
+    const customReqSerializer = async (documents: RawDocumentData[]) => {
+        let uri = ""
+        let text = null
+
+        if (documents[0] instanceof File) {
+            uri = await fileToBase64(documents[0] as File)
+        }
+        if (typeof documents[0] === "string" && isValidHttpUrl(documents[0])) {
+            uri = documents[0]
+        }
+
+        if (documents.length === 2 && documents[1] instanceof File && typeof documents[0] === "string") {
+            text = documents[0] as string
+            uri = await fileToBase64(documents[1] as File)
+        }
+
+        if (documents.length === 2 && isValidHttpUrl(documents[1] as string) && typeof documents[0] === "string") {
+            text = documents[0] as string
+            uri = documents[1] as string
+        }
+
+
+        const request = {
+            "data": [
+                {
+                    uri,
+                    text
+                }
+            ],
+            "parameters": {
+                "top_k": 10,
+                'conditions': filters
+            }
+        }
+        return request
+    }
+
+    const customResSerializer = (response: AnyObject) => {
+
+        return {
+            queries: [],
+            results: [response.data.data.docs[0].matches]
+        }
+    }
+
+    const jina = new JinaClient(url, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
+
+
+    async function search(...documents: RawDocumentData[]) {
+        setFirstSearchTriggered(true)
+        setResults([])
+        setSearching(true);
+        const {results, queries} = await jina.search(...documents);
+        setSearching(false);
+        setResults(results);
+        setQueries(queries);
+    }
+
+
+    const onFilter = (filters: FilterCondition[]) => {
         setFilters([...filters]);
     };
 
-    console.log("results", results)
+
+    function ExampleQuery({color}: { color?: string }) {
+
+        const url = "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg"
+        return (
+            <div className="cursor-pointer mr-6" onClick={() => {
+                setOriginalDocuments([url])
+                if (color) {
+                    onFilter([{attribute: "color", operator: "eq", value: color}])
+                }
+                else if(filters && filters.length > 0) setFilters([])
+                else (search(url))
+            }}>
+                <img className="w-56 h-auto" src={url}/>
+                <div className="flex items-center justify-center">
+                    <Image src={SearchIcon}/>
+                    <p className="ml-1">
+                        Image {color && <span>+ <q>{color}</q></span>}
+                    </p>
+                </div>
+            </div>
+        )
+    }
+
 
     return (
-        <>
+        <div className="px-6">
             <Head>
                 <title>Shop The Look</title>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
-
-            <SearchBar search={handleSearch} searching={searching}/>
-            <Filters onFilter={filter}/>
-            <div className="h-6 text-red-500">
-                {error}
+            <div className="mt-6">
+                <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
+                <Dropzone onDrop={acceptedFiles => {
+                    setOriginalDocuments(acceptedFiles)
+                    search(addDesc, ...acceptedFiles)
+                }}>
+                    {({getRootProps, getInputProps}) => (
+                        <div {...getRootProps()}
+                             className="border-b-0 cursor-pointer border border-primary-500 rounded-t flex flex-col items-center p-8 ">
+                            <div className="h-8 w-8 mb-3">
+                                <Image src={SearchIcon}/>
+                            </div>
+                            <input {...getInputProps()} />
+                            <p className="font-bold w-72 text-center">Drag and drop your image here or <span
+                                className="text-primary-500">Browse</span> to select a file
+                            </p>
+                            <div className="flex items-center">
+                                <div className="w-6 h-6">
+                                    <Image src={Picture}/>
+                                </div>
+                                <p className="text-gray-500 text-sm">Limit 200 MB per file</p>
+                            </div>
+                        </div>
+                    )}
+                </Dropzone>
+                <input
+                    onChange={(event) => setAddDesc(event.target.value)}
+                    className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                    id="grid-first-name" type="text" placeholder="Add additional description"/>
+                <style jsx>
+                    {`
+                      .textInput {
+                        border-top-color: #E5E5E5;
+                      }
+                    `}
+                </style>
             </div>
-            {searching ? (
-                <Searching/>
-            ) : results.length ? (
+
+            <Filters onFilter={onFilter}/>
+
+            <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
+            <div className="flex px-12">
+                <ExampleQuery/>
+                <ExampleQuery color="black"/>
+                <ExampleQuery color="white"/>
+                <ExampleQuery color="blue"/>
+
+            </div>
+
+            {
+                !firstSearchTriggered ?
+                <About
+                    className="mt-6"
+                    aboutPoints={[
+                        "We built this using python, jina, tensorflow, etc.",
+                        "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                        <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
+                                                                                        href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                    ]}/>
+                :
+
                 <>
-                    <Results
-                        results={results}
-                        CustomResultItem={ProductResult}
-                        classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                    />
+                    {searching ? (
+                        <Searching/>
+                    ) : results.length ? (
+                        <>
+                            <Results
+                                results={results}
+                                CustomResultItem={ProductResult}
+                                classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                            />
+                        </>
+                    ) : (
+                        <EmptyMessage/>
+                    )}
                 </>
-            ) : (
-                <EmptyMessage/>
-            )}
-        </>
+            }
+
+
+        </div>
 
     );
 }
