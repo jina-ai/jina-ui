@@ -14,6 +14,7 @@ import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
 import downloadButton from '../../images/download-button.svg'
 import CrossIcon from '../../images/cross.svg'
+import JinaLoading from '../../images/jina-loading.gif'
 import Image from "next/image";
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
@@ -23,8 +24,9 @@ import schema from "../../types/pdf/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
+import About from "../../components/common/About";
 
-const PDF_API_URL = "http://34.107.89.185:80"
+const PDF_API_URL = "https://europe-west3-jina-showcase.cloudfunctions.net/prod/"
 
 type CustomResult = any
 type CustomResults = any
@@ -166,6 +168,7 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
 export default function PDF() {
 
     const [queries, setQueries] = useState<SimpleQueries>([]);
+    const [firstTimeSearched, setFirstTimeSearched] = useState(false)
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [viewedPDF, setViewedPDF] = useState("")
@@ -176,11 +179,13 @@ export default function PDF() {
     const jinaClient = new JinaClient<IRequestBody, IResponseData>(PDF_API_URL, schema as OpenAPIV3.Document, false, customReqSerializer, customResSerializer)
 
     async function getSimiliarResults(url: string) {
-        const {results} = await jinaClient.search(url)
+
+        const {results} = await jinaClient.search(url.split('.')[0])
         return results[0].slice(1, 4)
     }
 
     async function search(...documents: RawDocumentData[]) {
+        setFirstTimeSearched(true)
         setResults([])
         let validQuestion = true
         if (typeof documents[0] === "string") {
@@ -196,6 +201,7 @@ export default function PDF() {
             setSearching(false);
             setResults(results);
             setQueries(queries);
+            if (results[0].length === 0) setError("No results found")
         } else setError("Please provide a valid question")
 
     }
@@ -272,37 +278,48 @@ export default function PDF() {
                 viewedPDF={viewedPDF} viewedPDFName={viewedPDFName} setIsOpen={setIsOpen}
                 modalIsOpen={modalIsOpen}
                 getSimiliarResults={getSimiliarResults}/>}
-            <SearchBar searching={searching} search={search}/>
-            <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
+            <SearchBar searching={searching} search={search} placeholder={"Ask here"}/>
 
+            {firstTimeSearched ?
+                <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
+                    <h2 className="font-bold text-xl mb-3">Examples:</h2>
 
-                <h2 className="font-bold text-xl mb-3">Examples:</h2>
+                    <div className="ml-3 text-primary-500 font-semibold">
+                        <p
+                            className="mb-3 cursor-pointer"
+                            onClick={() => search("What is machine learning?")}
+                        >
+                            What is machine learning?</p>
+                        <p className="mb-3 cursor-pointer"
+                           onClick={() => search("What is transfer learning?")}
+                        >What is transfer learning?</p>
+                        <p className="mb-3 cursor-pointer"
+                           onClick={() => search("What is reinforcement learning?")}
+                        >What is reinforcement learning?</p>
+                    </div>
+                    {error === "" ?
+                        <p className="font-semibold">
+                            Results for: <span
+                            className="text-xl">{searchedDocumentName}</span>
+                        </p> :
+                        <p className="font-semibold text-xl text-red-500">
+                            {error}
+                        </p>
+                    }
+                </div> :
+                <About className="mt-12" aboutPoints={[
+                    "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                    <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
+                    "Try it out and ask a paper anything!"
+                ]}/>
+            }
 
-                <div className="ml-3 text-primary-500 font-semibold">
-                    <p
-                        className="mb-3 cursor-pointer"
-                        onClick={() => search("What is the meaning of life?")}
-                    >What is the meaning of life?</p>
-                    <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What is a paper?")}
-                    >What is a paper?</p>
-                    <p className="mb-3 cursor-pointer"
-                       onClick={() => search("What does the fox say?")}
-                    >What does the fox say?</p>
+            {searching &&
+            <div className="w-full flex justify-center">
+                <div className="w-64">
+                    <Image src={JinaLoading}/>
                 </div>
-                {error === "" ?
-                    <p className="font-semibold">
-                        Results for: <span
-                        className="text-xl">{searchedDocumentName}</span>
-                    </p> :
-                    <p className="font-semibold text-xl text-red-500">
-                        {error}
-                    </p>
-                }
-
-            </div>
+            </div>}
             <Results results={results} CustomResultItem={CustomResultItem}/>
-
-            <FlowDiagram/>
         </div>)
 }
