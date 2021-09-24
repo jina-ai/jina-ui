@@ -48,9 +48,27 @@ class JinaClient {
         return __awaiter(this, void 0, void 0, function* () {
             const requestBody = yield this.serializeRequest(documents);
             console.log("request body:", requestBody);
-            const response = yield this.client.post("search", requestBody);
+            const response = yield this.client.post("search", requestBody, {
+                headers: {
+                    'content-type': ''
+                }
+            });
             console.log("response:", response);
             return this.serializeResponse(response);
+        });
+    }
+    searchWithParameters(documents, parameters) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(parameters);
+            const requestBody = yield this.serializeRequest(documents);
+            console.log("request body:", requestBody);
+            const response = yield this.client.post("search", requestBody, {
+                headers: {
+                    'content-type': ''
+                }
+            });
+            console.log("response:", response);
+            return this.serializeResponse(response.data);
         });
     }
 }

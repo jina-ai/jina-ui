@@ -13,12 +13,14 @@ export type ResultsProps = {
     results: SimpleResults[];
     queries?: SimpleQueries;
     CustomResultItem?: ICustomResultItem
+    classNames?: string
 };
 
 export const Results = ({
                             results,
                             queries,
-                            CustomResultItem
+                            CustomResultItem,
+                            classNames
                         }: ResultsProps) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -34,7 +36,7 @@ export const Results = ({
             />
 
             {hasResults ? (
-                <div className={"flex flex-wrap justify-center 2xl:justify-start"}>
+                <div className={`flex flex-wrap justify-center 2xl:justify-start ${classNames}`}>
                     {selectedResults.map((result, idx) => (
                         CustomResultItem ?
                             <CustomResultItem result={result} key={idx}/>

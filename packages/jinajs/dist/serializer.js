@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.serializeResponse = exports.serializeRequest = void 0;
 const utils_1 = require("./utils");
-function serializeRequest(documents) {
+function serializeRequest(documents, parameters) {
     return __awaiter(this, void 0, void 0, function* () {
         const request = {
             data: [],
@@ -28,6 +28,8 @@ function serializeRequest(documents) {
                 request.data.push({ text: doc });
             }
         }
+        if (parameters)
+            request.parameters = parameters;
         return request;
     });
 }
@@ -42,7 +44,7 @@ function serializeResponse(response) {
             mimeType: doc.mimeType,
         });
         const { matches } = doc;
-        results.push(matches.map(({ scores, text, uri, mimeType }) => {
+        results.push(matches.map(({ scores, text, uri, mimeType, tags }) => {
             var _a, _b;
             const score = scores.values
                 ? (_a = scores.values) === null || _a === void 0 ? void 0 : _a.value
@@ -51,6 +53,7 @@ function serializeResponse(response) {
                 data: text || uri,
                 mimeType,
                 score,
+                tags
             };
         }));
     });
