@@ -11,7 +11,7 @@ import JinaClient, {
     SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Spinner} from "../components/Spinner";
 import {useRef} from "react";
 import {MediaPreview} from "../components/common/MediaPreview";
@@ -25,6 +25,7 @@ import SearchIcon from '../images/searchIcon.svg'
 import Image from "next/image";
 import Picture from "../images/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
+import About from "../components/common/About";
 
 const Filter = ({
                     title,
@@ -190,6 +191,7 @@ export default function Home() {
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
+    const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
 
     useEffect(() => {
 
@@ -248,6 +250,7 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
+        setFirstSearchTriggered(true)
         setResults([])
         setSearching(true);
         const {results, queries} = await jina.search(...documents);
@@ -269,7 +272,7 @@ export default function Home() {
             <div className="cursor-pointer" onClick={() => {
                 setOriginalDocuments([url])
                 if (color) onFilter([{attribute: "color", operator: "eq", value: color}])
-                else(search(url))
+                else (search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
                 <div className="flex items-center justify-center">
@@ -283,7 +286,7 @@ export default function Home() {
 
 
     return (
-        <>
+        <div className="px-6">
             <Head>
                 <title>Shop The Look</title>
                 <link rel="icon" href="/favicon.ico"/>
@@ -333,25 +336,42 @@ export default function Home() {
             <div className="flex justify-between px-12">
                 <ExampleQuery/>
                 <ExampleQuery color="black"/>
-                <ExampleQuery color="gold"/>
+                <ExampleQuery color="white"/>
                 <ExampleQuery color="yellow"/>
                 <ExampleQuery color="green"/>
             </div>
 
-            {searching ? (
-                <Searching/>
-            ) : results.length ? (
+            {
+                !firstSearchTriggered ?
+                <About
+                    className="mt-6"
+                    aboutPoints={[
+                        "We built this using python, jina, tensorflow, etc.",
+                        "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                        <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
+                                                                                        href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                    ]}/>
+                :
+
                 <>
-                    <Results
-                        results={results}
-                        CustomResultItem={ProductResult}
-                        classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                    />
+                    {searching ? (
+                        <Searching/>
+                    ) : results.length ? (
+                        <>
+                            <Results
+                                results={results}
+                                CustomResultItem={ProductResult}
+                                classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                            />
+                        </>
+                    ) : (
+                        <EmptyMessage/>
+                    )}
                 </>
-            ) : (
-                <EmptyMessage/>
-            )}
-        </>
+            }
+
+
+        </div>
 
     );
 }
