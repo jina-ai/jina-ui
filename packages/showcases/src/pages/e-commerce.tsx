@@ -20,9 +20,11 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-import SearchIcon from '../images/searching.gif'
+import SearchingIcon from '../images/searching.gif'
+import SearchIcon from '../images/searchIcon.svg'
 import Image from "next/image";
 import Picture from "../images/image.svg"
+import {isValidHttpUrl} from "../utils/utils";
 
 const Filter = ({
                     title,
@@ -124,7 +126,7 @@ const ProductResult = ({result}: { result: SimpleResult }) => {
     return (
         <div className="rounded border h-full flex flex-col">
             <div className="border-b">
-                <MediaPreview src={result.data} mimeType={result.mimeType}/>
+                <MediaPreview src={result.uri} mimeType={result.mimeType}/>
             </div>
             {result.tags && (
                 <div className="flex-1 flex flex-col p-3">
@@ -190,22 +192,34 @@ export default function Home() {
     const [searching, setSearching] = useState(false);
 
     useEffect(() => {
-        if (originalDocuments.length){
+        if (originalDocuments.length) {
             search(addDesc, ...originalDocuments);
         }
     }, [filters]);
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
         console.log("filters in ReqSer", filters)
-
+        console.log("docs in ser", documents)
         let uri = ""
         let text = null
-        if (typeof documents[0] === "string") {
-            uri = await fileToBase64(documents[1] as File)
-            text = documents[0] as string
-        } else {
+
+        if (documents[0] instanceof File) {
             uri = await fileToBase64(documents[0] as File)
         }
+        if (typeof documents[0] === "string" && isValidHttpUrl(documents[0])) {
+            uri = documents[0]
+        }
+
+        if (documents.length === 2 && documents[1] instanceof File && typeof documents[0] === "string") {
+            text = documents[0] as string
+            uri = await fileToBase64(documents[1] as File)
+        }
+
+        if (documents.length === 2 && isValidHttpUrl(documents[0]) && typeof documents[0] === "string") {
+            text = documents[0] as string
+            uri = documents[1]
+        }
+
 
         const request = {
             "data": [
@@ -219,6 +233,7 @@ export default function Home() {
                 'conditions': filters
             }
         }
+        console.log("reqeust in Ser", request)
         return request
     }
 
@@ -234,7 +249,6 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
-        console.log("filters in searc", filters)
         setResults([])
         setSearching(true);
         const {results, queries} = await jina.search(...documents);
@@ -249,6 +263,23 @@ export default function Home() {
     };
 
 
+    function ExampleQuery({url, addDesc}: { url: string, addDesc?: string }) {
+        return (
+            <div className="" onClick={() => {
+                if(addDesc)search(addDesc, url)
+                else search(url)
+            }}>
+                <img className="w-56 h-auto" src={url}/>
+                <div className="flex items-center justify-center">
+                    <Image src={SearchIcon}/>
+                    <span className="ml-1">Image</span>
+                    {addDesc && <span>+ "{addDesc}"</span>}
+                </div>
+            </div>
+        )
+    }
+
+
     return (
         <>
             <Head>
@@ -260,7 +291,7 @@ export default function Home() {
                 <p className="text-sm text-gray-500 mb-2">Search fashion products with an image+description</p>
                 <Dropzone onDrop={acceptedFiles => {
                     setOriginalDocuments(acceptedFiles)
-                    search(addDesc,...acceptedFiles)
+                    search(addDesc, ...acceptedFiles)
                 }}>
                     {({getRootProps, getInputProps}) => (
                         <div {...getRootProps()}
@@ -296,11 +327,28 @@ export default function Home() {
 
             <Filters onFilter={onFilter}/>
 
-            <div className="mt-12">
-                <h2 className="font-bold mb-6">Click on example queries:</h2>
-                <div>
-                    <img className="w-36 h-auto" src={"https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"}/>
-                </div>
+            <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
+            <div className="flex justify-between px-12">
+                <ExampleQuery
+                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
+
+                />
+                <ExampleQuery
+                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
+                    addDesc="Red"
+                />
+                <ExampleQuery
+                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
+                    addDesc="Gold"
+                />
+                <ExampleQuery
+                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
+                    addDesc="Yellow"
+                />
+                <ExampleQuery
+                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
+                    addDesc="Green"
+                />
             </div>
 
             {searching ? (
