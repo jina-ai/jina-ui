@@ -13,6 +13,7 @@ export type SimpleResult = {
   data: string | Base64URI;
   score: number;
   mimeType: string;
+  tags?:AnyObject;
 };
 
 export type SimpleResults = SimpleResult[];

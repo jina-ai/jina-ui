@@ -1,3 +1,21 @@
+# [0.3.0](https://github.com/jina-ai/jina-ui/compare/v0.2.0...v0.3.0) (2021-09-23)
+
+
+### Bug Fixes
+
+* contains file ([7094429](https://github.com/jina-ai/jina-ui/commit/7094429c15d20acf80afa8c64b82fb3592149f72))
+* merge errors ([4121adb](https://github.com/jina-ai/jina-ui/commit/4121adbfc3a19ee654b2304f647c6f18a9f70dd2))
+* remove content-type header from request ([851abbe](https://github.com/jina-ai/jina-ui/commit/851abbe4ce0b80a871950864726189d2ad57b976))
+
+
+### Features
+
+* add custom ReqSerializer ([782338c](https://github.com/jina-ai/jina-ui/commit/782338cfc7ad04e49edeacb01c8c6a6fb9dd4ba5))
+* add schemas ([96bcfe6](https://github.com/jina-ai/jina-ui/commit/96bcfe6b0e25e7f7309f0af382124e5016416f01))
+* delete results after search ([cdaaf4f](https://github.com/jina-ai/jina-ui/commit/cdaaf4fed5c9d298c4939cb302ee086ff1a13f5d))
+* e-commerce showcase ([298baef](https://github.com/jina-ai/jina-ui/commit/298baef3de00ed048b8beae4bf9f36b2892366bb))
+* error ([c609951](https://github.com/jina-ai/jina-ui/commit/c6099516a41b988187a24d8c4bc290d5d0857adb))
+
 # [0.2.0](https://github.com/jina-ai/jina-ui/compare/v0.1.5...v0.2.0) (2021-09-22)
 
 

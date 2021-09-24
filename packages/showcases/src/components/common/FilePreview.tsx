@@ -14,11 +14,11 @@ export const FilePreview = ({
   const [src, setSrc] = useState("");
 
   useEffect(() => {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      setSrc(e.target.result);
-    };
-    reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        setSrc(e.target.result);
+      };
+      reader.readAsDataURL(file);
   }, [file]);
 
   return (

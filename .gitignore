@@ -1,5 +1,7 @@
 node_modules
 **/dist
+packages/showcases/dist
+packages/jinajs/dist
 yarn-error.log
 .idea
 /packages/jinajs/dist
