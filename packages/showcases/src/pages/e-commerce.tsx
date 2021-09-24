@@ -192,14 +192,14 @@ export default function Home() {
     const [searching, setSearching] = useState(false);
 
     useEffect(() => {
+
         if (originalDocuments.length) {
-            search(addDesc, ...originalDocuments);
+            if (addDesc !== "") search(addDesc, ...originalDocuments);
+            else search(...originalDocuments)
         }
     }, [filters]);
 
     const customReqSerializer = async (documents: RawDocumentData[]) => {
-        console.log("filters in ReqSer", filters)
-        console.log("docs in ser", documents)
         let uri = ""
         let text = null
 
@@ -215,7 +215,7 @@ export default function Home() {
             uri = await fileToBase64(documents[1] as File)
         }
 
-        if (documents.length === 2 && isValidHttpUrl(documents[0]) && typeof documents[0] === "string") {
+        if (documents.length === 2 && isValidHttpUrl(documents[1] as string) && typeof documents[0] === "string") {
             text = documents[0] as string
             uri = documents[1]
         }
@@ -233,7 +233,6 @@ export default function Home() {
                 'conditions': filters
             }
         }
-        console.log("reqeust in Ser", request)
         return request
     }
 
@@ -263,17 +262,19 @@ export default function Home() {
     };
 
 
-    function ExampleQuery({url, addDesc}: { url: string, addDesc?: string }) {
+    function ExampleQuery({color}: { color?: string }) {
+
+        const url = "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg"
         return (
-            <div className="" onClick={() => {
-                if(addDesc)search(addDesc, url)
-                else search(url)
+            <div className="cursor-pointer" onClick={() => {
+                setOriginalDocuments([url])
+                if (color) onFilter([{attribute: "color", operator: "eq", value: color}])
             }}>
                 <img className="w-56 h-auto" src={url}/>
                 <div className="flex items-center justify-center">
                     <Image src={SearchIcon}/>
                     <span className="ml-1">Image</span>
-                    {addDesc && <span>+ "{addDesc}"</span>}
+                    {color && <span> + "{color}"</span>}
                 </div>
             </div>
         )
@@ -329,26 +330,11 @@ export default function Home() {
 
             <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
             <div className="flex justify-between px-12">
-                <ExampleQuery
-                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
-
-                />
-                <ExampleQuery
-                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
-                    addDesc="Red"
-                />
-                <ExampleQuery
-                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
-                    addDesc="Gold"
-                />
-                <ExampleQuery
-                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
-                    addDesc="Yellow"
-                />
-                <ExampleQuery
-                    url="https://ae01.alicdn.com/kf/HTB1SbZ7XOfrK1RjSspbq6A4pFXaN/JOCKMAIL-Brand-Sexy-men-underwear-penis-boxer-Push-up-boxershorts-Breathable-Men-s-Package-Enhancing-Padded.jpg_Q90.jpg"
-                    addDesc="Green"
-                />
+                <ExampleQuery/>
+                <ExampleQuery color="black"/>
+                <ExampleQuery color="gold"/>
+                <ExampleQuery color="yellow"/>
+                <ExampleQuery color="green"/>
             </div>
 
             {searching ? (
