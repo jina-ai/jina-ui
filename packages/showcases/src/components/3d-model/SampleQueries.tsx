@@ -7,9 +7,9 @@ type SampleQueriesProps = {
 
 export default function SampleQueries({ handleSelectExample }: SampleQueriesProps) {
     const samepleQueryURIs = [
-        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/guitar_2.glb",
-        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/motorcycle_bike_6.glb",
-        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/clock_14.glb",
+        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/cap_2.glb",
+        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/piano_pianoforte_forte-piano_14.glb",
+        "https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/rifle_7.glb",
     ]
     return (
         <div className="border-b-2 border-t-2 py-3 mt-6">

@@ -14,6 +14,7 @@ import { OpenAPIV3 } from "openapi-types";
 import schema from "../types/pdf/schema.json"
 import { mockData } from '../gaming-response-mock-data'
 import Results from "../components/Results";
+import { Spinner } from "../components/Spinner"
 import { SearchBar } from "../components/SearchBar";
 import MeshResultItem from "../components/3d-model/MeshResultItem";
 import SampleQueries from '../components/3d-model/SampleQueries';
@@ -26,7 +27,7 @@ export default function GamingShowcase() {
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
-    const jinaClient = new JinaClient(GAMING_ENDPOINT, schema as OpenAPIV3.Document, false,  customRequestSerializer, customReponseSerializer)
+    const jinaClient = new JinaClient(GAMING_ENDPOINT, schema as OpenAPIV3.Document, false, customRequestSerializer, customReponseSerializer)
 
 
     async function search(...documents: RawDocumentData[]) {
@@ -49,10 +50,16 @@ export default function GamingShowcase() {
                 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
             </Head>
             <SampleQueries handleSelectExample={search} />
-            <h2 className="font-bold text-xl mb-3">
-                Results: 
+            {searching ? (
+                <Searching />
+            ) : (
+                    <>
+                        <h2 className="font-bold text-xl mb-3">
+                            Results:
             </h2>
-            <Results results={results} CustomResultItem={MeshResultItem}/>
+                        <Results results={results} CustomResultItem={MeshResultItem} />
+                    </>
+                )}
         </div>
     )
 }
@@ -66,13 +73,13 @@ const customRequestSerializer = async (documents: RawDocumentData[]) => {
             "mime_type": "model/gltf-binary",
             "data": cleanedUri
         }
-    } else if (typeof(doc) === 'string' && doc.slice(0, 4) === 'http') {
+    } else if (typeof (doc) === 'string' && doc.slice(0, 4) === 'http') {
         return {
-            "data": [{"uri": doc} ]
+            "data": [{ "uri": doc }]
         }
     } else {
         return {
-            "data": [{"text": doc} ]
+            "data": [{ "text": doc }]
         }
     }
 }
@@ -82,23 +89,30 @@ const customReponseSerializer = (rawResponse: AnyObject) => {
     const results: SimpleResults[] = [];
     const queries: SimpleQueries = [];
     docs.forEach((doc: any) => {
-      queries.push({
-        data: doc.text || doc.uri,
-        mimeType: doc.mimeType,
-      });
-      const { matches } = doc;
-      results.push(
-        matches.sort((match1: any, match2 : any) => match1.scores.cosine.value - match2.scores.cosine.value ).map(({ scores, text, uri, mimeType }: any) => {
-          const score = scores.cosine.value
-            ? scores.cosine.value
-            : scores.score?.value;
-          return {
-            data: text || uri,
-            mimeType,
-            score,
-          } as SimpleResult;
-        })
-      );
+        queries.push({
+            data: doc.text || doc.uri,
+            mimeType: doc.mimeType,
+        });
+        const { matches } = doc;
+        results.push(
+            matches.sort((match1: any, match2: any) => match1.scores.cosine.value - match2.scores.cosine.value).map(({ scores, text, uri, tags, mimeType }: any) => {
+                const score = scores.cosine.value
+                    ? scores.cosine.value
+                    : scores.score?.value;
+                return {
+                    data: tags?.glb_path || text || uri,
+                    mimeType,
+                    score,
+                } as SimpleResult;
+            })
+        );
     });
     return { queries, results };
-  }
+}
+
+const Searching = () => (
+    <div className="mx-auto text-3xl py-36 flex flex-row items-center text-primary-500">
+        <Spinner />
+        <span className="animate-pulse">Searching...</span>
+    </div>
+);
