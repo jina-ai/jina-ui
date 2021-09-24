@@ -269,6 +269,7 @@ export default function Home() {
             <div className="cursor-pointer" onClick={() => {
                 setOriginalDocuments([url])
                 if (color) onFilter([{attribute: "color", operator: "eq", value: color}])
+                else(search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
                 <div className="flex items-center justify-center">
