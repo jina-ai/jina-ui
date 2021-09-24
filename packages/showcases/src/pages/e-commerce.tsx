@@ -269,9 +269,12 @@ export default function Home() {
 
         const url = "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg"
         return (
-            <div className="cursor-pointer" onClick={() => {
+            <div className="cursor-pointer mr-6" onClick={() => {
                 setOriginalDocuments([url])
-                if (color) onFilter([{attribute: "color", operator: "eq", value: color}])
+                if (color) {
+                    onFilter([{attribute: "color", operator: "eq", value: color}])
+                }
+                if(filters && filters.length > 0) setFilters([])
                 else (search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
@@ -334,12 +337,12 @@ export default function Home() {
             <Filters onFilter={onFilter}/>
 
             <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
-            <div className="flex justify-between px-12">
+            <div className="flex px-12">
                 <ExampleQuery/>
                 <ExampleQuery color="black"/>
                 <ExampleQuery color="white"/>
-                <ExampleQuery color="yellow"/>
-                <ExampleQuery color="green"/>
+                <ExampleQuery color="blue"/>
+
             </div>
 
             {
