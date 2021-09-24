@@ -1,10 +1,16 @@
 {
   "hosting": {
-    "public": "packages/showcases/public",
+    "public": "public",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**/**",
+        "function": "next"
+      }
     ]
   }
 }
