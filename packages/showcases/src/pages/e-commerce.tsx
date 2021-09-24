@@ -274,7 +274,7 @@ export default function Home() {
                 if (color) {
                     onFilter([{attribute: "color", operator: "eq", value: color}])
                 }
-                if(filters && filters.length > 0) setFilters([])
+                else if(filters && filters.length > 0) setFilters([])
                 else (search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
