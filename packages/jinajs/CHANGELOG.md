@@ -1,3 +1,23 @@
+# [0.4.0](https://github.com/jina-ai/jina-ui/compare/v0.3.0...v0.4.0) (2021-09-24)
+
+
+### Bug Fixes
+
+* errors ([28b534f](https://github.com/jina-ai/jina-ui/commit/28b534f1dfbb7b9ce94ab08cdee5f631bac2ba81))
+* EVETHIASNDFGL:QNASDF ([5ca4993](https://github.com/jina-ai/jina-ui/commit/5ca49939a7fe91b0cca2a163566952cb791e488a))
+* merge conflict ([ec861fe](https://github.com/jina-ai/jina-ui/commit/ec861fe7e9da7ef016d90cd40e96fc98e9d90318))
+* sorting of results ([ec9d212](https://github.com/jina-ai/jina-ui/commit/ec9d212d85dd18cb3047c092f0935c1f5bddba82))
+* typo ([1383aff](https://github.com/jina-ai/jina-ui/commit/1383affb8ac975189362f03206096c0f5b2fa39b))
+
+
+### Features
+
+* About page ([ae8a4de](https://github.com/jina-ai/jina-ui/commit/ae8a4dee8fbb615629ff55b63e339e212839e718))
+* better search indication ([c880751](https://github.com/jina-ai/jina-ui/commit/c880751cec7598b29b2b7a115b50df082d74416c))
+* custom placeholder ([2f1e532](https://github.com/jina-ai/jina-ui/commit/2f1e53216a85bcbe4ee4ae0af579e35620be1e3b))
+* FUCK YES! ([22aff33](https://github.com/jina-ai/jina-ui/commit/22aff33f0d88f03beb22c4787a72d21e24b6a909))
+* no results error ([379733d](https://github.com/jina-ai/jina-ui/commit/379733d52e78d3552d4b790de0fd2f78488acb6c))
+
 # [0.3.0](https://github.com/jina-ai/jina-ui/compare/v0.2.0...v0.3.0) (2021-09-23)
 
 
