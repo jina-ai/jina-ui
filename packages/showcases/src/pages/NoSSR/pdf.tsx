@@ -26,7 +26,7 @@ import {checkIfQuestion} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
 import About from "../../components/common/About";
 
-const PDF_API_URL = "http://34.89.149.65:80"
+const PDF_API_URL = "https://europe-west3-jina-showcase.cloudfunctions.net/prod/"
 
 type CustomResult = any
 type CustomResults = any
