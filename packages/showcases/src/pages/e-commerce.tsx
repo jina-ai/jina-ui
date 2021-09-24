@@ -122,7 +122,7 @@ const Tag = ({children}: { children: string }) => (
     <div className="px-2 bg-gray-500 rounded-full text-white">{children}</div>
 );
 
-const ProductResult = ({result}: { result: SimpleResult }) => {
+const ProductResult = ({result}: { result: any }) => {
     return (
         <div className="rounded border h-full flex flex-col">
             <div className="border-b">
@@ -217,7 +217,7 @@ export default function Home() {
 
         if (documents.length === 2 && isValidHttpUrl(documents[1] as string) && typeof documents[0] === "string") {
             text = documents[0] as string
-            uri = documents[1]
+            uri = documents[1] as string
         }
 
 
