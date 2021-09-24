@@ -17,11 +17,13 @@ export const SearchInput = ({
   addFiles,
   onEnter,
   searching,
+  placeholder = "Search"
 }: {
   inputRef: InputRef;
   addFiles: (files: File[]) => void;
   onEnter?: () => void;
   searching: boolean;
+  placeholder?: string
 }) => {
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -84,7 +86,7 @@ export const SearchInput = ({
           searching ? "bg-primary-500 bg-opacity-10 animate-pulse" : ""
         }`}
         disabled={searching}
-        placeholder={searching ? "Searching..." : "Search"}
+        placeholder={searching ? "Searching..." : placeholder}
         ref={inputRef}
         onKeyPress={handleKeyPress}
       />

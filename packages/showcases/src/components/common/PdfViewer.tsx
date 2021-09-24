@@ -39,11 +39,6 @@ const PdfViewer = ({
         const [totalPages, setTotalPages] = useState(1);
         const [currentPage, setCurrentPage] = useState(1);
 
-        const container = useCallback((node) => {
-
-        }, []);
-
-
         function onLoad({numPages}: any) {
             setTotalPages(numPages);
         }

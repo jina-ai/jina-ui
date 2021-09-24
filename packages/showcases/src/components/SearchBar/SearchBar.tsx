@@ -17,9 +17,10 @@ const SearchButton = ({ onClick }: { onClick: () => void }) => {
 type SearchBarProps = {
   search: (...documents: RawDocumentData[]) => void;
   searching: boolean;
+  placeholder?: string
 };
 
-export const SearchBar = ({ search, searching }: SearchBarProps) => {
+export const SearchBar = ({ search, searching, placeholder }: SearchBarProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [files, setFiles] = useState<File[]>([]);
 
@@ -52,6 +53,7 @@ export const SearchBar = ({ search, searching }: SearchBarProps) => {
           inputRef={inputRef}
           addFiles={addFiles}
           onEnter={handleSearch}
+          placeholder={placeholder}
         />
         <DropZone files={files} addFiles={addFiles} removeFile={removeFile} />
       </div>
