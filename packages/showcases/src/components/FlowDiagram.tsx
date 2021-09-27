@@ -1,5 +1,8 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
+const IconPlusSearch ="assets/icon-plus-search.svg"
+const DragAndDropRec ="assets/drag-and-drop-rec.svg"
+
 const SampleFlow = "assets/sampleflow.svg";
 const PDFFlow = "assets/pdf-search-flowchart.svg"
 const ECommerceFlow = "assets/e-commerce-flowchart.svg"
@@ -53,7 +56,7 @@ export const FlowDiagram = () => {
 
     return (
         <div
-            className={"fixed bottom-0 w-full bg-gray-100 p-4 py-2 rounded-xl"}
+            className={"fixed bottom-0 w-full bg-gray-100 p-4 py-2 rounded-xl cursor-pointer"}
             onClick={() => toggleShow()}
         >
             <Modal
@@ -77,7 +80,7 @@ export const FlowDiagram = () => {
             >
                 <div className="flex justify-center">
                     <div className="flex text-gray-600">
-                        <img src={iconPlusSearch}/>
+                        <img src={IconPlusSearch}/>
                         <span className="ml-1">
                          Click to check full image
                     </span>
@@ -94,7 +97,7 @@ export const FlowDiagram = () => {
                 rel="noreferrer"
                 target="_blank"
                 className="mb-3 md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200 float-right">
-                <Image src={github} alt="github"/>
+                <img src={github} alt="github"/>
                 <span className="ml-2">Jina on Github</span>
             </a>}
         </div>
