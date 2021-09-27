@@ -72,19 +72,20 @@ export const FlowDiagram = () => {
                 <Image src={DragAndDropRec}/>
             </div>
             <div className="md:text-lg md:mt-2 flex-1 font-medium mb-3">Flow diagram</div>
-            <div className="flex justify-center">
-                <div className="flex text-gray-600">
-                    <Image src={iconPlusSearch}/>
-                    <span className="ml-1">
-                         Click to check full image
-                    </span>
-                </div>
-            </div>
+
             <div
                 className={`overflow-hidden transition-all duration-200 ease-in-out ${
                     show ? "max-h-screen" : "max-h-0"
                 }`}
             >
+                <div className="flex justify-center">
+                    <div className="flex text-gray-600">
+                        <Image src={iconPlusSearch}/>
+                        <span className="ml-1">
+                         Click to check full image
+                    </span>
+                    </div>
+                </div>
                 <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto"
                      onClick={() => setIsOpen(true)}>
                     <Image src={getFlowChartAsset(path)} alt="flow"/>
