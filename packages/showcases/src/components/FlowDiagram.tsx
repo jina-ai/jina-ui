@@ -5,6 +5,7 @@ import PDFFlow from "../images/pdf-search-flowchart.svg"
 import ECommerceFlow from "../images/e-commerce-flowchart.svg"
 import DragAndDropRec from "../images/dragAndDropRec.svg"
 import github from "../images/github.svg";
+import iconPlusSearch from "../images/icon-plus-search.svg"
 import Image from "next/image";
 import {ChevronUpIcon} from "@heroicons/react/solid";
 import Modal from 'react-modal';
@@ -67,11 +68,18 @@ export const FlowDiagram = () => {
                 <Image src={getFlowChartAsset(path)} alt="flow"/>
 
             </Modal>
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-3">
                 <Image src={DragAndDropRec}/>
             </div>
-            <div className="md:text-lg md:mt-2 flex-1 font-medium">Flow diagram</div>
-
+            <div className="md:text-lg md:mt-2 flex-1 font-medium mb-3">Flow diagram</div>
+            <div className="flex justify-center">
+                <div className="flex text-gray-600">
+                    <Image src={iconPlusSearch}/>
+                    <span className="ml-1">
+                         Click to check full image
+                    </span>
+                </div>
+            </div>
             <div
                 className={`overflow-hidden transition-all duration-200 ease-in-out ${
                     show ? "max-h-screen" : "max-h-0"
@@ -87,7 +95,7 @@ export const FlowDiagram = () => {
                 href="https://get.jina.ai"
                 rel="noreferrer"
                 target="_blank"
-                className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200 float-right">
+                className="mb-3 md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200 float-right">
                 <Image src={github} alt="github"/>
                 <span className="ml-2">Jina on Github</span>
             </a>}
