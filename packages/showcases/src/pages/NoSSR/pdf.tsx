@@ -12,10 +12,9 @@ import JinaClient, {
 } from "@jina-ai/jinajs";
 import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
-import downloadButton from '../../images/download-button.svg'
-import CrossIcon from '../../images/cross.svg'
-import JinaLoading from '../../images/jina-loading.gif'
-import Image from "next/image";
+const downloadButton = 'assets/download-button.svg'
+const CrossIcon = 'assets/cross.svg'
+const JinaLoading = 'assets/jina-loading.gif'
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {components} from "../../types/pdf/schema"
@@ -123,14 +122,14 @@ function PDFModal({viewedPDF, viewedPDFName, setIsOpen, modalIsOpen, getSimiliar
                     </style>
                     <div className="w-full md:px-6 flex justify-between flex items-center">
                         <div className="cursor-pointer max-w-12" onClick={closeModal}>
-                            <Image src={CrossIcon}/>
+                            <img src={CrossIcon}/>
                         </div>
                         <a className="cursor-pointer bg-primary-500 rounded-lg flex items-center pr-4 py-1"
                            href={viewedPDF}
                            target="_blank"
                            rel="noreferrer"
                         >
-                            <Image src={downloadButton}/>
+                            <img src={downloadButton}/>
                             <p className="text-white font-bold">Download</p>
                         </a>
                     </div>
@@ -255,7 +254,7 @@ export default function PDF() {
                             target="_blank"
                             rel="noreferrer"
                         >
-                            <Image src={downloadButton} alt="download"/>
+                            <img src={downloadButton} alt="download"/>
                         </a>
                     </button>
                 </div>
@@ -317,7 +316,7 @@ export default function PDF() {
             {searching &&
             <div className="w-full flex justify-center">
                 <div className="w-64">
-                    <Image src={JinaLoading}/>
+                    <img src={JinaLoading}/>
                 </div>
             </div>}
             <Results results={results} CustomResultItem={CustomResultItem}/>

@@ -1,12 +1,9 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
-import SampleFlow from "../images/sampleflow.svg";
-import PDFFlow from "../images/pdf-search-flowchart.svg"
-import ECommerceFlow from "../images/e-commerce-flowchart.svg"
-import DragAndDropRec from "../images/dragAndDropRec.svg"
-import github from "../images/github.svg";
-import iconPlusSearch from "../images/icon-plus-search.svg"
-import Image from "next/image";
+const SampleFlow = "assets/sampleflow.svg";
+const PDFFlow = "assets/pdf-search-flowchart.svg"
+const ECommerceFlow = "assets/e-commerce-flowchart.svg"
+const github = "assets/github.svg";
 import {ChevronUpIcon} from "@heroicons/react/solid";
 import Modal from 'react-modal';
 
@@ -65,11 +62,11 @@ export const FlowDiagram = () => {
                 style={customStyles}
                 contentLabel="Example Modal"
             >
-                <Image src={getFlowChartAsset(path)} alt="flow"/>
+                <img src={getFlowChartAsset(path)} alt="flow"/>
 
             </Modal>
             <div className="flex justify-center mt-3">
-                <Image src={DragAndDropRec}/>
+                <img src={DragAndDropRec}/>
             </div>
             <div className="md:text-lg md:mt-2 flex-1 font-medium mb-3">Flow diagram</div>
 
@@ -80,7 +77,7 @@ export const FlowDiagram = () => {
             >
                 <div className="flex justify-center">
                     <div className="flex text-gray-600">
-                        <Image src={iconPlusSearch}/>
+                        <img src={iconPlusSearch}/>
                         <span className="ml-1">
                          Click to check full image
                     </span>
@@ -88,7 +85,7 @@ export const FlowDiagram = () => {
                 </div>
                 <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto"
                      onClick={() => setIsOpen(true)}>
-                    <Image src={getFlowChartAsset(path)} alt="flow"/>
+                    <img src={getFlowChartAsset(path)} alt="flow"/>
 
                 </div>
             </div>
