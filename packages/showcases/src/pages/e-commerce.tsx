@@ -20,10 +20,9 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-import SearchingIcon from '../images/searching.gif'
-import SearchIcon from '../images/searchIcon.svg'
-import Image from "next/image";
-import Picture from "../images/image.svg"
+const SearchingIcon = 'assets/searching.gif'
+const SearchIcon = 'assets/searchIcon.svg'
+const Picture = "assets/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
 import About from "../components/common/About";
 
@@ -279,7 +278,7 @@ export default function Home() {
             }}>
                 <img className="w-56 h-auto" src={url}/>
                 <div className="flex items-center justify-center">
-                    <Image src={SearchIcon}/>
+                    <img src={SearchIcon}/>
                     <p className="ml-1">
                         Image {color && <span>+ <q>{color}</q></span>}
                     </p>
@@ -306,7 +305,7 @@ export default function Home() {
                         <div {...getRootProps()}
                              className="border-b-0 cursor-pointer border border-primary-500 rounded-t flex flex-col items-center p-8 ">
                             <div className="h-8 w-8 mb-3">
-                                <Image src={SearchIcon}/>
+                                <img src={SearchIcon}/>
                             </div>
                             <input {...getInputProps()} />
                             <p className="font-bold w-72 text-center">Drag and drop your image here or <span
@@ -314,7 +313,7 @@ export default function Home() {
                             </p>
                             <div className="flex items-center">
                                 <div className="w-6 h-6">
-                                    <Image src={Picture}/>
+                                    <img src={Picture}/>
                                 </div>
                                 <p className="text-gray-500 text-sm">Limit 200 MB per file</p>
                             </div>

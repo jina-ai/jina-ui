@@ -4,11 +4,10 @@ import React, {
   MutableRefObject,
   useRef,
 } from "react";
-import Image from "next/image";
-import jinaIcon from "../../images/magnifyingGlass.svg";
-import crossIcon from "../../images/cross.svg"
-import fileIcon from "../../images/file.svg";
-import searchingIcon from "../../images/searching.gif";
+const jinaIcon = "assets/magnifyingGlass.svg";
+const crossIcon = "assets/cross.svg"
+const fileIcon = "assets/file.svg";
+const searchingIcon = "assets/searching.gif";
 
 type InputRef = MutableRefObject<HTMLInputElement | null>;
 
@@ -49,27 +48,23 @@ export const SearchInput = ({
   return (
     <div className="flex flex-row items-center h-full bg-white rounded-md">
       <div className="absolute ml-4 h-6 w-6 flex">
-        <Image
+        <img
           src={searching ? searchingIcon : jinaIcon}
           alt="jina"
-          layout="intrinsic"
-          objectFit="contain"
         />
       </div>
       <div className="absolute right-0 mr-4 mb-0 flex pl-4 h-6">
-        <Image
+        <img
             src={crossIcon}
             alt="image"
-            layout="intrinsic"
             className="cursor-pointer"
             onClick={deleteInput}
         />
         <div className='border-l border-gray-400 mx-2'/>
 
-        <Image
+        <img
           src={fileIcon}
           alt="image"
-          layout="intrinsic"
           className="cursor-pointer"
           onClick={triggerFileSelect}
         />

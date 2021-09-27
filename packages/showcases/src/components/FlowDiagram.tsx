@@ -1,10 +1,9 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
-import SampleFlow from "../images/sampleflow.svg";
-import PDFFlow from "../images/pdf-search-flowchart.svg"
-import ECommerceFlow from "../images/e-commerce-flowchart.svg"
-import github from "../images/github.svg";
-import Image from "next/image";
+const SampleFlow = "assets/sampleflow.svg";
+const PDFFlow = "assets/pdf-search-flowchart.svg"
+const ECommerceFlow = "assets/e-commerce-flowchart.svg"
+const github = "assets/github.svg";
 import {ChevronUpIcon} from "@heroicons/react/solid";
 
 const getFlowChartAsset = (showcase: string) => {
@@ -37,7 +36,7 @@ export const FlowDiagram = () => {
                     rel="noreferrer"
                     target="_blank"
                     className="md:mt-2 flex flor-row items-center cursor-pointer hover:bg-gray-200 md:p-2 rounded-md tranistion-all duration-200">
-                    <Image src={github} alt="github"/>
+                    <img src={github} alt="github"/>
                     <span className="ml-2">Jina on Github</span>
                 </a>}
                 {show && <div className="md:text-lg md:mt-2 flex-1 font-medium text-center">How it works</div>}
@@ -54,7 +53,7 @@ export const FlowDiagram = () => {
                 }`}
             >
                 <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto">
-                    <Image src={getFlowChartAsset(path)} alt="flow"/>
+                    <img src={getFlowChartAsset(path)} alt="flow"/>
 
                 </div>
             </div>

@@ -1,8 +1,7 @@
 import React from "react";
-import Image from "next/image";
-import logo from "../images/logo.svg";
-import slack from "../images/slack.svg";
-import github from "../images/github.svg";
+const logo = "assets/logo.svg";
+const slack = "assets/slack.svg";
+const github = "assets/github.svg";
 
 type HeaderLinkProps = {
   url: string;
@@ -26,12 +25,12 @@ const linkItems = [
   {
     url: "https://get.jina.ai",
     text: "get.jina.ai",
-    icon: <Image src={github} alt="Github" />,
+    icon: <img src={github} alt="Github" />,
   },
   {
     url: "https://slack.jina.ai",
     text: "slack.jina.ai",
-    icon: <Image src={slack} alt="Slack" />,
+    icon: <img src={slack} alt="Slack" />,
   },
 ];
 
@@ -39,7 +38,7 @@ export const Header = () => {
   return (
     <div className="border-b-2 border-gray-100 sticky px-8 py-4 flex flex-row items-center">
       <div className="flex-1">
-        <Image src={logo} alt="Jina" />
+        <img src={logo} alt="Jina" />
       </div>
       {linkItems.map(({ url, icon, text }, idx) => (
         <HeaderItem icon={icon} url={url} key={idx}>
