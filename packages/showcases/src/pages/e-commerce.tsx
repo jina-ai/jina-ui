@@ -20,9 +20,9 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-const SearchingIcon = 'assets/searching.gif'
-const SearchIcon = 'assets/searchIcon.svg'
-const Picture = "assets/image.svg"
+const SearchingIcon = '/assets/searching.gif'
+const SearchIcon = '/assets/searchIcon.svg'
+const Picture = "/assets/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
 import About from "../components/common/About";
 

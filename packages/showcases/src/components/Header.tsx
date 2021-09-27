@@ -1,7 +1,7 @@
 import React from "react";
-const logo = "assets/logo.svg";
-const slack = "assets/slack.svg";
-const github = "assets/github.svg";
+const logo = "/assets/logo.svg";
+const slack = "/assets/slack.svg";
+const github = "/assets/github.svg";
 
 type HeaderLinkProps = {
   url: string;

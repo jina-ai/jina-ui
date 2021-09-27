@@ -1,6 +1,6 @@
 import React from 'react'
-const comingSoonImageDesktop = 'assets/coming-soon-background-desktop.svg'
-const comingSoonImageMobile = 'assets/coming-soon-background-mobile.svg'
+const comingSoonImageDesktop = '/assets/coming-soon-background-desktop.svg'
+const comingSoonImageMobile = '/assets/coming-soon-background-mobile.svg'
 
 export default function ComingSoon () {
     return (
