@@ -69,7 +69,7 @@ export const FlowDiagram = () => {
 
             </Modal>
             <div className="flex justify-center mt-3">
-                <img src={DragAndDropRec}/>
+                <img src={DragAndDropRec} alt={"dragAndDropRec"}/>
             </div>
             <div className="md:text-lg md:mt-2 flex-1 font-medium mb-3">Flow diagram</div>
 
@@ -80,7 +80,7 @@ export const FlowDiagram = () => {
             >
                 <div className="flex justify-center">
                     <div className="flex text-gray-600">
-                        <img src={IconPlusSearch}/>
+                        <img src={IconPlusSearch} alt="IconPlus"/>
                         <span className="ml-1">
                          Click to check full image
                     </span>
