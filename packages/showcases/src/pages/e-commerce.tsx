@@ -1,5 +1,6 @@
 import Head from "next/head";
 import {SearchBar} from "../components/SearchBar";
+import imageCompression from 'browser-image-compression';
 import JinaClient, {
     BaseURL,
     RawDocumentData,
@@ -20,6 +21,7 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
+
 const SearchingIcon = 'assets/searching.gif'
 const SearchIcon = 'assets/searchIcon.svg'
 const Picture = "assets/image.svg"
@@ -238,10 +240,15 @@ export default function Home() {
     }
 
     const customResSerializer = (response: AnyObject) => {
-
-        return {
+        if (results.length > 0 ) {
+            return {
+                queries: [],
+                results: [response.data.data.docs[0].matches]
+            }
+        }
+        else return {
             queries: [],
-            results: [response.data.data.docs[0].matches]
+            results: []
         }
     }
 
@@ -249,10 +256,21 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
+
+        const options = {
+            maxSizeMB: 1,
+            useWebWorker: true
+        }
+
+        const compressedDocuments = await Promise.all(documents.map(async (document) => {
+                if (document instanceof File) return imageCompression(document, options);
+                else return document
+            })
+        )
         setFirstSearchTriggered(true)
         setResults([])
         setSearching(true);
-        const {results, queries} = await jina.search(...documents);
+        const {results, queries} = await jina.search(...compressedDocuments);
         setSearching(false);
         setResults(results);
         setQueries(queries);
@@ -272,8 +290,7 @@ export default function Home() {
                 setOriginalDocuments([url])
                 if (color) {
                     onFilter([{attribute: "color", operator: "eq", value: color}])
-                }
-                else if(filters && filters.length > 0) setFilters([])
+                } else if (filters && filters.length > 0) setFilters([])
                 else (search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
@@ -346,31 +363,31 @@ export default function Home() {
 
             {
                 !firstSearchTriggered ?
-                <About
-                    className="mt-6"
-                    aboutPoints={[
-                        "We built this using python, jina, tensorflow, etc.",
-                        "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                        <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
-                                                                                        href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
-                    ]}/>
-                :
+                    <About
+                        className="mt-6"
+                        aboutPoints={[
+                            "We built this using python, jina, tensorflow, etc.",
+                            "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                            <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
+                                                                                            href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                        ]}/>
+                    :
 
-                <>
-                    {searching ? (
-                        <Searching/>
-                    ) : results.length ? (
-                        <>
-                            <Results
-                                results={results}
-                                CustomResultItem={ProductResult}
-                                classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                            />
-                        </>
-                    ) : (
-                        <EmptyMessage/>
-                    )}
-                </>
+                    <>
+                        {searching ? (
+                            <Searching/>
+                        ) : results.length ? (
+                            <>
+                                <Results
+                                    results={results}
+                                    CustomResultItem={ProductResult}
+                                    classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                                />
+                            </>
+                        ) : (
+                            <EmptyMessage/>
+                        )}
+                    </>
             }
 
 
