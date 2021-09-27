@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
-const SampleFlow = "assets/sampleflow.svg";
-const PDFFlow = "assets/pdf-search-flowchart.svg"
-const ECommerceFlow = "assets/e-commerce-flowchart.svg"
-const github = "assets/github.svg";
+const SampleFlow = "/assets/sampleflow.svg";
+const PDFFlow = "/assets/pdf-search-flowchart.svg"
+const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
+const github = "/assets/github.svg";
 import {ChevronUpIcon} from "@heroicons/react/solid";
 
 const getFlowChartAsset = (showcase: string) => {

@@ -12,9 +12,9 @@ import JinaClient, {
 } from "@jina-ai/jinajs";
 import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
-const downloadButton = 'assets/download-button.svg'
-const CrossIcon = 'assets/cross.svg'
-const JinaLoading = 'assets/jina-loading.gif'
+const downloadButton = '/assets/download-button.svg'
+const CrossIcon = '/assets/cross.svg'
+const JinaLoading = '/assets/jina-loading.gif'
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {components} from "../../types/pdf/schema"
