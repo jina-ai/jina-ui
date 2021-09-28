@@ -30,7 +30,7 @@ export const Sidebar = () => {
   return (
     <div className="bg-gray-50 md:w-72 px-6">
       {items.map(({ url, title }) => (
-        <SidebarItem url={url} selected={url === asPath} key={url}>
+        <SidebarItem url={url} selected={asPath.includes(url)} key={url}>
           {title}
         </SidebarItem>
       ))}

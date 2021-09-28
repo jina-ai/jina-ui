@@ -1,20 +1,18 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
+import {ChevronUpIcon} from "@heroicons/react/solid";
+
 const SampleFlow = "/assets/sampleflow.svg";
 const PDFFlow = "/assets/pdf-search-flowchart.svg"
 const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
 const github = "/assets/github.svg";
-import {ChevronUpIcon} from "@heroicons/react/solid";
 
 const getFlowChartAsset = (showcase: string) => {
-    switch (showcase) {
-        case "pdf":
-            return PDFFlow
-        case "e-commerce":
-            return ECommerceFlow
-        default:
+    if(showcase.includes("pdf"))
+        return PDFFlow
+    if(showcase.includes("e-commerce"))
+        return ECommerceFlow;
             return SampleFlow
-    }
 }
 
 
@@ -22,7 +20,6 @@ const getFlowChartAsset = (showcase: string) => {
 export const FlowDiagram = () => {
     const [show, setShow] = useState(true);
     const {asPath} = useRouter()
-    const path = asPath.replace('/', '')
 
     function toggleShow() {
         setShow((prev) => !prev);
@@ -53,7 +50,7 @@ export const FlowDiagram = () => {
                 }`}
             >
                 <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto">
-                    <img src={getFlowChartAsset(path)} alt="flow"/>
+                    <img src={getFlowChartAsset(asPath)} alt="flow"/>
 
                 </div>
             </div>

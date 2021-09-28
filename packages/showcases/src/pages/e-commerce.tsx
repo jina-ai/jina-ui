@@ -311,12 +311,6 @@ export default function Home() {
                             <p className="font-bold w-72 text-center">Drag and drop your image here or <span
                                 className="text-primary-500">Browse</span> to select a file
                             </p>
-                            <div className="flex items-center">
-                                <div className="w-6 h-6">
-                                    <img src={Picture}/>
-                                </div>
-                                <p className="text-gray-500 text-sm">Limit 200 MB per file</p>
-                            </div>
                         </div>
                     )}
                 </Dropzone>
@@ -336,12 +330,11 @@ export default function Home() {
             <Filters onFilter={onFilter}/>
 
             <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
-            <div className="flex px-12">
+            <div className="flex px-12 mb-12">
                 <ExampleQuery/>
                 <ExampleQuery color="black"/>
                 <ExampleQuery color="white"/>
                 <ExampleQuery color="blue"/>
-
             </div>
 
             {

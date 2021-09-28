@@ -1,4 +1,5 @@
 import React from "react";
+const hub = "/assets/hub.svg";
 const logo = "/assets/logo.svg";
 const slack = "/assets/slack.svg";
 const github = "/assets/github.svg";
@@ -22,6 +23,11 @@ const HeaderItem = ({ icon, children, url }: HeaderLinkProps) => (
 );
 
 const linkItems = [
+  {
+    url: "https://hub.jina.ai",
+    text: "hub.jina.ai",
+    icon: <img src={hub} alt="Jina Hub" />,
+  },
   {
     url: "https://get.jina.ai",
     text: "get.jina.ai",
