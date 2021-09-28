@@ -53,12 +53,12 @@ export default function GamingShowcase() {
             {searching ? (
                 <Searching />
             ) : (
-                    <>
+                    queries.length?<>
                         <h2 className="font-bold text-xl mb-3">
                             Results:
             </h2>
                         <Results results={results} CustomResultItem={MeshResultItem} />
-                    </>
+                    </>:""
                 )}
         </div>
     )
