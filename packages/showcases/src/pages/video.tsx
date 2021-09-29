@@ -1,23 +1,9 @@
 import { useState } from 'react'
-import Head from "next/head";
-import JinaClient, {
-    BaseURL,
-    RawDocumentData,
-    SimpleResults,
-    SimpleQueries,
-    AnyObject,
-    SimpleResponse,
-    SimpleResult,
-    fileToBase64
-} from "@jina-ai/jinajs";
-import { OpenAPIV3 } from "openapi-types";
-import schema from "../types/pdf/schema.json"
-import { mockData } from '../gaming-response-mock-data'
+import JinaClient, { RawDocumentData, SimpleResults, SimpleQueries, AnyObject, SimpleResult } from "@jina-ai/jinajs";
 import Results from "../components/Results";
 import { Spinner } from "../components/Spinner"
 import { SearchBar } from "../components/SearchBar";
-import MeshResultItem from "../components/3d-model/MeshResultItem";
-import SampleQueries from '../components/3d-model/SampleQueries';
+import VideoPlayer from '../components/video/VideoPlayer';
 
 const VIDEO_SEARCH_ENDPOINT = 'http://localhost:45678'
 
@@ -44,11 +30,6 @@ export default function GamingShowcase() {
     }
     return (
         <div>
-            <Head>
-                <title>Jina Showcases</title>
-                <link rel="icon" href="/favicon.ico" />
-                <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
-            </Head>
             <SearchBar searching={searching} search={search} placeholder={"Search video"}/>
             {searching ? (
                 <Searching />
@@ -60,6 +41,11 @@ export default function GamingShowcase() {
                         <Results classNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" results={results} />
                     </>:""
                 )}
+            <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <VideoPlayer url="https://www.youtube.com/watch?v=3091MHksLM4" />
+                <VideoPlayer url="https://youtu.be/LACbVhgtx9I?t=9" timeStamp={9} />
+                <VideoPlayer url="https://www.youtube.com/watch?v=-BakWVXHSug" timeStamp={6} />
+            </div>
         </div>
     )
 }

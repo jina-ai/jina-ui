@@ -38,6 +38,7 @@
     "react-dropzone": "^11.4.1",
     "react-modal": "^3.14.3",
     "react-pdf": "^5.3.2",
+    "react-player": "^2.9.0",
     "styled-jsx-plugin-postcss": "^4.0.1"
   },
   "devDependencies": {
