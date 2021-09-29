@@ -23,6 +23,7 @@ const items = [
   { url: "/pdf", title: "PDF Showcase" },
   { url: "/e-commerce", title: "E-commerce Showcase" },
   { url: "/gaming", title: "Gaming Showcase" },
+  { url: "/video", title: "Video Search" },
 ];
 
 export const Sidebar = () => {
