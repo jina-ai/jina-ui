@@ -10,15 +10,17 @@ const github = "assets/github.svg";
 import {ChevronUpIcon} from "@heroicons/react/solid";
 import Modal from 'react-modal';
 
+const SampleFlow = "/assets/sampleflow.svg";
+const PDFFlow = "/assets/pdf-search-flowchart.svg"
+const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
+const github = "/assets/github.svg";
+
 const getFlowChartAsset = (showcase: string) => {
-    switch (showcase) {
-        case "pdf":
-            return PDFFlow
-        case "e-commerce":
-            return ECommerceFlow
-        default:
+    if(showcase.includes("pdf"))
+        return PDFFlow
+    if(showcase.includes("e-commerce"))
+        return ECommerceFlow;
             return SampleFlow
-    }
 }
 
 const customStyles = {

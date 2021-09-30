@@ -20,9 +20,9 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-const SearchingIcon = 'assets/searching.gif'
-const SearchIcon = 'assets/searchIcon.svg'
-const Picture = "assets/image.svg"
+const SearchingIcon = '/assets/searching.gif'
+const SearchIcon = '/assets/searchIcon.svg'
+const Picture = "/assets/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
 import About from "../components/common/About";
 
@@ -310,12 +310,6 @@ export default function Home() {
                             <p className="font-bold w-72 text-center">Drag and drop your image here or <span
                                 className="text-primary-500">Browse</span> to select a file
                             </p>
-                            <div className="flex items-center">
-                                <div className="w-6 h-6">
-                                    <img src={Picture}/>
-                                </div>
-                                <p className="text-gray-500 text-sm">Limit 200 MB per file</p>
-                            </div>
                         </div>
                     )}
                 </Dropzone>
@@ -340,7 +334,6 @@ export default function Home() {
                 <ExampleQuery color="black"/>
                 <ExampleQuery color="white"/>
                 <ExampleQuery color="blue"/>
-
             </div>
 
             {

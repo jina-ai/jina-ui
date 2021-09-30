@@ -12,9 +12,9 @@ import JinaClient, {
 } from "@jina-ai/jinajs";
 import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
-const downloadButton = 'assets/download-button.svg'
-const CrossIcon = 'assets/cross.svg'
-const JinaLoading = 'assets/jina-loading.gif'
+const downloadButton = '/assets/download-button.svg'
+const CrossIcon = '/assets/cross.svg'
+const JinaLoading = '/assets/jina-loading.gif'
 import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {components} from "../../types/pdf/schema"
@@ -279,7 +279,7 @@ export default function PDF() {
                 getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search} placeholder={"Ask here"}/>
 
-            {firstTimeSearched ?
+            
                 <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
                     <h2 className="font-bold text-xl mb-3">Examples:</h2>
 
@@ -296,7 +296,7 @@ export default function PDF() {
                            onClick={() => search("What is reinforcement learning?")}
                         >What is reinforcement learning?</p>
                     </div>
-                    {error === "" ?
+                    {error === ""  && queries.length ?
                         <p className="font-semibold">
                             Results for: <span
                             className="text-xl">{searchedDocumentName}</span>
@@ -305,7 +305,8 @@ export default function PDF() {
                             {error}
                         </p>
                     }
-                </div> :
+                </div> 
+                {!firstTimeSearched &&
                 <About className="mt-12" aboutPoints={[
                     "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
                     <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,

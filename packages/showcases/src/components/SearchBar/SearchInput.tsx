@@ -4,10 +4,10 @@ import React, {
   MutableRefObject,
   useRef,
 } from "react";
-const jinaIcon = "assets/magnifyingGlass.svg";
-const crossIcon = "assets/cross.svg"
-const fileIcon = "assets/file.svg";
-const searchingIcon = "assets/searching.gif";
+const jinaIcon = "/assets/magnifyingGlass.svg";
+const crossIcon = "/assets/cross.svg"
+const fileIcon = "/assets/file.svg";
+const searchingIcon = "/assets/searching.gif";
 
 type InputRef = MutableRefObject<HTMLInputElement | null>;
 
