@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import Head from "next/head";
 import JinaClient, {
     RawDocumentData,
@@ -14,6 +14,7 @@ import Results from "../components/Results";
 import { Spinner } from "../components/Spinner"
 import MeshResultItem from "../components/3d-model/MeshResultItem";
 import { ExampleQueries, ExampleQueryItem } from '../components/common/ExampleQueries';
+import { debounce } from '../utils/utils';
 
 const GAMING_ENDPOINT = 'https://europe-west3-jina-showcase.cloudfunctions.net/proxy3d/3d/';
 
@@ -23,16 +24,23 @@ const exampleQueries: ExampleQueryItem[] = [
     {src:"https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/rifle_7.glb",mimeType:"model"},
 ]
 
-export default function GamingShowcase() {
+type GamingShowCaseProps = {
+    showFlowChart: boolean
+    setShowFlowChart: (arg: boolean) => void
+}
+
+export default function GamingShowcase({showFlowChart, setShowFlowChart}: GamingShowCaseProps) {
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
 
     const jinaClient = new JinaClient(GAMING_ENDPOINT, schema as OpenAPIV3.Document, false, customRequestSerializer, customReponseSerializer)
-
+    const [isFlowChartOpenedOnce, setIsFlowChartOpenedOnce] = useState(false)
+    let debouncedFlowChartOpen = useCallback(debounce(() => setShowFlowChart(true), 1000), [])
 
     async function search(...documents: RawDocumentData[]) {
+        if(searching) return
         setSearching(true);
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
@@ -43,6 +51,8 @@ export default function GamingShowcase() {
         setSearching(false);
         setResults(results);
         setQueries(queries);
+        !isFlowChartOpenedOnce && debouncedFlowChartOpen()
+        setIsFlowChartOpenedOnce(true)
     }
     
     return (

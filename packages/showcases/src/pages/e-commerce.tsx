@@ -7,7 +7,7 @@ import JinaClient, {
     fileToBase64,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback, useRef} from "react";
 import {Spinner} from "../components/Spinner";
 import {MediaPreview} from "../components/common/MediaPreview";
 import {TextPreview} from "../components/common/TextPreview";
@@ -26,6 +26,7 @@ const exampleQueries: ExampleQueryItem[] = [
     {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"white"},
     {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"blue"},
 ]
+import { debounce } from '../utils/utils';
 
 const Filter = ({
                     title,
@@ -54,11 +55,7 @@ const Filter = ({
     </div>
 );
 
-const Filters = ({
-                     onFilter,
-                 }: {
-    onFilter: (filters: FilterCondition[]) => void;
-}) => {
+const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void }) => {
     const [season, setSeason] = useState("");
     const [price, setPrice] = useState("");
     const [gender, setGender] = useState("");
@@ -181,7 +178,12 @@ type FilterCondition = {
     value: string | number;
 };
 
-export default function Home() {
+type EcommerceShowCaseProps = {
+    showFlowChart: boolean
+    setShowFlowChart: (arg: boolean) => void
+}
+
+export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
@@ -192,6 +194,9 @@ export default function Home() {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
+    const resultsRef = useRef<HTMLDivElement>(null)
+    const [isFlowChartOpenedOnce, setIsFlowChartOpenedOnce] = useState(false)
+    let debouncedFlowChartOpen = useCallback(debounce(() => setShowFlowChart(true), 1000), [])
 
     useEffect(() => {
 
@@ -250,6 +255,7 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
+        if(searching) return
         setFirstSearchTriggered(true)
         setResults([])
         setSearching(true);
@@ -257,6 +263,9 @@ export default function Home() {
         setSearching(false);
         setResults(results);
         setQueries(queries);
+        resultsRef.current?.scrollIntoView({behavior: "smooth", block: "center"})
+        !isFlowChartOpenedOnce && debouncedFlowChartOpen()
+        setIsFlowChartOpenedOnce(true)
     }
 
 
@@ -333,22 +342,21 @@ export default function Home() {
                                                                                             href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
                         ]}/>
                     :
-
-                    <>
+                    <div ref={resultsRef}>
                         {searching ? (
                             <Searching/>
                         ) : results.length ? (
-                            <>
+                        <>
                                 <Results
                                     results={results}
                                     CustomResultItem={ProductResult}
                                     classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
                                 />
-                            </>
+                        </>
                         ) : (
                             <EmptyMessage/>
                         )}
-                    </>
+                    </div>
             }
 
 

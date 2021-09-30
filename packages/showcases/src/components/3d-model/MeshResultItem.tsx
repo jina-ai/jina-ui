@@ -32,6 +32,10 @@ export default function MeshResultItem ({result, className}: ResultItemProps) {
                 environment-image="neutral"
                 interaction-policy="allow-when-focused"
                 interaction-prompt="when-focused"
+                auto-rotate
+                rotation-per-second="30deg"
+                orientation="0 0 180deg"
+                turntableRotation
                 camera-controls />
         </div>
     )
