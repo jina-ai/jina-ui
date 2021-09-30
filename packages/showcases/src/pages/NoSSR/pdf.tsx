@@ -184,6 +184,7 @@ export default function PDF() {
     }
 
     async function search(...documents: RawDocumentData[]) {
+        if(searching) return
         setFirstTimeSearched(true)
         setResults([])
         let validQuestion = true

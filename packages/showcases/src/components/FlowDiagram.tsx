@@ -1,15 +1,9 @@
 import React, {useState} from "react";
 import {useRouter} from 'next/router'
-const IconPlusSearch ="assets/icon-plus-search.svg"
-const DragAndDropRec ="assets/drag-and-drop-rec.svg"
-
-const SampleFlow = "assets/sampleflow.svg";
-const PDFFlow = "assets/pdf-search-flowchart.svg"
-const ECommerceFlow = "assets/e-commerce-flowchart.svg"
-const github = "assets/github.svg";
-import {ChevronUpIcon} from "@heroicons/react/solid";
 import Modal from 'react-modal';
 
+const IconPlusSearch ="/assets/icon-plus-search.svg"
+const DragAndDropRec ="/assets/drag-and-drop-rec.svg"
 const SampleFlow = "/assets/sampleflow.svg";
 const PDFFlow = "/assets/pdf-search-flowchart.svg"
 const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
@@ -25,7 +19,7 @@ const getFlowChartAsset = (showcase: string) => {
 
 const customStyles = {
     overlay: {
-        background: "black"
+        background: "#000000BB"
     },
     content: {
         top: '50%',
@@ -35,20 +29,21 @@ const customStyles = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
     },
-};
+}
 
+type FlowDiagramProps = {
+    showFlowChart: boolean
+    setShowFlowChart: (show: boolean) => void
+}
 
-export const FlowDiagram = () => {
-    const [show, setShow] = useState(true);
+export const FlowDiagram = ({ showFlowChart, setShowFlowChart }: FlowDiagramProps) => {
     const {asPath} = useRouter()
     const path = asPath.replace('/', '')
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
-
     function toggleShow() {
-        setShow((prev) => !prev);
+        setShowFlowChart(!showFlowChart);
     }
-
 
     function openModal() {
         setIsOpen(true);
@@ -77,8 +72,9 @@ export const FlowDiagram = () => {
 
             <div
                 className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                    show ? "max-h-screen" : "max-h-0"
+                    showFlowChart ? "max-h-screen" : "max-h-0"
                 }`}
+                onClick={() => setIsOpen(true)}
             >
                 <div className="flex justify-center">
                     <div className="flex text-gray-600">
@@ -88,13 +84,11 @@ export const FlowDiagram = () => {
                     </span>
                     </div>
                 </div>
-                <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto"
-                     onClick={() => setIsOpen(true)}>
+                <div className="flex justify-center pb-8 bg-gray-100 rounded mt-4 overflow-y-auto">
                     <img src={getFlowChartAsset(path)} alt="flow"/>
-
                 </div>
             </div>
-            {show && <a
+            {showFlowChart && <a
                 href="https://get.jina.ai"
                 rel="noreferrer"
                 target="_blank"
