@@ -53,7 +53,7 @@ export default function GamingShowcase() {
                 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
             </Head>
             <div className="mb-6">
-                <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.src as string)}/>
+                <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.src as string)} />
             </div>
             {searching ? (
                 <Searching />

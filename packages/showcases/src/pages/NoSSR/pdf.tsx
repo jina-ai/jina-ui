@@ -282,7 +282,7 @@ export default function PDF() {
             <SearchBar searching={searching} search={search} placeholder={"Ask here"}/>
 
             <div className="mt-6">
-            <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.text as string)} textOnly />
+                <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.text as string)} textOnly />
             </div>
             {error === ""  && queries.length ?
                         <p className="font-semibold">

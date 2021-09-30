@@ -318,7 +318,7 @@ export default function Home() {
 
             <Filters onFilter={onFilter}/>
             <div className="my-6">
-                <ExampleQueries queries={exampleQueries} onClick={handleExampleQuery}/>
+                <ExampleQueries queries={exampleQueries} onClick={handleExampleQuery} size="small"/>
             </div>
             
 
