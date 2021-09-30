@@ -7,14 +7,22 @@ const DragAndDropRec ="/assets/drag-and-drop-rec.svg"
 const SampleFlow = "/assets/sampleflow.svg";
 const PDFFlow = "/assets/pdf-search-flowchart.svg"
 const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
+const MeshFlow = "/assets/e-commerce-flowchart.svg"
 const github = "/assets/github.svg";
 
+const flowChartMap = {
+    pdf: "/assets/pdf-search-flowchart.svg",
+    "e-commerce": "/assets/e-commerce-flowchart.svg",
+    gaming: "/assets/3d-mesh-flowchart.svg",
+}
+
 const getFlowChartAsset = (showcase: string) => {
-    if(showcase.includes("pdf"))
-        return PDFFlow
-    if(showcase.includes("e-commerce"))
-        return ECommerceFlow;
-            return SampleFlow
+    let flowChartSrc
+    Object.keys(flowChartMap).forEach((showcaseName) => {
+        if(showcase.includes(showcaseName)) flowChartSrc = flowChartMap[showcaseName as keyof typeof flowChartMap]
+    })
+
+    return flowChartSrc
 }
 
 const customStyles = {
