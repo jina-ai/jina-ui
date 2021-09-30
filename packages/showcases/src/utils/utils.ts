@@ -15,3 +15,11 @@ export function isValidHttpUrl(text: string) {
 
     return url.protocol === "http:" || url.protocol === "https:";
 }
+
+export const debounce = (callback: (...args: any[]) => void, delay: number) => {
+    let timer: NodeJS.Timeout
+    return (...args: any[]) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => callback(...args), delay)
+    }
+}
