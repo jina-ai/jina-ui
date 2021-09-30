@@ -11,9 +11,8 @@ import JinaClient, {
     SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect, useState, useCallback, useRef} from "react";
 import {Spinner} from "../components/Spinner";
-import {useRef} from "react";
 import {MediaPreview} from "../components/common/MediaPreview";
 import {TextPreview} from "../components/common/TextPreview";
 import {ShoppingCartIcon} from "@heroicons/react/outline";
@@ -54,11 +53,7 @@ const Filter = ({
     </div>
 );
 
-const Filters = ({
-                     onFilter,
-                 }: {
-    onFilter: (filters: FilterCondition[]) => void;
-}) => {
+const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void }) => {
     const [season, setSeason] = useState("");
     const [price, setPrice] = useState("");
     const [gender, setGender] = useState("");
@@ -181,7 +176,12 @@ type FilterCondition = {
     value: string | number;
 };
 
-export default function EcommerceShowCase({showFlowChart, setShowFlowChart}) {
+type EcommerceShowCaseProps = {
+    showFlowChart: boolean
+    setShowFlowChart: (arg: boolean) => void
+}
+
+export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
@@ -192,6 +192,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}) {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
+    const resultsRef = useRef<HTMLDivElement>(null)
     const [isFlowChartOpenedOnce, setIsFlowChartOpenedOnce] = useState(false)
     let debouncedFlowChartOpen = useCallback(debounce(() => setShowFlowChart(true), 1000), [])
 
@@ -260,6 +261,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}) {
         setSearching(false);
         setResults(results);
         setQueries(queries);
+        resultsRef.current?.scrollIntoView({behavior: "smooth", block: "center"})
         !isFlowChartOpenedOnce && debouncedFlowChartOpen()
         setIsFlowChartOpenedOnce(true)
     }
@@ -353,22 +355,21 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}) {
                                                                                             href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
                         ]}/>
                     :
-
-                    <>
+                    <div ref={resultsRef}>
                         {searching ? (
                             <Searching/>
                         ) : results.length ? (
-                            <>
+                        <>
                                 <Results
                                     results={results}
                                     CustomResultItem={ProductResult}
                                     classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
                                 />
-                            </>
+                        </>
                         ) : (
                             <EmptyMessage/>
                         )}
-                    </>
+                    </div>
             }
 
 

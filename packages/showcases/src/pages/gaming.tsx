@@ -22,7 +22,12 @@ import { debounce } from '../utils/utils';
 
 const GAMING_ENDPOINT = 'https://europe-west3-jina-showcase.cloudfunctions.net/proxy3d/3d/'
 
-export default function GamingShowcase({showFlowChart, setShowFlowChart}) {
+type GamingShowCaseProps = {
+    showFlowChart: boolean
+    setShowFlowChart: (arg: boolean) => void
+}
+
+export default function GamingShowcase({showFlowChart, setShowFlowChart}: GamingShowCaseProps) {
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false)
