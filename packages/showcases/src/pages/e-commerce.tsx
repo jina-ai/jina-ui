@@ -11,7 +11,7 @@ import JinaClient, {
     SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {Spinner} from "../components/Spinner";
 import {useRef} from "react";
 import {MediaPreview} from "../components/common/MediaPreview";
@@ -25,6 +25,7 @@ const SearchIcon = '/assets/searchIcon.svg'
 const Picture = "/assets/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
 import About from "../components/common/About";
+import { debounce } from '../utils/utils';
 
 const Filter = ({
                     title,
@@ -180,7 +181,7 @@ type FilterCondition = {
     value: string | number;
 };
 
-export default function Home() {
+export default function EcommerceShowCase({showFlowChart, setShowFlowChart}) {
     const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
@@ -191,6 +192,8 @@ export default function Home() {
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false);
     const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
+    const [isFlowChartOpenedOnce, setIsFlowChartOpenedOnce] = useState(false)
+    let debouncedFlowChartOpen = useCallback(debounce(() => setShowFlowChart(true), 1000), [])
 
     useEffect(() => {
 
@@ -257,6 +260,8 @@ export default function Home() {
         setSearching(false);
         setResults(results);
         setQueries(queries);
+        !isFlowChartOpenedOnce && debouncedFlowChartOpen()
+        setIsFlowChartOpenedOnce(true)
     }
 
 
