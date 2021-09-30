@@ -324,31 +324,31 @@ export default function Home() {
 
             {
                 !firstSearchTriggered ?
-                <About
-                    className="mt-6"
-                    aboutPoints={[
-                        "We built this using python, jina, tensorflow, etc.",
-                        "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                        <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
-                                                                                        href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
-                    ]}/>
-                :
+                    <About
+                        className="mt-6"
+                        aboutPoints={[
+                            "We built this using python, jina, tensorflow, etc.",
+                            "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                            <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
+                                                                                            href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                        ]}/>
+                    :
 
-                <>
-                    {searching ? (
-                        <Searching/>
-                    ) : results.length ? (
-                        <>
-                            <Results
-                                results={results}
-                                CustomResultItem={ProductResult}
-                                classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                            />
-                        </>
-                    ) : (
-                        <EmptyMessage/>
-                    )}
-                </>
+                    <>
+                        {searching ? (
+                            <Searching/>
+                        ) : results.length ? (
+                            <>
+                                <Results
+                                    results={results}
+                                    CustomResultItem={ProductResult}
+                                    classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                                />
+                            </>
+                        ) : (
+                            <EmptyMessage/>
+                        )}
+                    </>
             }
 
 
