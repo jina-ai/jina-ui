@@ -249,6 +249,7 @@ export default function Home() {
 
 
     async function search(...documents: RawDocumentData[]) {
+        if(searching) return
         setFirstSearchTriggered(true)
         setResults([])
         setSearching(true);

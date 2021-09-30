@@ -31,6 +31,7 @@ export default function GamingShowcase() {
 
 
     async function search(...documents: RawDocumentData[]) {
+        if(searching) return
         setSearching(true);
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
