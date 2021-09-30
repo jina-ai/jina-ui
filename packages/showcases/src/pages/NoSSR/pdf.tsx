@@ -1,31 +1,33 @@
 import {SearchBar} from "../../components/SearchBar";
-import {FlowDiagram} from "../../components/FlowDiagram";
 import JinaClient, {
-    BaseURL,
     RawDocumentData,
     SimpleResults,
     SimpleQueries,
-    AnyObject,
-    SimpleResponse,
-    SimpleResult,
     fileToBase64
 } from "@jina-ai/jinajs";
 import React, {useEffect, useState} from "react";
 import Results from "../../components/Results";
-const downloadButton = '/assets/download-button.svg'
-const CrossIcon = '/assets/cross.svg'
-const JinaLoading = '/assets/jina-loading.gif'
-import Modal from 'react-modal';
 import PdfViewer from "../../components/common/PdfViewer";
 import {components} from "../../types/pdf/schema"
-import {RequestSerializer} from "../../../../jinajs/dist/types";
 import schema from "../../types/pdf/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import {checkIfQuestion} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
 import About from "../../components/common/About";
+import { ExampleQueries, ExampleQueryItem } from "../../components/common/ExampleQueries";
+import Modal from 'react-modal';
+
+const downloadButton = '/assets/download-button.svg'
+const CrossIcon = '/assets/cross.svg'
+const JinaLoading = '/assets/jina-loading.gif'
 
 const PDF_API_URL = "https://europe-west3-jina-showcase.cloudfunctions.net/prod/"
+
+const exampleQueries: ExampleQueryItem[] = [
+    {text:"What is machine learning?"},
+    {text: "What is transfer learning?"},
+    {text: "What is reinforcement learning?"}
+]
 
 type CustomResult = any
 type CustomResults = any
@@ -280,24 +282,10 @@ export default function PDF() {
                 getSimiliarResults={getSimiliarResults}/>}
             <SearchBar searching={searching} search={search} placeholder={"Ask here"}/>
 
-            
-                <div className="border-b-2 border-t-2 py-3 md:py-8  mt-6">
-                    <h2 className="font-bold text-xl mb-3">Examples:</h2>
-
-                    <div className="ml-3 text-primary-500 font-semibold">
-                        <p
-                            className="mb-3 cursor-pointer"
-                            onClick={() => search("What is machine learning?")}
-                        >
-                            What is machine learning?</p>
-                        <p className="mb-3 cursor-pointer"
-                           onClick={() => search("What is transfer learning?")}
-                        >What is transfer learning?</p>
-                        <p className="mb-3 cursor-pointer"
-                           onClick={() => search("What is reinforcement learning?")}
-                        >What is reinforcement learning?</p>
-                    </div>
-                    {error === ""  && queries.length ?
+            <div className="mt-6">
+                <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.text as string)} textOnly />
+            </div>
+            {error === ""  && queries.length ?
                         <p className="font-semibold">
                             Results for: <span
                             className="text-xl">{searchedDocumentName}</span>
@@ -306,7 +294,6 @@ export default function PDF() {
                             {error}
                         </p>
                     }
-                </div> 
                 {!firstTimeSearched &&
                 <About className="mt-12" aboutPoints={[
                     "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",

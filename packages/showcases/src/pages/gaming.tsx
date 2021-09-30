@@ -1,26 +1,28 @@
 import { useState, useCallback } from 'react'
 import Head from "next/head";
 import JinaClient, {
-    BaseURL,
     RawDocumentData,
     SimpleResults,
     SimpleQueries,
     AnyObject,
-    SimpleResponse,
     SimpleResult,
     fileToBase64
 } from "@jina-ai/jinajs";
 import { OpenAPIV3 } from "openapi-types";
 import schema from "../types/pdf/schema.json"
-import { mockData } from '../gaming-response-mock-data'
 import Results from "../components/Results";
 import { Spinner } from "../components/Spinner"
-import { SearchBar } from "../components/SearchBar";
 import MeshResultItem from "../components/3d-model/MeshResultItem";
-import SampleQueries from '../components/3d-model/SampleQueries';
+import { ExampleQueries, ExampleQueryItem } from '../components/common/ExampleQueries';
 import { debounce } from '../utils/utils';
 
-const GAMING_ENDPOINT = 'https://europe-west3-jina-showcase.cloudfunctions.net/proxy3d/3d/'
+const GAMING_ENDPOINT = 'https://europe-west3-jina-showcase.cloudfunctions.net/proxy3d/3d/';
+
+const exampleQueries: ExampleQueryItem[] = [
+    {src:"https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/cap_2.glb",mimeType:"model"},
+    {src:"https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/piano_pianoforte_forte-piano_14.glb",mimeType:"model"},
+    {src:"https://storage.googleapis.com/showcase-3d-models/ShapeNetV2/rifle_7.glb",mimeType:"model"},
+]
 
 type GamingShowCaseProps = {
     showFlowChart: boolean
@@ -52,6 +54,7 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
         !isFlowChartOpenedOnce && debouncedFlowChartOpen()
         setIsFlowChartOpenedOnce(true)
     }
+    
     return (
         <div>
             <Head>
@@ -59,7 +62,9 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
                 <link rel="icon" href="/favicon.ico" />
                 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
             </Head>
-            <SampleQueries handleSelectExample={search} />
+            <div className="mb-6">
+                <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.src as string)} />
+            </div>
             {searching ? (
                 <Searching />
             ) : (

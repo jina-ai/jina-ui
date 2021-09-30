@@ -4,10 +4,6 @@ import Modal from 'react-modal';
 
 const IconPlusSearch ="/assets/icon-plus-search.svg"
 const DragAndDropRec ="/assets/drag-and-drop-rec.svg"
-const SampleFlow = "/assets/sampleflow.svg";
-const PDFFlow = "/assets/pdf-search-flowchart.svg"
-const ECommerceFlow = "/assets/e-commerce-flowchart.svg"
-const MeshFlow = "/assets/e-commerce-flowchart.svg"
 const github = "/assets/github.svg";
 
 const flowChartMap = {

@@ -1,14 +1,10 @@
 import Head from "next/head";
-import {SearchBar} from "../components/SearchBar";
 import JinaClient, {
-    BaseURL,
     RawDocumentData,
     SimpleResults,
     SimpleQueries,
-    SimpleResult,
     AnyObject,
     fileToBase64,
-    SimpleResponse,
 } from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
 import React, {useEffect, useState, useCallback, useRef} from "react";
@@ -19,11 +15,17 @@ import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-const SearchingIcon = '/assets/searching.gif'
-const SearchIcon = '/assets/searchIcon.svg'
-const Picture = "/assets/image.svg"
 import {isValidHttpUrl} from "../utils/utils";
 import About from "../components/common/About";
+import { ExampleQueries, ExampleQueryItem } from "../components/common/ExampleQueries";
+
+const SearchIcon = '/assets/searchIcon.svg'
+
+const exampleQueries: ExampleQueryItem[] = [
+    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image"},
+    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"white"},
+    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"blue"},
+]
 import { debounce } from '../utils/utils';
 
 const Filter = ({
@@ -271,29 +273,18 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
         setFilters([...filters]);
     };
 
+    function handleExampleQuery(query: ExampleQueryItem){
+        const {src,text} = query;
 
-    function ExampleQuery({color}: { color?: string }) {
+        if(!src) return;
 
-        const url = "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg"
-        return (
-            <div className="cursor-pointer md:mr-6" onClick={() => {
-                setOriginalDocuments([url])
-                if (color) {
-                    onFilter([{attribute: "color", operator: "eq", value: color}])
-                } else if (filters && filters.length > 0) setFilters([])
-                else (search(url))
-            }}>
-                <img className="w-56 h-auto" src={url}/>
-                <div className="flex items-center justify-center">
-                    <img src={SearchIcon}/>
-                    <p className="ml-1">
-                        Image {color && <span>+ <q>{color}</q></span>}
-                    </p>
-                </div>
-            </div>
-        )
+        setOriginalDocuments([src]);
+
+        if(text)
+            onFilter([{attribute: "color", operator: "eq", value: text}]);
+        else
+            search(src);
     }
-
 
     return (
         <div className="px-6">
@@ -335,14 +326,10 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
             </div>
 
             <Filters onFilter={onFilter}/>
-
-            <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
-            <div className="flex md:px-12">
-                <ExampleQuery/>
-                <ExampleQuery color="black"/>
-                <ExampleQuery color="white"/>
-                <ExampleQuery color="blue"/>
+            <div className="my-6">
+                <ExampleQueries queries={exampleQueries} onClick={handleExampleQuery} size="small"/>
             </div>
+            
 
             {
                 !firstSearchTriggered ?
