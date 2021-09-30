@@ -269,12 +269,11 @@ export default function Home() {
 
         const url = "https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg"
         return (
-            <div className="cursor-pointer mr-6" onClick={() => {
+            <div className="cursor-pointer md:mr-6" onClick={() => {
                 setOriginalDocuments([url])
                 if (color) {
                     onFilter([{attribute: "color", operator: "eq", value: color}])
-                }
-                else if(filters && filters.length > 0) setFilters([])
+                } else if (filters && filters.length > 0) setFilters([])
                 else (search(url))
             }}>
                 <img className="w-56 h-auto" src={url}/>
@@ -331,7 +330,7 @@ export default function Home() {
             <Filters onFilter={onFilter}/>
 
             <h2 className="mt-12 font-bold mb-6">Click on example queries:</h2>
-            <div className="flex px-12 mb-12">
+            <div className="flex md:px-12">
                 <ExampleQuery/>
                 <ExampleQuery color="black"/>
                 <ExampleQuery color="white"/>
@@ -340,31 +339,31 @@ export default function Home() {
 
             {
                 !firstSearchTriggered ?
-                <About
-                    className="mt-6"
-                    aboutPoints={[
-                        "We built this using python, jina, tensorflow, etc.",
-                        "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                        <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
-                                                                                        href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
-                    ]}/>
-                :
+                    <About
+                        className="mt-6"
+                        aboutPoints={[
+                            "We built this using python, jina, tensorflow, etc.",
+                            "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
+                            <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
+                                                                                            href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                        ]}/>
+                    :
 
-                <>
-                    {searching ? (
-                        <Searching/>
-                    ) : results.length ? (
-                        <>
-                            <Results
-                                results={results}
-                                CustomResultItem={ProductResult}
-                                classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
-                            />
-                        </>
-                    ) : (
-                        <EmptyMessage/>
-                    )}
-                </>
+                    <>
+                        {searching ? (
+                            <Searching/>
+                        ) : results.length ? (
+                            <>
+                                <Results
+                                    results={results}
+                                    CustomResultItem={ProductResult}
+                                    classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                                />
+                            </>
+                        ) : (
+                            <EmptyMessage/>
+                        )}
+                    </>
             }
 
 
