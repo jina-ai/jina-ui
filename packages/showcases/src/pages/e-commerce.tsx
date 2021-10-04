@@ -22,9 +22,9 @@ import { ExampleQueries, ExampleQueryItem } from "../components/common/ExampleQu
 const SearchIcon = '/assets/searchIcon.svg'
 
 const exampleQueries: ExampleQueryItem[] = [
-    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image"},
-    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"white"},
-    {src:"https://www.helikon-tex.com/media/catalog/product/cache/4/image/9df78eab33525d08d6e5fb8d27136e95/s/p/sp-uts-pr-13_4.jpg",mimeType:"image",text:"blue"},
+    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"black"},
+    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"blue"},
 ]
 import { debounce } from '../utils/utils';
 
@@ -186,9 +186,7 @@ type EcommerceShowCaseProps = {
 export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
-    const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>(
-        []
-    );
+    const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>([]);
     const [addDesc, setAddDesc] = useState("")
     const [queries, setQueries] = useState<SimpleQueries>([]);
     const [results, setResults] = useState<SimpleResults[]>([]);
