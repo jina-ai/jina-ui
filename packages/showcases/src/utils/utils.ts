@@ -1,7 +1,6 @@
-export function checkIfQuestion(text: string) {
-    const regexQuestionMark = new RegExp("\\?", "g");
+export function checkIfValidSearchString(text: string) {
     var wordCount = text.match(/(\w+)/g)?.length || 0;
-    return (regexQuestionMark.test(text) && wordCount > 2)
+    return wordCount >= 2;
 }
 
 export function isValidHttpUrl(text: string) {
