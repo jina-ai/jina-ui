@@ -312,6 +312,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
                 </Dropzone>
                 <input
                     onChange={(event) => setAddDesc(event.target.value)}
+                    onKeyUp={(event) => { if(event.key === 'Enter') search(addDesc, ...originalDocuments) }}
                     className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                     id="grid-first-name" type="text" placeholder="Add additional description"/>
                 <style jsx>
