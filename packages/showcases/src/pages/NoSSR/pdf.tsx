@@ -11,7 +11,7 @@ import PdfViewer from "../../components/common/PdfViewer";
 import {components} from "../../types/pdf/schema"
 import schema from "../../types/pdf/schema.json"
 import {OpenAPIV3} from "openapi-types";
-import {checkIfQuestion} from "../../utils/utils";
+import {checkIfValidSearchString} from "../../utils/utils";
 import {AxiosResponse} from 'axios'
 import About from "../../components/common/About";
 import { ExampleQueries, ExampleQueryItem } from "../../components/common/ExampleQueries";
@@ -192,7 +192,7 @@ export default function PDF() {
         let validQuestion = true
         if (typeof documents[0] === "string") {
             setSearchedDocumentName(documents[0])
-            if (!checkIfQuestion(documents[0])) validQuestion = false
+            if (!checkIfValidSearchString(documents[0])) validQuestion = false
         } else {
             setSearchedDocumentName(documents[0].name)
         }
