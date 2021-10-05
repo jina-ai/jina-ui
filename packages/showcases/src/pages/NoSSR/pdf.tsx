@@ -271,7 +271,7 @@ export default function PDF() {
     }
 
     return (
-        <div className="">
+        <div className="mb-16">
             <h1 className="font-bold text-2xl md:text-5xl mb-3">
                 Ask a paper anything!
             </h1>
