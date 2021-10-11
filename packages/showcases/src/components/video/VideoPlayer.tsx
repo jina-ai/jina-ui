@@ -7,6 +7,6 @@ type VideoPlayerProps = {
 }
 export default function VideoPlayer ({result, timeStamp}: VideoPlayerProps) {
     return (
-        <ReactPlayer url={`${result.data}&t=${timeStamp || 0}`} width="100%" height="20rem" controls />
+        <ReactPlayer url={`${result.url}&t=${result.timeStamp || 0}`} width="100%" height="20rem" controls />
     )
 }

@@ -62,6 +62,8 @@ const customReponseSerializer = (rawResponse: AnyObject) => {
                     : scores.score?.value;
                 return {
                     data: tags?.glb_path || text || uri,
+                    url: uri,
+                    timestamp: tags.timestamp,
                     mimeType,
                     score,
                 } as SimpleResult;
