@@ -38,14 +38,9 @@ export default function GamingShowcase() {
                         <h2 className="font-bold text-xl mb-3">
                             Results:
             </h2>
-                        <Results classNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" results={results} />
+                        <Results classNames="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" results={results} CustomResultItem={VideoPlayer} />
                     </>:""
                 )}
-            <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <VideoPlayer url="https://www.youtube.com/watch?v=3091MHksLM4" />
-                <VideoPlayer url="https://youtu.be/LACbVhgtx9I?t=9" timeStamp={9} />
-                <VideoPlayer url="https://www.youtube.com/watch?v=-BakWVXHSug" timeStamp={6} />
-            </div>
         </div>
     )
 }

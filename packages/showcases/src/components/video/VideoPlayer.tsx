@@ -2,11 +2,11 @@ import React from "react"
 import ReactPlayer from "react-player"
 
 type VideoPlayerProps = {
-    url: string
+    result: any
     timeStamp?: number
 }
-export default function VideoPlayer ({url, timeStamp}: VideoPlayerProps) {
+export default function VideoPlayer ({result, timeStamp}: VideoPlayerProps) {
     return (
-        <ReactPlayer url={`${url}&t=${timeStamp}`} width="100%" height="20rem" controls />
+        <ReactPlayer url={`${result.data}&t=${timeStamp || 0}`} width="100%" height="20rem" controls />
     )
 }
