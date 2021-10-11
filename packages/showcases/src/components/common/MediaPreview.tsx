@@ -22,7 +22,7 @@ export const MediaPreview = ({
       <img
         src={src}
         alt="Image"
-        className={`min-h-12 min-2-12 max-h-full max-w-full mx-auto${
+        className={`min-h-12 min-2-12 h-80 max-h-full max-w-full mx-auto${
           rounded ? " rounded" : ""
         }`}
       />
