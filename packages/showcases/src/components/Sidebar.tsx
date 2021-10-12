@@ -20,9 +20,9 @@ const SidebarItem = ({ children, url, selected }: SidebarItemProps) => {
 };
 
 const items = [
-  { url: "/pdf", title: "PDF Showcase" },
-  { url: "/e-commerce", title: "E-commerce Showcase" },
-  { url: "/gaming", title: "Gaming Showcase" },
+  { url: "/pdf", title: "PDF" },
+  { url: "/e-commerce", title: "E-commerce" },
+  { url: "/gaming", title: "Gaming" },
 ];
 
 export const Sidebar = () => {
