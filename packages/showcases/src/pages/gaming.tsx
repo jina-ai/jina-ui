@@ -58,7 +58,7 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
     return (
         <div>
             <Head>
-                <title>Jina Showcases</title>
+                <title>Gaming Showcase | Jina AI | Jina AI is a Neural Search Company</title>
                 <link rel="icon" href="/favicon.ico" />
                 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" />
             </Head>
