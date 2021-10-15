@@ -287,7 +287,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
     return (
         <div className="px-6">
             <Head>
-                <title>Shop The Look</title>
+                <title>Shop The Look | Jina AI | Jina AI is a Neural Search Company </title>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
