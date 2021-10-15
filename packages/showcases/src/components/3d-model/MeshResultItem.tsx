@@ -3,7 +3,7 @@ type ResultItem = {
     data: string
     tags?: any
     adjacency?: number
-    scores?: any    
+    score?: any    
 }
 
 type ResultItemProps = {

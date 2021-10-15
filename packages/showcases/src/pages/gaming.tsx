@@ -130,7 +130,7 @@ const customReponseSerializer = (rawResponse: AnyObject) => {
             })
         );
     });
-    return { queries, results };
+    return { queries, results: [results[0].slice(0, 4)] };
 }
 
 const Searching = () => (
