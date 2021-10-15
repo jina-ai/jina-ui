@@ -335,10 +335,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
                     <About
                         className="mt-6"
                         aboutPoints={[
-                            "We built this using python, jina, tensorflow, etc.",
-                            "We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                            <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500"
-                                                                                            href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>
+                            "e-commerce platforms are a common use-case of Jina. The e-commerce showcase lets you find similar products based on an image. You can even refine your search by adding some text to the query."
                         ]}/>
                     :
                     <div ref={resultsRef}>

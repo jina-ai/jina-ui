@@ -12,6 +12,7 @@ import { OpenAPIV3 } from "openapi-types";
 import schema from "../types/pdf/schema.json"
 import Results from "../components/Results";
 import { Spinner } from "../components/Spinner"
+import About from "../components/common/About";
 import MeshResultItem from "../components/3d-model/MeshResultItem";
 import { ExampleQueries, ExampleQueryItem } from '../components/common/ExampleQueries';
 import { debounce } from '../utils/utils';
@@ -34,6 +35,7 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
     const [results, setResults] = useState<SimpleResults[]>([]);
     const [searching, setSearching] = useState(false)
     const [searchedDocumentName, setSearchedDocumentName] = useState("")
+    const [firstSearchTriggered, setFirstSearchTriggered] = useState(false)
 
     const jinaClient = new JinaClient(GAMING_ENDPOINT, schema as OpenAPIV3.Document, false, customRequestSerializer, customReponseSerializer)
     const [isFlowChartOpenedOnce, setIsFlowChartOpenedOnce] = useState(false)
@@ -53,6 +55,7 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
         setQueries(queries);
         !isFlowChartOpenedOnce && debouncedFlowChartOpen()
         setIsFlowChartOpenedOnce(true)
+        setFirstSearchTriggered(true)
     }
     
     return (
@@ -65,6 +68,11 @@ export default function GamingShowcase({showFlowChart, setShowFlowChart}: Gaming
             <div className="mb-6">
                 <ExampleQueries queries={exampleQueries} onClick={(query)=>search(query.src as string)} />
             </div>
+
+            {!firstSearchTriggered &&
+                <About className="mt-12" aboutPoints={[
+                    "In game design, it is common to reuse previously made game objects. However, sometimes it is challenging to find matching objects. This showcase illustrates Jina's capability of finding similar instances of a 3d object."
+                ]}/>}
             {searching ? (
                 <Searching />
             ) : (

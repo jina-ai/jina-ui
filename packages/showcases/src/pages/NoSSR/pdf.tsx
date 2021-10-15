@@ -296,9 +296,7 @@ export default function PDF() {
                     }
                 {!firstTimeSearched &&
                 <About className="mt-12" aboutPoints={[
-                    "We built this using python, jina, tensorflow,... We trained the __model__ and indexed 10k papers for now, we are planning to add more and make this more complete.",
-                    <span key="someElement">Reports problems/feature-requests at <a className="text-primary-500" href="https://github.com/jina-ai/examples/issues/new">https://github.com/jina-ai/examples/issues/new</a></span>,
-                    "Try it out and ask a paper anything!"
+                    "Welcome to our PDF showcase. We indexed the title and the abstract of a bunch of machine learning papers. Just type in machine learning-related questions and retrieve relevant documents. The results are containing the matching text."
                 ]}/>
             }
 
