@@ -19,7 +19,7 @@ export const ShowcaseLayout = ({ children, showFlowChart, setShowFlowChart }: Pr
         <main className="w-full overflow-y-auto p-4">
           {children}
         </main>
-        <FlowDiagram  showFlowChart={showFlowChart} setShowFlowChart={setShowFlowChart} />
+        {/*<FlowDiagram  showFlowChart={showFlowChart} setShowFlowChart={setShowFlowChart} />*/}
       </div>
     </div>
   );

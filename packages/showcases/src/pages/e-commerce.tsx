@@ -23,8 +23,21 @@ const SearchIcon = '/assets/searchIcon.svg'
 
 const exampleQueries: ExampleQueryItem[] = [
     {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"black"},
-    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"blue"},
+    {src:"https://images.pexels.com/photos/6429239/pexels-photo-6429239.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/6046226/pexels-photo-6046226.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/6368922/pexels-photo-6368922.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/4030611/pexels-photo-4030611.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/8483418/pexels-photo-8483418.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/6311641/pexels-photo-6311641.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/9558912/pexels-photo-9558912.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/6969983/pexels-photo-6969983.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/4869794/pexels-photo-4869794.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/9499143/pexels-photo-9499143.jpeg",mimeType:"image"},
+    {src:"https://images.pexels.com/photos/6311599/pexels-photo-6311599.jpeg",mimeType:"image"},
+
+    // TODO get back
+    // {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"black"},
+    // {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"blue"},
 ]
 import { debounce } from '../utils/utils';
 
@@ -45,7 +58,7 @@ const Filter = ({
             onChange={(e) => onSelect(e.target.value)}
             className="bg-transparent outline-none cursor-pointer capitalize"
         >
-            <option value="">Any {title}</option>
+            <option value="">{title}</option>
             {options.map((item) => (
                 <option value={item} key={item}>
                     {item}
@@ -56,62 +69,74 @@ const Filter = ({
 );
 
 const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void }) => {
+    const [model, setModel] = useState("8080");
+    {/*TODO bring back*/}
     const [season, setSeason] = useState("");
     const [price, setPrice] = useState("");
     const [gender, setGender] = useState("");
     const [color, setColor] = useState("");
     const [category, setCategory] = useState("");
-
     useEffect(() => {
         const filters: FilterCondition[] = [];
-        if (season)
-            filters.push({attribute: "season", operator: "eq", value: season});
-        if (price === "Under $500")
-            filters.push({attribute: "price", operator: "lt", value: 500});
-        if (price === "Under $200")
-            filters.push({attribute: "price", operator: "lt", value: 200});
-        if (color)
-            filters.push({attribute: "color", operator: "eq", value: color});
-        if (gender)
-            filters.push({attribute: "gender", operator: "eq", value: gender});
-        if (category)
-            filters.push({attribute: "category", operator: "eq", value: category});
+        // if (season)
+        //     filters.push({attribute: "season", operator: "eq", value: season});
+        // if (price === "Under $500")
+        //     filters.push({attribute: "price", operator: "gt", value: 500});
+        // if (price === "Under $200")
+        //     filters.push({attribute: "price", operator: "lt", value: 200});
+        // if (color)
+        //     filters.push({attribute: "color", operator: "eq", value: color});
+        // if (gender)
+        //     filters.push({attribute: "gender", operator: "eq", value: gender});
+        // if (category)
+        //     filters.push({attribute: "category", operator: "eq", value: category});
+        if (model)
+            filters.push({attribute: "model", operator: "eq", value: model});
 
         return onFilter(filters);
-    }, [season, price, gender, color, category]);
+
+    }, [model, season, price, gender, color, category]);
 
     return (
         <div className="flex flex-wrap flex-row gap-1 md:gap-4 mt-3">
             <Filter
-                title="Season"
-                current={season}
-                onSelect={setSeason}
-                options={["winter", "spring", "summer", "fall"]}
+                title="Model"
+                current={model}
+                onSelect={setModel}
+                options={["8080", "8081"]}
             />
-            <Filter
-                title="Price"
-                current={price}
-                onSelect={setPrice}
-                options={["Under $500", "Under $200"]}
-            />
-            <Filter
-                title="Gender"
-                current={gender}
-                onSelect={setGender}
-                options={["boys", "girls", "men", "women"]}
-            />
-            <Filter
-                title="color"
-                current={color}
-                onSelect={setColor}
-                options={["red", "orange", "yellow", "green", "blue", "white", "black"]}
-            />
-            <Filter
-                title="Category"
-                current={category}
-                onSelect={setCategory}
-                options={["apparel", "accessories"]}
-            />
+
+            {/*TODO bring back*/}
+            {/*<Filter*/}
+            {/*    title="Season"*/}
+            {/*    current={season}*/}
+            {/*    onSelect={setSeason}*/}
+            {/*    options={["winter", "spring", "summer", "fall"]}*/}
+            {/*/>*/}
+            {/*<Filter*/}
+            {/*    title="Price"*/}
+            {/*    current={price}*/}
+            {/*    onSelect={setPrice}*/}
+            {/*    options={["Under $500", "Under $200"]}*/}
+            {/*/>*/}
+            {/*<Filter*/}
+            {/*    title="Gender"*/}
+            {/*    current={gender}*/}
+            {/*    onSelect={setGender}*/}
+            {/*    options={["boys", "girls", "men", "women"]}*/}
+            {/*/>*/}
+            {/*<Filter*/}
+            {/*    title="color"*/}
+            {/*    current={color}*/}
+            {/*    onSelect={setColor}*/}
+            {/*    options={["red", "orange", "yellow", "green", "blue", "white", "black"]}*/}
+            {/*/>*/}
+            {/*<Filter*/}
+            {/*    title="Category"*/}
+            {/*    current={category}*/}
+            {/*    onSelect={setCategory}*/}
+            {/*    options={["apparel", "accessories"]}*/}
+            {/*/>*/}
         </div>
     );
 };
@@ -184,8 +209,10 @@ type EcommerceShowCaseProps = {
 }
 
 export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
-    const url = 'https://europe-west3-jina-showcase.cloudfunctions.net/prod/shop-the-look'
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
+    // const url = 'http://34.159.58.52:' + (filters ? filters[0].value: '')
+    const url = 'http://localhost:' + (filters ? filters[0].value: '')
+    console.log('my url', url)
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>([]);
     const [addDesc, setAddDesc] = useState("")
     const [queries, setQueries] = useState<SimpleQueries>([]);
@@ -310,11 +337,13 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
                         </div>
                     )}
                 </Dropzone>
-                <input
-                    onChange={(event) => setAddDesc(event.target.value)}
-                    onKeyUp={(event) => { if(event.key === 'Enter') search(addDesc, ...originalDocuments) }}
-                    className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-                    id="grid-first-name" type="text" placeholder="Add additional description"/>
+
+                {/*TODO get back*/}
+                {/*<input*/}
+                {/*    onChange={(event) => setAddDesc(event.target.value)}*/}
+                {/*    onKeyUp={(event) => { if(event.key === 'Enter') search(addDesc, ...originalDocuments) }}*/}
+                {/*    className="textInput appearance-none block w-full text-gray-700 border border-primary-500 rounded-b py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"*/}
+                {/*    id="grid-first-name" type="text" placeholder="Add additional description"/>*/}
                 <style jsx>
                     {`
                       .textInput {
@@ -328,7 +357,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
             <div className="my-6">
                 <ExampleQueries queries={exampleQueries} onClick={handleExampleQuery} size="small"/>
             </div>
-            
+
 
             {
                 !firstSearchTriggered ?
