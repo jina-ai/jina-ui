@@ -6,7 +6,7 @@ const Home = () => {
   useEffect(() => {
     const { pathname } = Router;
     if (pathname == "/") {
-      Router.push("/pdf");
+      Router.push("/e-commerce");
     } else {
       setLoaded(true);
     }
