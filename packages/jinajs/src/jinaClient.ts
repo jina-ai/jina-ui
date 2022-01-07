@@ -3,7 +3,6 @@ import { serializeRequest, serializeResponse } from "./serializer";
 import MockedClient from './MockedClient'
 import {
   AnyObject,
-  BaseURL,
   RawDocumentData,
   RequestSerializer,
   ResponseSerializer,
@@ -22,7 +21,7 @@ export class JinaClient<IRequestBody = AnyObject ,IResponseData = AnyObject> {
   private schema: OpenAPIV3.Document | undefined
   private debugMode: boolean
 
-  constructor(baseURL: BaseURL, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequestBody>, customSerializeResponse?: ResponseSerializer<IResponseData> ) {
+  constructor(baseURL: string, schema?: OpenAPIV3.Document, debugMode?: boolean, customSerializeRequest?: RequestSerializer<IRequestBody>, customSerializeResponse?: ResponseSerializer<IResponseData> ) {
     this.schema = schema
     this.debugMode = debugMode || false
     this.serializeRequest = customSerializeRequest || serializeRequest
