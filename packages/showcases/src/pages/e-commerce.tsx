@@ -214,7 +214,7 @@ type EcommerceShowCaseProps = {
 
 export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
-    const url = 'https://34.159.58.52:' + (filters ? filters[0].value: '')
+    const url = 'https://visionapi.jina.ai:' + (filters ? filters[0].value: '')
     // const url = 'http://localhost:' + (filters ? filters[0].value: '')
     console.log('my url', url)
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>([]);
