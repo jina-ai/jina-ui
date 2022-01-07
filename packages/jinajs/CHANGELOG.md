@@ -1,3 +1,41 @@
+# [0.5.0](https://github.com/jina-ai/jina-ui/compare/v0.4.0...v0.5.0) (2022-01-07)
+
+
+### Bug Fixes
+
+* also only file ([f53ab30](https://github.com/jina-ai/jina-ui/commit/f53ab30be08f0ec4a076c4f13c79a490c475469b))
+* alt ([6f92d0e](https://github.com/jina-ai/jina-ui/commit/6f92d0e1e9c9aafab93384dc4593eabdb9543e94))
+* else if bug ([8f026c9](https://github.com/jina-ai/jina-ui/commit/8f026c9479daf1703e838a58c50455a26b979062))
+* first example not working ([67be1c0](https://github.com/jina-ai/jina-ui/commit/67be1c0e8f7845209a88528e174c91266f1e8848))
+* img sources to absolute urls ([582e53b](https://github.com/jina-ai/jina-ui/commit/582e53b5df266da61bdf0974c39e49e9246d879c))
+* merge issues ([ef6410f](https://github.com/jina-ai/jina-ui/commit/ef6410f6c307bfb0bf307afa5413ebd5e87dd6f1))
+* move original index => sample, use index to redirect to pdf search ([8153341](https://github.com/jina-ai/jina-ui/commit/81533412cf098f5265ba3cd28e3715efd222dcc8))
+* not showing examples before search ([9932c1e](https://github.com/jina-ai/jina-ui/commit/9932c1ef0c05fcaf7570dd10fd81ab4811babfc5))
+* prevent search when a search is in progress ([1e5fef4](https://github.com/jina-ai/jina-ui/commit/1e5fef42e53f875d32bde3e1633c5435d5d87c32))
+* refactor fuckups ([fe5a47c](https://github.com/jina-ai/jina-ui/commit/fe5a47c6b4152ac6ddbca5e40f6f2c5305e0c528))
+* removed showcase word from menu ([b3d805e](https://github.com/jina-ai/jina-ui/commit/b3d805e81cbbca1cdcefcc8562c4e11cdd0b753f))
+* show page on sidebar, show correct flow diagram ([9652fbd](https://github.com/jina-ai/jina-ui/commit/9652fbdb715cbc2e747c9a7b7547a4f694a70a82))
+* show results only when queries made ([6588889](https://github.com/jina-ai/jina-ui/commit/65888894bd5bfb509e5ecd5a00c444608a499d72))
+* spacing, rm confusing file limit ([1c51850](https://github.com/jina-ai/jina-ui/commit/1c51850fe0a665b0779b66589b1cf63459b8aa8b))
+* type errors ([dfba757](https://github.com/jina-ai/jina-ui/commit/dfba7576b9af1d102cdd31eb4d5ccde9c692aff8))
+
+
+### Features
+
+* add hub icon and logo ([f46b41b](https://github.com/jina-ai/jina-ui/commit/f46b41b816f4fcdd2a3646a3dca241d41139fd77))
+* additional desc in req ([fde49ea](https://github.com/jina-ai/jina-ui/commit/fde49ea8b3bc06effc110e50dfb6aaf4e823b77f))
+* bigger flowdiagram onClick ([92a666f](https://github.com/jina-ai/jina-ui/commit/92a666f3078290bc16ead76735ec293b967521b4))
+* configureable size example queries ([db80492](https://github.com/jina-ai/jina-ui/commit/db8049291b1926fdc56256ace242873cd9959934))
+* custom serialzer ([dcec0e8](https://github.com/jina-ai/jina-ui/commit/dcec0e8f9a6df1d0f46cf60d5b27c2b191531925))
+* deactivate other cases ([99a27ac](https://github.com/jina-ai/jina-ui/commit/99a27acb83607eb24cb8f06d8d4c3db209570a72))
+* DropZone ([e4cc427](https://github.com/jina-ai/jina-ui/commit/e4cc427475aedc707a3aeabebdacab3527b293f4))
+* example queries component ([a3e5dc1](https://github.com/jina-ai/jina-ui/commit/a3e5dc1d34e7fef6eab9541158ba27b7fa6540f9))
+* fashion comparison ([ded6e38](https://github.com/jina-ai/jina-ui/commit/ded6e38cbc8748d098bc8212e37d6903b1f606a9))
+* query examples ([b8df01e](https://github.com/jina-ai/jina-ui/commit/b8df01e75eaec375cc74600633f43b3980af3267))
+* remote adress ([bebbed4](https://github.com/jina-ai/jina-ui/commit/bebbed45a24e70e6c5a1f2e22738d99b9d6807bf))
+* serach with parameters ([14349dd](https://github.com/jina-ai/jina-ui/commit/14349dd3980f95ef4db69d5c81d15e141f7719b1))
+* something something NLKASDJF:LKAJSDF ([dc6eab9](https://github.com/jina-ai/jina-ui/commit/dc6eab99e4f2eac717c79a1e59d12f0d226914b8))
+
 # [0.4.0](https://github.com/jina-ai/jina-ui/compare/v0.3.0...v0.4.0) (2021-09-24)
 
 
