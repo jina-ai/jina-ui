@@ -73,7 +73,7 @@ const Filter = ({
 );
 
 const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void }) => {
-    const [model, setModel] = useState("8080");
+    const [model, setModel] = useState("resnet_finetuner");
     {/*TODO bring back*/}
     const [season, setSeason] = useState("");
     const [price, setPrice] = useState("");
