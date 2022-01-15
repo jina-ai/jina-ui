@@ -107,7 +107,7 @@ const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void
                 title="Model"
                 current={model}
                 onSelect={setModel}
-                options={["8080", "8081"]}
+                options={["resnet_untrained", "resnet_tll_finetuner", "resnet_finetuner", "resnet_custom", "resnet_multi_objective", "vit_custom"]}
             />
 
             {/*TODO bring back*/}
@@ -155,35 +155,35 @@ const ProductResult = ({result}: { result: any }) => {
             <div className="border-b">
                 <MediaPreview src={result.uri} mimeType={result.mimeType}/>
             </div>
-            {result.tags && (
-                <div className="flex-1 flex flex-col p-3">
-                    <div className="capitalize font-semibold text-lg">
-                        {result.tags.display_name}
-                    </div>
-                    <div className="text-gray-500 flex-1">
-                        <TextPreview
-                            text={result.tags.description}
-                            size="sm"
-                            clampLines={3}
-                        />
-                    </div>
-                    <div className="flex flex-row gap-1 capitalize mt-2">
-                        <Tag>{result.tags.usage}</Tag>
-                        <Tag>{result.tags.season}</Tag>
-                    </div>
+            {/*{result.tags && (*/}
+            {/*    <div className="flex-1 flex flex-col p-3">*/}
+                    {/*<div className="capitalize font-semibold text-lg">*/}
+                    {/*    {result.tags.display_name}*/}
+                    {/*</div>*/}
+                    {/*<div className="text-gray-500 flex-1">*/}
+                    {/*    <TextPreview*/}
+                    {/*        text={result.tags.description}*/}
+                    {/*        size="sm"*/}
+                    {/*        clampLines={3}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
+                    {/*<div className="flex flex-row gap-1 capitalize mt-2">*/}
+                    {/*    <Tag>{result.tags.usage}</Tag>*/}
+                    {/*    <Tag>{result.tags.season}</Tag>*/}
+                    {/*</div>*/}
 
-                    <div className="flex flex-row items-center border-t mt-2 pt-2">
-                        <div className="text-2xl font-semibold flex-1">
-                            ${result.tags.price}
-                        </div>
-                        <div
-                            className="px-4 py-1 bg-blue-600 rounded-full text-white cursor-pointer flex flex-row items-center text-sm">
-                            <ShoppingCartIcon className="h-3.5 inline"/>
-                            <div className="ml-1">Add to Cart</div>
-                        </div>
-                    </div>
-                </div>
-            )}
+                    {/*<div className="flex flex-row items-center border-t mt-2 pt-2">*/}
+                    {/*    <div className="text-2xl font-semibold flex-1">*/}
+                    {/*        ${result.tags.price}*/}
+                    {/*    </div>*/}
+                    {/*    <div*/}
+                    {/*        className="px-4 py-1 bg-blue-600 rounded-full text-white cursor-pointer flex flex-row items-center text-sm">*/}
+                    {/*        <ShoppingCartIcon className="h-3.5 inline"/>*/}
+                    {/*        <div className="ml-1">Add to Cart</div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 };
@@ -214,7 +214,8 @@ type EcommerceShowCaseProps = {
 
 export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
-    const url = 'https://visionapi.jina.ai:' + (filters ? filters[0].value: '')
+    const url = 'https://visionapi.jina.ai/' + (filters ? filters[0].value: '')
+    // const url = 'http://34.159.58.52:' + (filters ? filters[0].value: '')
     // const url = 'http://localhost:' + (filters ? filters[0].value: '')
     console.log('my url', url)
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>([]);
