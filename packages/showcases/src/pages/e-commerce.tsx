@@ -1,49 +1,87 @@
 import Head from "next/head";
-import JinaClient, {
-    RawDocumentData,
-    SimpleResults,
-    SimpleQueries,
-    AnyObject,
-    fileToBase64,
-} from "@jina-ai/jinajs";
+import JinaClient, {AnyObject, fileToBase64, RawDocumentData, SimpleQueries, SimpleResults,} from "@jina-ai/jinajs";
 import {Results} from "../components/Results";
-import React, {useEffect, useState, useCallback, useRef} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Spinner} from "../components/Spinner";
 import {MediaPreview} from "../components/common/MediaPreview";
-import {TextPreview} from "../components/common/TextPreview";
-import {ShoppingCartIcon} from "@heroicons/react/outline";
 import schema from "../types/e-commerce/schema.json"
 import {OpenAPIV3} from "openapi-types";
 import Dropzone from 'react-dropzone'
-import {isValidHttpUrl} from "../utils/utils";
-import About from "../components/common/About";
-import { ExampleQueries, ExampleQueryItem } from "../components/common/ExampleQueries";
+import {debounce, isValidHttpUrl} from "../utils/utils";
+import {ExampleQueries, ExampleQueryItem} from "../components/common/ExampleQueries";
 
 const SearchIcon = '/assets/searchIcon.svg'
 
 const exampleQueries: ExampleQueryItem[] = [
-    {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6429239/pexels-photo-6429239.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6046226/pexels-photo-6046226.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6368922/pexels-photo-6368922.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/4030611/pexels-photo-4030611.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/8483418/pexels-photo-8483418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6311641/pexels-photo-6311641.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/9558912/pexels-photo-9558912.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6969983/pexels-photo-6969983.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/4869794/pexels-photo-4869794.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/9499143/pexels-photo-9499143.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.pexels.com/photos/6311599/pexels-photo-6311599.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
-    {src:"https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
-    {src:"https://images.unsplash.com/photo-1627225924765-552d49cf47ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
-    {src:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
-    {src:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=997&q=80",mimeType:"image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/1.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/2.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/3.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/4.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/5.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/6.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/7.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/8.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/9.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/10.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/11.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/12.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/13.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/14.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/15.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/16.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/17.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/18.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/19.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/20.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/21.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/22.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/23.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/24.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/25.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/26.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/27.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/28.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/29.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/30.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/31.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/32.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/33.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/34.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/35.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/36.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/37.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/38.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/39.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/40.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/41.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/42.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/43.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/44.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/45.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/46.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/47.jpg", mimeType: "image"},
+    {src: "https://storage.googleapis.com/jina-fashion-data/data/website_example_images/48.jpg", mimeType: "image"},
+    // {src:"https://storage.googleapis.com/jina-fashion-data/data/website_example_images/1.jpg",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6429239/pexels-photo-6429239.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6046226/pexels-photo-6046226.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6368922/pexels-photo-6368922.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/4030611/pexels-photo-4030611.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/8483418/pexels-photo-8483418.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6311641/pexels-photo-6311641.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/9558912/pexels-photo-9558912.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6969983/pexels-photo-6969983.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/4869794/pexels-photo-4869794.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/9499143/pexels-photo-9499143.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.pexels.com/photos/6311599/pexels-photo-6311599.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=504",mimeType:"image"},
+    // {src:"https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
+    // {src:"https://images.unsplash.com/photo-1627225924765-552d49cf47ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
+    // {src:"https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80",mimeType:"image"},
+    // {src:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=997&q=80",mimeType:"image"},
 
     // TODO get back
     // {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"black"},
     // {src:"https://images.pexels.com/photos/1464625/pexels-photo-1464625.jpeg",mimeType:"image",text:"blue"},
 ]
-import { debounce } from '../utils/utils';
 
 const Filter = ({
                     title,
@@ -72,9 +110,10 @@ const Filter = ({
     </div>
 );
 
-const Filters = ({ onFilter, }: { onFilter: (filters: FilterCondition[]) => void }) => {
+const Filters = ({onFilter,}: { onFilter: (filters: FilterCondition[]) => void }) => {
     const [model, setModel] = useState("resnet_finetuner");
-    {/*TODO bring back*/}
+    {/*TODO bring back*/
+    }
     const [season, setSeason] = useState("");
     const [price, setPrice] = useState("");
     const [gender, setGender] = useState("");
@@ -157,31 +196,31 @@ const ProductResult = ({result}: { result: any }) => {
             </div>
             {/*{result.tags && (*/}
             {/*    <div className="flex-1 flex flex-col p-3">*/}
-                    {/*<div className="capitalize font-semibold text-lg">*/}
-                    {/*    {result.tags.display_name}*/}
-                    {/*</div>*/}
-                    {/*<div className="text-gray-500 flex-1">*/}
-                    {/*    <TextPreview*/}
-                    {/*        text={result.tags.description}*/}
-                    {/*        size="sm"*/}
-                    {/*        clampLines={3}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
-                    {/*<div className="flex flex-row gap-1 capitalize mt-2">*/}
-                    {/*    <Tag>{result.tags.usage}</Tag>*/}
-                    {/*    <Tag>{result.tags.season}</Tag>*/}
-                    {/*</div>*/}
+            {/*<div className="capitalize font-semibold text-lg">*/}
+            {/*    {result.tags.display_name}*/}
+            {/*</div>*/}
+            {/*<div className="text-gray-500 flex-1">*/}
+            {/*    <TextPreview*/}
+            {/*        text={result.tags.description}*/}
+            {/*        size="sm"*/}
+            {/*        clampLines={3}*/}
+            {/*    />*/}
+            {/*</div>*/}
+            {/*<div className="flex flex-row gap-1 capitalize mt-2">*/}
+            {/*    <Tag>{result.tags.usage}</Tag>*/}
+            {/*    <Tag>{result.tags.season}</Tag>*/}
+            {/*</div>*/}
 
-                    {/*<div className="flex flex-row items-center border-t mt-2 pt-2">*/}
-                    {/*    <div className="text-2xl font-semibold flex-1">*/}
-                    {/*        ${result.tags.price}*/}
-                    {/*    </div>*/}
-                    {/*    <div*/}
-                    {/*        className="px-4 py-1 bg-blue-600 rounded-full text-white cursor-pointer flex flex-row items-center text-sm">*/}
-                    {/*        <ShoppingCartIcon className="h-3.5 inline"/>*/}
-                    {/*        <div className="ml-1">Add to Cart</div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+            {/*<div className="flex flex-row items-center border-t mt-2 pt-2">*/}
+            {/*    <div className="text-2xl font-semibold flex-1">*/}
+            {/*        ${result.tags.price}*/}
+            {/*    </div>*/}
+            {/*    <div*/}
+            {/*        className="px-4 py-1 bg-blue-600 rounded-full text-white cursor-pointer flex flex-row items-center text-sm">*/}
+            {/*        <ShoppingCartIcon className="h-3.5 inline"/>*/}
+            {/*        <div className="ml-1">Add to Cart</div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
             {/*    </div>*/}
             {/*)}*/}
         </div>
@@ -214,7 +253,7 @@ type EcommerceShowCaseProps = {
 
 export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: EcommerceShowCaseProps) {
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
-    const url = 'https://visionapi.jina.ai/' + (filters ? filters[0].value: '')
+    const url = 'https://visionapi.jina.ai/' + (filters ? filters[0].value : '')
     // const url = 'http://34.159.58.52:' + (filters ? filters[0].value: '')
     // const url = 'http://localhost:' + (filters ? filters[0].value: '')
     console.log('my url', url)
@@ -285,7 +324,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
 
 
     async function search(...documents: RawDocumentData[]) {
-        if(searching) return
+        if (searching) return
         setFirstSearchTriggered(true)
         setResults([])
         setSearching(true);
@@ -303,14 +342,14 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
         setFilters([...filters]);
     };
 
-    function handleExampleQuery(query: ExampleQueryItem){
-        const {src,text} = query;
+    function handleExampleQuery(query: ExampleQueryItem) {
+        const {src, text} = query;
 
-        if(!src) return;
+        if (!src) return;
 
         setOriginalDocuments([src]);
 
-        if(text)
+        if (text)
             onFilter([{attribute: "color", operator: "eq", value: text}]);
         else
             search(src);
@@ -378,13 +417,13 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
                         {searching ? (
                             <Searching/>
                         ) : results.length ? (
-                        <>
+                            <>
                                 <Results
                                     results={results}
                                     CustomResultItem={ProductResult}
                                     classNames="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"
                                 />
-                        </>
+                            </>
                         ) : (
                             <EmptyMessage/>
                         )}

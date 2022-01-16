@@ -131,7 +131,7 @@ export const ExampleQueries = ({
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-12 gap-3">
           {queries.map((query, idx) => (
             <ExampleQuery
               query={query}
