@@ -111,7 +111,7 @@ const Filter = ({
 );
 
 const Filters = ({onFilter,}: { onFilter: (filters: FilterCondition[]) => void }) => {
-    const [model, setModel] = useState("resnet_finetuner");
+    const [model, setModel] = useState("vit_custom");
     {/*TODO bring back*/
     }
     const [season, setSeason] = useState("");
@@ -146,7 +146,7 @@ const Filters = ({onFilter,}: { onFilter: (filters: FilterCondition[]) => void }
                 title="Model"
                 current={model}
                 onSelect={setModel}
-                options={["resnet_untrained", "resnet_tll_finetuner", "resnet_finetuner", "resnet_custom", "resnet_multi_objective", "vit_custom"]}
+                options={["resnet_untrained", "resnet_tll_finetuner", "resnet_finetuner", "resnet_custom", "resnet_multi_objective", "vit_custom", "clip_image_untrained"]}
             />
 
             {/*TODO bring back*/}
