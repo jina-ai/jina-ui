@@ -146,7 +146,7 @@ const Filters = ({onFilter,}: { onFilter: (filters: FilterCondition[]) => void }
                 title="Model"
                 current={model}
                 onSelect={setModel}
-                options={["resnet_untrained", "resnet_tll_finetuner", "resnet_finetuner", "resnet_custom", "resnet_multi_objective", "vit_custom", "clip_image_untrained"]}
+                options={["resnet_untrained", "resnet_tll_finetuner", "resnet_finetuner", "resnet_custom", "resnet_multi_objective", "vit_custom", "clip_image_untrained", "clip_image_finetuner"]}
             />
 
             {/*TODO bring back*/}
@@ -255,7 +255,7 @@ export default function EcommerceShowCase({showFlowChart, setShowFlowChart}: Eco
     const [filters, setFilters] = useState<FilterCondition[] | undefined>();
     const url = 'https://visionapi.jina.ai/' + (filters ? filters[0].value : '')
     // const url = 'http://34.159.58.52:' + (filters ? filters[0].value: '')
-    // const url = 'http://localhost:' + (filters ? filters[0].value: '')
+    // const url = 'http://localhost:8087' // + (filters ? filters[0].value: '')
     console.log('my url', url)
     const [originalDocuments, setOriginalDocuments] = useState<RawDocumentData[]>([]);
     const [addDesc, setAddDesc] = useState("")
