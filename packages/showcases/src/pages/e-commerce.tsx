@@ -111,7 +111,7 @@ const Filter = ({
 );
 
 const Filters = ({onFilter,}: { onFilter: (filters: FilterCondition[]) => void }) => {
-    const [model, setModel] = useState("vit_custom");
+    const [model, setModel] = useState("clip_image_finetuner");
     {/*TODO bring back*/
     }
     const [season, setSeason] = useState("");
