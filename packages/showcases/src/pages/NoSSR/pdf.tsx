@@ -215,7 +215,7 @@ export default function PDF() {
     }
 
     const CustomResultItem = (result: CustomResult) => {
-        const {thumbnail, pdf_name, pdf, page} = result.result
+        const {thumbnail, pdf_name, pdf, page, tags} = result.result
         const [hovered, setHovered] = useState<boolean>(false)
 
         return (
@@ -237,6 +237,9 @@ export default function PDF() {
                       }
                     `}
                 </style>
+                <div className="px-2 pt-4">
+                    <div className="text-sm md:text-base font-semibold">{tags.match_text}</div>
+                </div>
                 <div className="relative rounded-xl border border-primary-500 m-b-3 overflow-hidden h-96"
                      onMouseOver={() => setHovered(true)}
                      onMouseLeave={() => setHovered(false)}
@@ -260,12 +263,6 @@ export default function PDF() {
                             <img src={downloadButton} alt="download"/>
                         </a>
                     </button>
-                </div>
-                <div>
-                </div>
-                <div className="px-2 md:px-8 pt-4 flex justify-between">
-                    <div className="text-sm md:text-base font-semibold max-w-xs">{pdf_name}</div>
-                    <div className="float-right text-gray-700 min-w-max">Page {parseInt(page) + 1}</div>
                 </div>
             </div>)
     }
